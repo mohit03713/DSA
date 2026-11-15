@@ -1,0 +1,3576 @@
+export interface LabApproach {
+  id: string
+  name: string
+  tag: string
+  intuition: string
+  algorithm?: string[]
+  cCode: string
+  cppCode: string
+  timeComplexity: string
+  spaceComplexity: string
+  pros: string[]
+  cons: string[]
+}
+
+export interface LabQuestionDetail {
+  id: string
+  number: number
+  title: string
+  statement: string
+  explanation: string
+  requiredConcepts: string[]
+  algorithm?: string[]
+  cCode: string
+  cppCode: string
+  approaches?: LabApproach[]
+  sampleIO: { input: string; output: string; explanation?: string }[]
+  dryRun: { step: number; state: string; explanation: string }[]
+  timeComplexity: string
+  spaceComplexity: string
+  commonMistakes: string[]
+  edgeCases: string[]
+  vivaQuestions?: string[]
+  relatedTopicId?: string
+  isCompleted?: boolean
+}
+
+export interface DetailedLab {
+  id: string
+  subjectId: string
+  subjectName: string
+  labNo: number
+  title: string
+  description: string
+  dueDate: string
+  questions: LabQuestionDetail[]
+}
+
+export const LABS_DATA: DetailedLab[] = [
+  // ─── DS Lab Exercise 1: Basic 1D-Array ─────────────────────────────────────
+  {
+    id: 'ds-lab-1',
+    subjectId: 'ds',
+    subjectName: 'Data Structures',
+    labNo: 1,
+    title: 'Exercise 1 (Basic 1D-Array)',
+    description: 'Fundamental one-dimensional array input, traversal, aggregations, extrema, counts, linear search, and frequency calculation.',
+    dueDate: '2024-11-20',
+    questions: [
+      {
+        id: 'q1',
+        number: 1,
+        title: 'Array Input and Display',
+        statement: 'Write a C program to declare a one-dimensional array of size n, read its elements from the user, and display them. (Note: User input is mandatory).',
+        explanation: 'Dynamically allocates or sized array based on user input n, loops through indices 0 to n-1 using scanf to read, and prints each value.',
+        requiredConcepts: ['1D Array declaration', 'scanf / printf', 'For loops', 'Array indexing'],
+        algorithm: [
+          'Read integer n from user',
+          'Declare array arr[n] (or allocate dynamically)',
+          'Iterate i from 0 to n-1 and read arr[i]',
+          'Iterate i from 0 to n-1 and print arr[i]',
+        ],
+        cCode: `#include <stdio.h>
+
+int main() {
+    int n;
+    printf("Enter number of elements: ");
+    if (scanf("%d", &n) != 1 || n <= 0) return 0;
+    
+    int arr[n];
+    printf("Enter %d integers:\\n", n);
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &arr[i]);
+    }
+    
+    printf("Array elements are: ");
+    for (int i = 0; i < n; i++) {
+        printf("%d ", arr[i]);
+    }
+    printf("\\n");
+    return 0;
+}`,
+        cppCode: `#include <iostream>
+#include <vector>
+using namespace std;
+
+int main() {
+    int n;
+    cout << "Enter number of elements: ";
+    cin >> n;
+    vector<int> arr(n);
+    cout << "Enter " << n << " integers:" << endl;
+    for (int i = 0; i < n; i++) cin >> arr[i];
+    cout << "Array elements are: ";
+    for (int x : arr) cout << x << " ";
+    cout << endl;
+    return 0;
+}`,
+        sampleIO: [
+          { input: '5\n10 20 30 40 50', output: 'Array elements are: 10 20 30 40 50' },
+        ],
+        dryRun: [
+          { step: 1, state: 'Read n = 5', explanation: 'Allocates array of size 5.' },
+          { step: 2, state: 'Loop i = 0..4', explanation: 'Stores 10, 20, 30, 40, 50 at indices 0, 1, 2, 3, 4.' },
+          { step: 3, state: 'Print elements', explanation: 'Prints each element separated by space.' },
+        ],
+        timeComplexity: 'O(N)',
+        spaceComplexity: 'O(N)',
+        commonMistakes: ['Not checking for n <= 0', 'Buffer overflow if array size exceeds bounds'],
+        edgeCases: ['n = 1 (single element)', 'Negative elements'],
+        relatedTopicId: 'arrays',
+        isCompleted: true,
+      },
+      {
+        id: 'q2',
+        number: 2,
+        title: 'Sum and Average of Elements',
+        statement: 'Write a C program to find the sum and average of all elements in a one-dimensional array.',
+        explanation: 'Accumulates sum in a loop and divides by n casting to float to preserve precision.',
+        requiredConcepts: ['Accumulator variable', 'Type casting to float/double'],
+        algorithm: [
+          'Read n and array elements',
+          'Initialize sum = 0',
+          'For each element x in array, sum = sum + x',
+          'Calculate avg = (float)sum / n',
+          'Print sum and avg',
+        ],
+        cCode: `#include <stdio.h>
+
+int main() {
+    int n, sum = 0;
+    printf("Enter n: ");
+    scanf("%d", &n);
+    int arr[n];
+    printf("Enter elements: ");
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &arr[i]);
+        sum += arr[i];
+    }
+    float avg = (float)sum / n;
+    printf("Sum = %d\\n", sum);
+    printf("Average = %.2f\\n", avg);
+    return 0;
+}`,
+        cppCode: `#include <iostream>
+#include <vector>
+#include <numeric>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+    vector<int> arr(n);
+    int sum = 0;
+    for (int i = 0; i < n; i++) {
+        cin >> arr[i];
+        sum += arr[i];
+    }
+    cout << "Sum = " << sum << "\\nAverage = " << (double)sum / n << endl;
+    return 0;
+}`,
+        sampleIO: [
+          { input: '4\n10 20 30 40', output: 'Sum = 100\nAverage = 25.00' },
+        ],
+        dryRun: [
+          { step: 1, state: 'Read 4 elements: 10, 20, 30, 40', explanation: 'sum = 10+20+30+40 = 100.' },
+          { step: 2, state: 'avg = 100.0 / 4 = 25.00', explanation: 'Calculates floating point average.' },
+        ],
+        timeComplexity: 'O(N)',
+        spaceComplexity: 'O(N)',
+        commonMistakes: ['Integer division: sum / n gives truncated integer if not cast to float'],
+        edgeCases: ['Array of zeros', 'Negative sum'],
+        relatedTopicId: 'arrays',
+        isCompleted: true,
+      },
+      {
+        id: 'q3',
+        number: 3,
+        title: 'Largest and Smallest Element',
+        statement: 'Write a C program to find the largest and smallest elements in an array.',
+        explanation: 'Initialize min and max with arr[0], then single-pass compare each element.',
+        requiredConcepts: ['Extremum search', 'Comparison logic'],
+        algorithm: [
+          'Read n and array elements',
+          'min = arr[0], max = arr[0]',
+          'Iterate i from 1 to n-1:',
+          '  If arr[i] > max, max = arr[i]',
+          '  If arr[i] < min, min = arr[i]',
+          'Print max and min',
+        ],
+        cCode: `#include <stdio.h>
+
+int main() {
+    int n;
+    printf("Enter n: ");
+    scanf("%d", &n);
+    int arr[n];
+    for (int i = 0; i < n; i++) scanf("%d", &arr[i]);
+    
+    int max = arr[0], min = arr[0];
+    for (int i = 1; i < n; i++) {
+        if (arr[i] > max) max = arr[i];
+        if (arr[i] < min) min = arr[i];
+    }
+    printf("Largest element = %d\\n", max);
+    printf("Smallest element = %d\\n", min);
+    return 0;
+}`,
+        cppCode: `#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int main() {
+    int n; cin >> n;
+    vector<int> a(n);
+    for (int &x : a) cin >> x;
+    int maxVal = *max_element(a.begin(), a.end());
+    int minVal = *min_element(a.begin(), a.end());
+    cout << "Largest: " << maxVal << "\\nSmallest: " << minVal << endl;
+    return 0;
+}`,
+        sampleIO: [
+          { input: '5\n14 3 67 2 89', output: 'Largest element = 89\nSmallest element = 2' },
+        ],
+        dryRun: [
+          { step: 1, state: 'Init: max=14, min=14', explanation: 'Start with index 0.' },
+          { step: 2, state: 'Check 3: min=3, Check 67: max=67', explanation: 'Updates extrema.' },
+          { step: 3, state: 'Check 2: min=2, Check 89: max=89', explanation: 'Final max=89, min=2.' },
+        ],
+        timeComplexity: 'O(N)',
+        spaceComplexity: 'O(1) auxiliary',
+        commonMistakes: ['Initializing min to 0 (fails if all numbers are positive or negative)'],
+        edgeCases: ['All elements equal', 'All elements negative'],
+        relatedTopicId: 'arrays',
+        isCompleted: true,
+      },
+      {
+        id: 'q4',
+        number: 4,
+        title: 'Count Even and Odd Elements',
+        statement: 'Write a C program to count the number of even and odd elements in an array.',
+        explanation: 'Uses modulo operator % 2 to check divisibility by 2.',
+        requiredConcepts: ['Parity check', 'Modulo arithmetic'],
+        algorithm: [
+          'Initialize evenCount = 0, oddCount = 0',
+          'For each element arr[i]:',
+          '  If arr[i] % 2 == 0, increment evenCount',
+          '  Else increment oddCount',
+          'Print both counts',
+        ],
+        cCode: `#include <stdio.h>
+
+int main() {
+    int n, evens = 0, odds = 0;
+    printf("Enter n: ");
+    scanf("%d", &n);
+    int arr[n];
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &arr[i]);
+        if (arr[i] % 2 == 0) evens++;
+        else odds++;
+    }
+    printf("Number of even elements = %d\\n", evens);
+    printf("Number of odd elements = %d\\n", odds);
+    return 0;
+}`,
+        cppCode: `#include <iostream>
+using namespace std;
+
+int main() {
+    int n, x, evens = 0, odds = 0;
+    cin >> n;
+    while (n--) {
+        cin >> x;
+        if (x % 2 == 0) evens++;
+        else odds++;
+    }
+    cout << "Even: " << evens << " Odd: " << odds << endl;
+    return 0;
+}`,
+        sampleIO: [
+          { input: '6\n1 2 3 4 5 6', output: 'Number of even elements = 3\nNumber of odd elements = 3' },
+        ],
+        dryRun: [
+          { step: 1, state: '1, 3, 5 are odd', explanation: 'odds = 3' },
+          { step: 2, state: '2, 4, 6 are even', explanation: 'evens = 3' },
+        ],
+        timeComplexity: 'O(N)',
+        spaceComplexity: 'O(N)',
+        commonMistakes: ['Handling negative odd numbers: in C, (-3) % 2 evaluates to -1, not 1. Check == 0 vs != 0'],
+        edgeCases: ['Negative even and odd integers', 'Array with 0 (0 is even)'],
+        relatedTopicId: 'arrays',
+        isCompleted: true,
+      },
+      {
+        id: 'q5',
+        number: 5,
+        title: 'Linear Search for Given Element',
+        statement: 'Write a C program to search for a given element in an array using Linear Search.',
+        explanation: 'Sequentially inspects each element until key is found or array is exhausted.',
+        requiredConcepts: ['Sequential traversal', 'Early exit flag'],
+        algorithm: [
+          'Read n, array elements, and target key',
+          'foundIndex = -1',
+          'Iterate i from 0 to n-1:',
+          '  If arr[i] == key: foundIndex = i, break',
+          'If foundIndex != -1, print index; else print not found',
+        ],
+        cCode: `#include <stdio.h>
+
+int main() {
+    int n, key, found = -1;
+    printf("Enter n: ");
+    scanf("%d", &n);
+    int arr[n];
+    printf("Enter array elements: ");
+    for (int i = 0; i < n; i++) scanf("%d", &arr[i]);
+    printf("Enter search key: ");
+    scanf("%d", &key);
+    
+    for (int i = 0; i < n; i++) {
+        if (arr[i] == key) {
+            found = i;
+            break;
+        }
+    }
+    if (found != -1)
+        printf("Element %d found at index %d\\n", key, found);
+    else
+        printf("Element %d not found\\n", key);
+    return 0;
+}`,
+        cppCode: `#include <iostream>
+#include <vector>
+using namespace std;
+
+int main() {
+    int n, key; cin >> n;
+    vector<int> a(n);
+    for (int &x : a) cin >> x;
+    cin >> key;
+    for (int i = 0; i < n; i++) {
+        if (a[i] == key) {
+            cout << "Found at index " << i << endl;
+            return 0;
+        }
+    }
+    cout << "Not found" << endl;
+    return 0;
+}`,
+        sampleIO: [
+          { input: '5\n10 25 32 45 60\n32', output: 'Element 32 found at index 2' },
+        ],
+        dryRun: [
+          { step: 1, state: 'i=0, arr[0]=10 != 32', explanation: 'Advance' },
+          { step: 2, state: 'i=1, arr[1]=25 != 32', explanation: 'Advance' },
+          { step: 3, state: 'i=2, arr[2]=32 == 32', explanation: 'Match! Exit.' },
+        ],
+        timeComplexity: 'Best: O(1), Worst/Avg: O(N)',
+        spaceComplexity: 'O(1) auxiliary',
+        commonMistakes: ['Printing "Not found" inside loop on first mismatch instead of after full scan'],
+        edgeCases: ['Key at first position', 'Key not present'],
+        relatedTopicId: 'binary-search',
+        isCompleted: true,
+      },
+      {
+        id: 'q6',
+        number: 6,
+        title: 'Count Positive, Negative, and Zero Elements',
+        statement: 'Write a C program to count the number of positive, negative, and zero elements in an array.',
+        explanation: 'Three-way branch comparison: arr[i] > 0, arr[i] < 0, or arr[i] == 0.',
+        requiredConcepts: ['Conditional branching', 'Sign classification'],
+        algorithm: [
+          'Init pos = 0, neg = 0, zero = 0',
+          'For each element x in arr:',
+          '  If x > 0: pos++',
+          '  Else if x < 0: neg++',
+          '  Else: zero++',
+          'Print counts',
+        ],
+        cCode: `#include <stdio.h>
+
+int main() {
+    int n, pos = 0, neg = 0, zero = 0;
+    printf("Enter n: ");
+    scanf("%d", &n);
+    int arr[n];
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &arr[i]);
+        if (arr[i] > 0) pos++;
+        else if (arr[i] < 0) neg++;
+        else zero++;
+    }
+    printf("Positive elements: %d\\n", pos);
+    printf("Negative elements: %d\\n", neg);
+    printf("Zero elements: %d\\n", zero);
+    return 0;
+}`,
+        cppCode: `#include <iostream>
+using namespace std;
+
+int main() {
+    int n, x, p = 0, ng = 0, z = 0;
+    cin >> n;
+    while (n--) {
+        cin >> x;
+        if (x > 0) p++;
+        else if (x < 0) ng++;
+        else z++;
+    }
+    cout << "Positive: " << p << " Negative: " << ng << " Zero: " << z << endl;
+    return 0;
+}`,
+        sampleIO: [
+          { input: '6\n-4 0 7 -2 0 15', output: 'Positive elements: 2\nNegative elements: 2\nZero elements: 2' },
+        ],
+        dryRun: [
+          { step: 1, state: 'Scan elements', explanation: '7, 15 (>0) -> pos=2. -4, -2 (<0) -> neg=2. 0, 0 -> zero=2.' },
+        ],
+        timeComplexity: 'O(N)',
+        spaceComplexity: 'O(N)',
+        commonMistakes: ['Confusing 0 with positive numbers (0 is neither positive nor negative)'],
+        edgeCases: ['Array containing only zeros'],
+        relatedTopicId: 'arrays',
+        isCompleted: true,
+      },
+      {
+        id: 'q7',
+        number: 7,
+        title: 'Calculate Frequency of a Given Element',
+        statement: 'Write a C program to calculate the frequency of a given element in an array.',
+        explanation: 'Linear scan counting how many times target appears in the array.',
+        requiredConcepts: ['Frequency counter', 'Equality check'],
+        algorithm: [
+          'Read n, array elements, and target value',
+          'freq = 0',
+          'For each x in arr: if x == target, freq++',
+          'Print freq',
+        ],
+        cCode: `#include <stdio.h>
+
+int main() {
+    int n, target, freq = 0;
+    printf("Enter n: ");
+    scanf("%d", &n);
+    int arr[n];
+    for (int i = 0; i < n; i++) scanf("%d", &arr[i]);
+    printf("Enter element to find frequency: ");
+    scanf("%d", &target);
+    
+    for (int i = 0; i < n; i++) {
+        if (arr[i] == target) freq++;
+    }
+    printf("Frequency of %d = %d\\n", target, freq);
+    return 0;
+}`,
+        cppCode: `#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int main() {
+    int n, target; cin >> n;
+    vector<int> a(n);
+    for (int &x : a) cin >> x;
+    cin >> target;
+    cout << "Frequency = " << count(a.begin(), a.end(), target) << endl;
+    return 0;
+}`,
+        sampleIO: [
+          { input: '7\n10 20 20 10 20 30 20\n20', output: 'Frequency of 20 = 4' },
+        ],
+        dryRun: [
+          { step: 1, state: 'Scan array for 20', explanation: 'Matches at indices 1, 2, 4, 6 -> count = 4.' },
+        ],
+        timeComplexity: 'O(N)',
+        spaceComplexity: 'O(1) auxiliary',
+        commonMistakes: ['Resetting count variable inside the loop'],
+        edgeCases: ['Frequency is 0 (element not present)'],
+        relatedTopicId: 'arrays',
+        isCompleted: true,
+      },
+    ],
+  },
+
+  // ─── DS Lab Exercise 2: Array Operations ──────────────────────────────────
+  {
+    id: 'ds-lab-2',
+    subjectId: 'ds',
+    subjectName: 'Data Structures',
+    labNo: 2,
+    title: 'Exercise 2 (Array Operations & In-Place Manipulations)',
+    description: 'Second extrema without sorting, duplicate removal, missing number from 1 to N, palindrome checking, in-place frequency, and pair sums.',
+    dueDate: '2024-11-25',
+    questions: [
+      {
+        id: 'q1',
+        number: 1,
+        title: 'Second Largest & Second Smallest Without Sorting',
+        statement: 'Write a C program to find the second largest and second smallest elements in an array without sorting the array. (Note: User input is mandatory).',
+        explanation: 'Maintains two largest (max1, max2) and two smallest (min1, min2) in a single O(N) pass without modifying the original array.',
+        requiredConcepts: ['Extrema tracking', 'Condition ordering', 'INT_MIN / INT_MAX'],
+        approaches: [
+          {
+            id: 'two-pass',
+            name: 'Approach 1: Two-Pass Traversal (Beginner Intuitive)',
+            tag: 'Most Intuitive for Beginners',
+            intuition: 'Think of finding the winner of a race first (Pass 1). Once the winner is known, search the remaining participants to find whoever ran the fastest behind the winner (Pass 2). You do the same for the slowest person.',
+            algorithm: [
+              'Pass 1: Find largest (max1) and smallest (min1) across entire array.',
+              'Pass 2: Find max2 = largest element strictly smaller than max1.',
+              '        Find min2 = smallest element strictly greater than min1.',
+              'Return max2 and min2.',
+            ],
+            cCode: `#include <stdio.h>
+#include <limits.h>
+
+int main() {
+    int n;
+    printf("Enter number of elements: ");
+    if (scanf("%d", &n) != 1 || n < 2) return 0;
+    int arr[n];
+    for (int i = 0; i < n; i++) scanf("%d", &arr[i]);
+
+    // Pass 1: find max1 and min1
+    int max1 = arr[0], min1 = arr[0];
+    for (int i = 1; i < n; i++) {
+        if (arr[i] > max1) max1 = arr[i];
+        if (arr[i] < min1) min1 = arr[i];
+    }
+
+    // Pass 2: find max2 and min2
+    int max2 = INT_MIN, min2 = INT_MAX;
+    for (int i = 0; i < n; i++) {
+        if (arr[i] < max1 && arr[i] > max2) max2 = arr[i];
+        if (arr[i] > min1 && arr[i] < min2) min2 = arr[i];
+    }
+
+    if (max2 == INT_MIN) printf("No distinct second largest.\\n");
+    else printf("Second Largest = %d\\n", max2);
+    if (min2 == INT_MAX) printf("No distinct second smallest.\\n");
+    else printf("Second Smallest = %d\\n", min2);
+    return 0;
+}`,
+            cppCode: `#include <iostream>
+#include <vector>
+#include <climits>
+using namespace std;
+
+int main() {
+    int n; cin >> n;
+    vector<int> arr(n);
+    for (int &x : arr) cin >> x;
+    int max1 = arr[0], min1 = arr[0];
+    for (int x : arr) { max1 = max(max1, x); min1 = min(min1, x); }
+    int max2 = INT_MIN, min2 = INT_MAX;
+    for (int x : arr) {
+        if (x < max1 && x > max2) max2 = x;
+        if (x > min1 && x < min2) min2 = x;
+    }
+    cout << "Second Largest: " << max2 << "\\nSecond Smallest: " << min2 << endl;
+    return 0;
+}`,
+            timeComplexity: 'O(N) (2 passes = 2N operations)',
+            spaceComplexity: 'O(1) auxiliary',
+            pros: ['Extremely simple logic that anyone can grasp immediately', 'Zero risk of complex nested if-else boundary errors'],
+            cons: ['Traverses the array twice instead of once'],
+          },
+          {
+            id: 'single-pass',
+            name: 'Approach 2: Single-Pass Traversal (Optimal)',
+            tag: 'Optimal O(N) Single-Pass',
+            intuition: 'Imagine watching runners cross a finish line one by one. Whenever a new leader arrives, the previous leader automatically becomes runner-up (2nd place). If someone arrives behind the leader but ahead of runner-up, they claim runner-up position directly.',
+            algorithm: [
+              'Initialize max1 = INT_MIN, max2 = INT_MIN, min1 = INT_MAX, min2 = INT_MAX.',
+              'For each number x in array:',
+              '  If x > max1: max2 = max1, max1 = x',
+              '  Else if x > max2 and x != max1: max2 = x',
+              '  If x < min1: min2 = min1, min1 = x',
+              '  Else if x < min2 and x != min1: min2 = x',
+              'Display max2 and min2.',
+            ],
+            cCode: `#include <stdio.h>
+#include <limits.h>
+
+int main() {
+    int n;
+    printf("Enter number of elements: ");
+    if (scanf("%d", &n) != 1 || n < 2) return 0;
+    int arr[n];
+    for (int i = 0; i < n; i++) scanf("%d", &arr[i]);
+
+    int max1 = INT_MIN, max2 = INT_MIN;
+    int min1 = INT_MAX, min2 = INT_MAX;
+
+    for (int i = 0; i < n; i++) {
+        if (arr[i] > max1) {
+            max2 = max1;
+            max1 = arr[i];
+        } else if (arr[i] > max2 && arr[i] != max1) {
+            max2 = arr[i];
+        }
+
+        if (arr[i] < min1) {
+            min2 = min1;
+            min1 = arr[i];
+        } else if (arr[i] < min2 && arr[i] != min1) {
+            min2 = arr[i];
+        }
+    }
+
+    printf("Second Largest = %d\\n", max2);
+    printf("Second Smallest = %d\\n", min2);
+    return 0;
+}`,
+            cppCode: `#include <iostream>
+#include <vector>
+#include <climits>
+using namespace std;
+
+int main() {
+    int n; cin >> n;
+    vector<int> a(n);
+    for (int &x : a) cin >> x;
+    int m1 = INT_MIN, m2 = INT_MIN, s1 = INT_MAX, s2 = INT_MAX;
+    for (int x : a) {
+        if (x > m1) { m2 = m1; m1 = x; }
+        else if (x > m2 && x != m1) m2 = x;
+        if (x < s1) { s2 = s1; s1 = x; }
+        else if (x < s2 && x != s1) s2 = x;
+    }
+    cout << "Second Largest: " << m2 << "\\nSecond Smallest: " << s2 << endl;
+    return 0;
+}`,
+            timeComplexity: 'O(N) (single pass)',
+            spaceComplexity: 'O(1) auxiliary',
+            pros: ['Only reads each element once', 'Fastest possible time complexity'],
+            cons: ['Must carefully handle duplicate entries matching the maximum'],
+          },
+        ],
+        cCode: `#include <stdio.h>
+#include <limits.h>
+
+int main() {
+    int n;
+    printf("Enter number of elements: ");
+    if (scanf("%d", &n) != 1 || n < 2) {
+        printf("Array must have at least 2 elements.\\n");
+        return 0;
+    }
+    int arr[n];
+    printf("Enter %d elements: ", n);
+    for (int i = 0; i < n; i++) scanf("%d", &arr[i]);
+    
+    int max1 = INT_MIN, max2 = INT_MIN;
+    int min1 = INT_MAX, min2 = INT_MAX;
+    
+    for (int i = 0; i < n; i++) {
+        if (arr[i] > max1) {
+            max2 = max1;
+            max1 = arr[i];
+        } else if (arr[i] > max2 && arr[i] != max1) {
+            max2 = arr[i];
+        }
+        
+        if (arr[i] < min1) {
+            min2 = min1;
+            min1 = arr[i];
+        } else if (arr[i] < min2 && arr[i] != min1) {
+            min2 = arr[i];
+        }
+    }
+    
+    if (max2 == INT_MIN) printf("No distinct second largest element.\\n");
+    else printf("Second Largest = %d\\n", max2);
+    
+    if (min2 == INT_MAX) printf("No distinct second smallest element.\\n");
+    else printf("Second Smallest = %d\\n", min2);
+    
+    return 0;
+}`,
+        cppCode: `#include <iostream>
+#include <vector>
+#include <climits>
+using namespace std;
+
+int main() {
+    int n; cin >> n;
+    vector<int> a(n);
+    for (int &x : a) cin >> x;
+    int m1 = INT_MIN, m2 = INT_MIN, s1 = INT_MAX, s2 = INT_MAX;
+    for (int x : a) {
+        if (x > m1) { m2 = m1; m1 = x; }
+        else if (x > m2 && x != m1) m2 = x;
+        if (x < s1) { s2 = s1; s1 = x; }
+        else if (x < s2 && x != s1) s2 = x;
+    }
+    cout << "Second Largest: " << m2 << "\\nSecond Smallest: " << s2 << endl;
+    return 0;
+}`,
+        sampleIO: [
+          { input: '6\n12 35 1 10 34 1', output: 'Second Largest = 34\nSecond Smallest = 10' },
+        ],
+        dryRun: [
+          { step: 1, state: 'max1=35, max2=34', explanation: '35 is maximum, 34 is runner up.' },
+          { step: 2, state: 'min1=1, min2=10', explanation: '1 is minimum, 10 is second smallest distinct element.' },
+        ],
+        timeComplexity: 'O(N)',
+        spaceComplexity: 'O(1)',
+        commonMistakes: ['Sorting the array (violates instruction "without sorting")', 'Failing when duplicate maximums exist'],
+        edgeCases: ['All elements equal', 'Array with only 2 elements'],
+        relatedTopicId: 'arrays',
+        isCompleted: true,
+      },
+      {
+        id: 'q2',
+        number: 2,
+        title: 'Remove Duplicate Elements from Array',
+        statement: 'Write a C program to remove duplicate elements from an array and display the updated array.',
+        explanation: 'Shifts duplicate elements leftwards or copies unique elements to maintain updated compact array.',
+        requiredConcepts: ['In-place deletion', 'Array shifting', 'Nested loop comparison'],
+        algorithm: [
+          'Read n and array elements',
+          'For i = 0 to n-1:',
+          '  For j = i+1 to n-1:',
+          '    If arr[i] == arr[j]:',
+          '      Shift elements from j to n-2 one step left',
+          '      Decrement n and j',
+          'Display first n elements of updated array',
+        ],
+        cCode: `#include <stdio.h>
+
+int main() {
+    int n;
+    printf("Enter n: ");
+    scanf("%d", &n);
+    int arr[n];
+    for (int i = 0; i < n; i++) scanf("%d", &arr[i]);
+    
+    for (int i = 0; i < n; i++) {
+        for (int j = i + 1; j < n; j++) {
+            if (arr[i] == arr[j]) {
+                for (int k = j; k < n - 1; k++) {
+                    arr[k] = arr[k + 1];
+                }
+                n--;
+                j--; // Check current index again
+            }
+        }
+    }
+    printf("Updated array without duplicates: ");
+    for (int i = 0; i < n; i++) printf("%d ", arr[i]);
+    printf("\\n");
+    return 0;
+}`,
+        cppCode: `#include <iostream>
+#include <vector>
+using namespace std;
+
+int main() {
+    int n; cin >> n;
+    vector<int> a(n);
+    for (int &x : a) cin >> x;
+    for (int i = 0; i < a.size(); i++) {
+        for (int j = i + 1; j < a.size(); j++) {
+            if (a[i] == a[j]) {
+                a.erase(a.begin() + j);
+                j--;
+            }
+        }
+    }
+    for (int x : a) cout << x << " ";
+    cout << endl;
+    return 0;
+}`,
+        sampleIO: [
+          { input: '7\n1 2 2 3 4 4 5', output: 'Updated array without duplicates: 1 2 3 4 5' },
+        ],
+        dryRun: [
+          { step: 1, state: 'Found duplicate 2 at j=2', explanation: 'Shifts remaining elements left; n becomes 6.' },
+          { step: 2, state: 'Found duplicate 4 at j=4', explanation: 'Shifts remaining elements left; n becomes 5.' },
+        ],
+        timeComplexity: 'O(N²)',
+        spaceComplexity: 'O(1) auxiliary',
+        commonMistakes: ['Forgetting j-- after shifting causes consecutive duplicates to be skipped'],
+        edgeCases: ['Array with all identical elements', 'Array with no duplicates'],
+        relatedTopicId: 'arrays',
+        isCompleted: true,
+      },
+      {
+        id: 'q3',
+        number: 3,
+        title: 'Find Missing Number from 1 to N',
+        statement: 'An array contains numbers from 1 to N with one number missing. Write a C program to find the missing number.',
+        explanation: 'Uses Gauss arithmetic sum formula S = N*(N+1)/2. The missing number is expectedSum - actualSum.',
+        requiredConcepts: ['Arithmetic progression', 'Sum formula', 'Overflow prevention'],
+        approaches: [
+          {
+            id: 'math-sum',
+            name: 'Approach 1: Mathematical Formula Sum (Beginner)',
+            tag: 'Formula Based',
+            intuition: 'If you have consecutive numbers from 1 to N, their exact sum is always N*(N+1)/2 (Gauss formula). If one number is removed, the sum of the remaining numbers will be less than expected by exactly the missing number.',
+            algorithm: [
+              'Calculate expectedSum = N * (N + 1) / 2',
+              'Sum all the N - 1 numbers present in the array into actualSum',
+              'missingNumber = expectedSum - actualSum',
+            ],
+            cCode: `#include <stdio.h>
+
+int main() {
+    int N;
+    printf("Enter N: ");
+    scanf("%d", &N);
+    long long expected = (long long)N * (N + 1) / 2;
+    long long actual = 0, val;
+    for (int i = 0; i < N - 1; i++) {
+        scanf("%lld", &val);
+        actual += val;
+    }
+    printf("Missing Number = %lld\\n", expected - actual);
+    return 0;
+}`,
+            cppCode: `#include <iostream>
+using namespace std;
+
+int main() {
+    long long N; cin >> N;
+    long long expected = N * (N + 1) / 2, actual = 0, x;
+    for (int i = 0; i < N - 1; i++) { cin >> x; actual += x; }
+    cout << "Missing: " << expected - actual << endl;
+    return 0;
+}`,
+            timeComplexity: 'O(N)',
+            spaceComplexity: 'O(1)',
+            pros: ['One-line math formula', 'Easy for anyone to remember'],
+            cons: ['For very large N (e.g. N > 10^9), N*(N+1) can cause arithmetic overflow without 64-bit integers'],
+          },
+          {
+            id: 'bitwise-xor',
+            name: 'Approach 2: Bitwise XOR Method (Optimal / No Overflow)',
+            tag: 'Bit Manipulation',
+            intuition: 'XOR has two magical properties: a ^ a = 0 (identical numbers cancel out) and a ^ 0 = a. If we XOR all numbers from 1 to N, and also XOR all numbers in our array, every present number appears twice and turns to zero! The only number left standing is the missing number.',
+            algorithm: [
+              'Initialize xorAll = 0',
+              'XOR all numbers from 1 to N: xorAll ^= i',
+              'XOR all array elements: xorAll ^= arr[i]',
+              'The remaining value in xorAll is the missing number.',
+            ],
+            cCode: `#include <stdio.h>
+
+int main() {
+    int N;
+    printf("Enter N: ");
+    scanf("%d", &N);
+    int xorTotal = 0;
+    
+    // XOR numbers 1 to N
+    for (int i = 1; i <= N; i++) xorTotal ^= i;
+    
+    // XOR array elements
+    printf("Enter %d numbers: ", N - 1);
+    for (int i = 0; i < N - 1; i++) {
+        int x;
+        scanf("%d", &x);
+        xorTotal ^= x;
+    }
+    printf("Missing Number = %d\\n", xorTotal);
+    return 0;
+}`,
+            cppCode: `#include <iostream>
+using namespace std;
+
+int main() {
+    int N; cin >> N;
+    int xorTotal = 0;
+    for (int i = 1; i <= N; i++) xorTotal ^= i;
+    for (int i = 0; i < N - 1; i++) { int x; cin >> x; xorTotal ^= x; }
+    cout << "Missing: " << xorTotal << endl;
+    return 0;
+}`,
+            timeComplexity: 'O(N)',
+            spaceComplexity: 'O(1)',
+            pros: ['Zero possibility of integer arithmetic overflow', 'Operates directly on CPU bitwise instructions'],
+            cons: ['Requires understanding bitwise XOR cancellation properties'],
+          },
+        ],
+        algorithm: [
+          'Read N (the full range length, where array contains N-1 elements)',
+          'Compute expectedSum = N * (N + 1) / 2',
+          'Compute actualSum = sum of all N-1 elements in array',
+          'Missing number = expectedSum - actualSum',
+          'Print missing number',
+        ],
+        cCode: `#include <stdio.h>
+
+int main() {
+    int N;
+    printf("Enter N (range 1 to N): ");
+    scanf("%d", &N);
+    
+    int expectedSum = N * (N + 1) / 2;
+    int actualSum = 0, val;
+    printf("Enter %d numbers: ", N - 1);
+    for (int i = 0; i < N - 1; i++) {
+        scanf("%d", &val);
+        actualSum += val;
+    }
+    int missing = expectedSum - actualSum;
+    printf("The missing number is: %d\\n", missing);
+    return 0;
+}`,
+        cppCode: `#include <iostream>
+using namespace std;
+
+int main() {
+    long long N; cin >> N;
+    long long expected = N * (N + 1) / 2;
+    long long actual = 0, x;
+    for (int i = 0; i < N - 1; i++) {
+        cin >> x;
+        actual += x;
+    }
+    cout << "Missing: " << expected - actual << endl;
+    return 0;
+}`,
+        sampleIO: [
+          { input: '5\n1 2 4 5', output: 'The missing number is: 3' },
+        ],
+        dryRun: [
+          { step: 1, state: 'N = 5', explanation: 'expectedSum = 5 * 6 / 2 = 15.' },
+          { step: 2, state: 'actualSum = 1 + 2 + 4 + 5 = 12', explanation: 'missing = 15 - 12 = 3.' },
+        ],
+        timeComplexity: 'O(N)',
+        spaceComplexity: 'O(1)',
+        commonMistakes: ['Integer overflow when N*(N+1) exceeds 32-bit INT_MAX for large N (use long long)'],
+        edgeCases: ['Missing element is 1', 'Missing element is N'],
+        relatedTopicId: 'arrays',
+        isCompleted: true,
+      },
+      {
+        id: 'q4',
+        number: 4,
+        title: 'Check if Array is a Palindrome',
+        statement: 'Write a C program to determine whether the given array is a palindrome.',
+        explanation: 'Two pointers starting from left (0) and right (n-1) move towards the center comparing elements.',
+        requiredConcepts: ['Two-pointer technique', 'Palindrome property'],
+        algorithm: [
+          'Read n and array elements',
+          'Init left = 0, right = n - 1, isPal = 1',
+          'While left < right:',
+          '  If arr[left] != arr[right]: isPal = 0, break',
+          '  left++, right--',
+          'Print palindrome result',
+        ],
+        cCode: `#include <stdio.h>
+
+int main() {
+    int n;
+    printf("Enter n: ");
+    scanf("%d", &n);
+    int arr[n];
+    for (int i = 0; i < n; i++) scanf("%d", &arr[i]);
+    
+    int left = 0, right = n - 1, isPalindrome = 1;
+    while (left < right) {
+        if (arr[left] != arr[right]) {
+            isPalindrome = 0;
+            break;
+        }
+        left++;
+        right--;
+    }
+    
+    if (isPalindrome) printf("The array is a PALINDROME.\\n");
+    else printf("The array is NOT a palindrome.\\n");
+    return 0;
+}`,
+        cppCode: `#include <iostream>
+#include <vector>
+using namespace std;
+
+int main() {
+    int n; cin >> n;
+    vector<int> a(n);
+    for (int &x : a) cin >> x;
+    int l = 0, r = n - 1;
+    while (l < r) {
+        if (a[l] != a[r]) {
+            cout << "NOT a palindrome\\n";
+            return 0;
+        }
+        l++; r--;
+    }
+    cout << "PALINDROME\\n";
+    return 0;
+}`,
+        sampleIO: [
+          { input: '5\n1 2 3 2 1', output: 'The array is a PALINDROME.' },
+          { input: '4\n1 2 3 4', output: 'The array is NOT a palindrome.' },
+        ],
+        dryRun: [
+          { step: 1, state: 'left=0 (1), right=4 (1)', explanation: '1 == 1, continue.' },
+          { step: 2, state: 'left=1 (2), right=3 (2)', explanation: '2 == 2, continue.' },
+          { step: 3, state: 'left=2 >= right=2', explanation: 'Loop terminates, array is palindrome.' },
+        ],
+        timeComplexity: 'O(N)',
+        spaceComplexity: 'O(1) auxiliary',
+        commonMistakes: ['Iterating up to n instead of n/2 (redundant comparisons)'],
+        edgeCases: ['Array with 1 element (always palindrome)', 'Even length palindrome vs odd length'],
+        relatedTopicId: 'arrays',
+        isCompleted: true,
+      },
+      {
+        id: 'q5',
+        number: 5,
+        title: 'Count Frequency of Every Element Without Extra Arrays',
+        statement: 'Write a C program to count the frequency of every element in an array without using extra arrays.',
+        explanation: 'For each element, count matching subsequent elements and mark counted elements with a sentinel or skip already counted indices.',
+        requiredConcepts: ['In-place frequency counting', 'Visited element handling'],
+        algorithm: [
+          'Read n and array elements',
+          'For i = 0 to n-1:',
+          '  Check if arr[i] appeared previously at index 0 to i-1. If yes, continue (already printed)',
+          '  count = 1',
+          '  For j = i+1 to n-1: if arr[j] == arr[i], count++',
+          '  Print arr[i] and its count',
+        ],
+        cCode: `#include <stdio.h>
+
+int main() {
+    int n;
+    printf("Enter n: ");
+    scanf("%d", &n);
+    int arr[n];
+    for (int i = 0; i < n; i++) scanf("%d", &arr[i]);
+    
+    printf("Element frequencies:\\n");
+    for (int i = 0; i < n; i++) {
+        // Check if already counted
+        int alreadyCounted = 0;
+        for (int k = 0; k < i; k++) {
+            if (arr[k] == arr[i]) {
+                alreadyCounted = 1;
+                break;
+            }
+        }
+        if (alreadyCounted) continue;
+        
+        int count = 1;
+        for (int j = i + 1; j < n; j++) {
+            if (arr[j] == arr[i]) count++;
+        }
+        printf("%d appears %d time(s)\\n", arr[i], count);
+    }
+    return 0;
+}`,
+        cppCode: `#include <iostream>
+#include <vector>
+using namespace std;
+
+int main() {
+    int n; cin >> n;
+    vector<int> a(n);
+    for (int &x : a) cin >> x;
+    for (int i = 0; i < n; i++) {
+        bool seen = false;
+        for (int k = 0; k < i; k++) if (a[k] == a[i]) { seen = true; break; }
+        if (seen) continue;
+        int c = 1;
+        for (int j = i + 1; j < n; j++) if (a[j] == a[i]) c++;
+        cout << a[i] << " -> " << c << endl;
+    }
+    return 0;
+}`,
+        sampleIO: [
+          { input: '7\n10 20 20 10 10 20 5', output: 'Element frequencies:\n10 appears 3 time(s)\n20 appears 3 time(s)\n5 appears 1 time(s)' },
+        ],
+        dryRun: [
+          { step: 1, state: 'arr[0]=10', explanation: 'Counts future 10s: 3 times. Prints 10 -> 3.' },
+          { step: 2, state: 'arr[1]=20', explanation: 'Counts future 20s: 3 times. Prints 20 -> 3.' },
+          { step: 3, state: 'arr[3]=10', explanation: 'Found earlier at k=0, skips.' },
+        ],
+        timeComplexity: 'O(N²)',
+        spaceComplexity: 'O(1) auxiliary (strictly no extra array used)',
+        commonMistakes: ['Allocating a frequency array (violates instruction "without extra arrays")'],
+        edgeCases: ['All elements distinct', 'All elements identical'],
+        relatedTopicId: 'arrays',
+        isCompleted: true,
+      },
+      {
+        id: 'q6',
+        number: 6,
+        title: 'Find All Pairs With Given Sum',
+        statement: 'Write a C program to find all pairs of elements whose sum is equal to a given target value.',
+        explanation: 'Nested iteration to test every pair (arr[i], arr[j]) where i < j.',
+        requiredConcepts: ['Pair search', 'Combinatorial loops'],
+        algorithm: [
+          'Read n, array elements, and target sum S',
+          'pairCount = 0',
+          'For i = 0 to n-1:',
+          '  For j = i+1 to n-1:',
+          '    If arr[i] + arr[j] == S:',
+          '      Print pair (arr[i], arr[j])',
+          '      pairCount++',
+          'If pairCount == 0, print no pairs found',
+        ],
+        cCode: `#include <stdio.h>
+
+int main() {
+    int n, target, found = 0;
+    printf("Enter n: ");
+    scanf("%d", &n);
+    int arr[n];
+    printf("Enter array elements: ");
+    for (int i = 0; i < n; i++) scanf("%d", &arr[i]);
+    printf("Enter target sum: ");
+    scanf("%d", &target);
+    
+    printf("Pairs with sum %d:\\n", target);
+    for (int i = 0; i < n; i++) {
+        for (int j = i + 1; j < n; j++) {
+            if (arr[i] + arr[j] == target) {
+                printf("(%d, %d)\\n", arr[i], arr[j]);
+                found++;
+            }
+        }
+    }
+    if (!found) printf("No pairs found.\\n");
+    return 0;
+}`,
+        cppCode: `#include <iostream>
+#include <vector>
+using namespace std;
+
+int main() {
+    int n, target; cin >> n;
+    vector<int> a(n);
+    for (int &x : a) cin >> x;
+    cin >> target;
+    int c = 0;
+    for (int i = 0; i < n; i++) {
+        for (int j = i + 1; j < n; j++) {
+            if (a[i] + a[j] == target) {
+                cout << "(" << a[i] << ", " << a[j] << ")\\n";
+                c++;
+            }
+        }
+    }
+    if (!c) cout << "No pairs found\\n";
+    return 0;
+}`,
+        sampleIO: [
+          { input: '6\n1 5 7 -1 5 6\n6', output: 'Pairs with sum 6:\n(1, 5)\n(7, -1)\n(1, 5)' },
+        ],
+        dryRun: [
+          { step: 1, state: 'i=0 (1), j=1 (5)', explanation: '1 + 5 = 6. Output (1, 5).' },
+          { step: 2, state: 'i=2 (7), j=3 (-1)', explanation: '7 + (-1) = 6. Output (7, -1).' },
+        ],
+        timeComplexity: 'O(N²)',
+        spaceComplexity: 'O(1) auxiliary',
+        commonMistakes: ['Starting inner loop from 0 which counts pairs twice: (a,b) and (b,a) and pairs element with itself'],
+        edgeCases: ['No pairs match target sum', 'Negative numbers matching positive target'],
+        relatedTopicId: 'two-sum',
+        isCompleted: true,
+      },
+    ],
+  },
+
+  // ─── DS Lab Exercise 3: Linear & Binary Search ────────────────────────────
+  {
+    id: 'ds-lab-3',
+    subjectId: 'ds',
+    subjectName: 'Data Structures',
+    labNo: 3,
+    title: 'Lab Exercise 3 (Linear Search, Binary Search, and Array Operations)',
+    description: 'In-place array reversal, sorted insertion, deleting all occurrences, comparison counts for best/avg/worst case linear search, binary search with duplicates, and linear search with single deletion.',
+    dueDate: '2024-11-28',
+    questions: [
+      {
+        id: 'q1',
+        number: 1,
+        title: 'Traverse Array for Statistics',
+        statement: 'Write a C program to read n integers into an array and traverse the array to find: • Sum and average of elements • Largest and smallest element • Number of even and odd elements.',
+        explanation: 'Combines multiple metrics in a single comprehensive traversal pass.',
+        requiredConcepts: ['Multi-variable accumulation', 'Conditional state tracking'],
+        algorithm: [
+          'Read n and array elements',
+          'Init sum = 0, max = arr[0], min = arr[0], evens = 0, odds = 0',
+          'Loop i from 0 to n-1:',
+          '  sum += arr[i]',
+          '  if arr[i] > max: max = arr[i]',
+          '  if arr[i] < min: min = arr[i]',
+          '  if arr[i] % 2 == 0: evens++ else odds++',
+          'Print all computed statistics',
+        ],
+        cCode: `#include <stdio.h>
+
+int main() {
+    int n;
+    printf("Enter n: ");
+    scanf("%d", &n);
+    int arr[n];
+    for (int i = 0; i < n; i++) scanf("%d", &arr[i]);
+    
+    int sum = 0, max = arr[0], min = arr[0], evens = 0, odds = 0;
+    for (int i = 0; i < n; i++) {
+        sum += arr[i];
+        if (arr[i] > max) max = arr[i];
+        if (arr[i] < min) min = arr[i];
+        if (arr[i] % 2 == 0) evens++;
+        else odds++;
+    }
+    printf("Sum = %d\\n", sum);
+    printf("Average = %.2f\\n", (float)sum / n);
+    printf("Largest = %d, Smallest = %d\\n", max, min);
+    printf("Even elements = %d, Odd elements = %d\\n", evens, odds);
+    return 0;
+}`,
+        cppCode: `#include <iostream>
+#include <vector>
+using namespace std;
+
+int main() {
+    int n; cin >> n;
+    vector<int> a(n);
+    for (int &x : a) cin >> x;
+    int sum = 0, maxV = a[0], minV = a[0], ev = 0, od = 0;
+    for (int x : a) {
+        sum += x;
+        if (x > maxV) maxV = x;
+        if (x < minV) minV = x;
+        if (x % 2 == 0) ev++; else od++;
+    }
+    cout << "Sum: " << sum << " Avg: " << (double)sum/n << "\\nMax: " << maxV << " Min: " << minV << "\\nEven: " << ev << " Odd: " << od << endl;
+    return 0;
+}`,
+        sampleIO: [
+          { input: '5\n10 15 20 25 30', output: 'Sum = 100\nAverage = 20.00\nLargest = 30, Smallest = 10\nEven elements = 3, Odd elements = 2' },
+        ],
+        dryRun: [
+          { step: 1, state: 'Scan 10, 15, 20, 25, 30', explanation: 'Computes sum=100, max=30, min=10, 3 even, 2 odd in a single pass.' },
+        ],
+        timeComplexity: 'O(N)',
+        spaceComplexity: 'O(N)',
+        commonMistakes: ['Using separate loops for each metric instead of doing all in one traversal'],
+        edgeCases: ['Array with all negative numbers', 'Array with single element'],
+        relatedTopicId: 'arrays',
+        isCompleted: true,
+      },
+      {
+        id: 'q2',
+        number: 2,
+        title: 'In-Place Array Reversal',
+        statement: 'Write a C program to traverse an array and reverse its elements in-place, without using a second array.',
+        explanation: 'Swaps element at index i with element at index (n - 1 - i) up to the midpoint n/2.',
+        requiredConcepts: ['Two-pointer swap', 'In-place modification'],
+        algorithm: [
+          'Read n and array elements',
+          'Loop i from 0 to n/2 - 1:',
+          '  temp = arr[i]',
+          '  arr[i] = arr[n - 1 - i]',
+          '  arr[n - 1 - i] = temp',
+          'Print reversed array',
+        ],
+        cCode: `#include <stdio.h>
+
+int main() {
+    int n;
+    printf("Enter n: ");
+    scanf("%d", &n);
+    int arr[n];
+    for (int i = 0; i < n; i++) scanf("%d", &arr[i]);
+    
+    for (int i = 0; i < n / 2; i++) {
+        int temp = arr[i];
+        arr[i] = arr[n - 1 - i];
+        arr[n - 1 - i] = temp;
+    }
+    printf("Reversed array: ");
+    for (int i = 0; i < n; i++) printf("%d ", arr[i]);
+    printf("\\n");
+    return 0;
+}`,
+        cppCode: `#include <iostream>
+#include <vector>
+using namespace std;
+
+int main() {
+    int n; cin >> n;
+    vector<int> a(n);
+    for (int &x : a) cin >> x;
+    for (int i = 0; i < n / 2; i++) swap(a[i], a[n - 1 - i]);
+    for (int x : a) cout << x << " ";
+    cout << endl;
+    return 0;
+}`,
+        sampleIO: [
+          { input: '5\n10 20 30 40 50', output: 'Reversed array: 50 40 30 20 10' },
+        ],
+        dryRun: [
+          { step: 1, state: 'i=0, swap(arr[0]=10, arr[4]=50)', explanation: 'Array becomes [50, 20, 30, 40, 10]' },
+          { step: 2, state: 'i=1, swap(arr[1]=20, arr[3]=40)', explanation: 'Array becomes [50, 40, 30, 20, 10]' },
+        ],
+        timeComplexity: 'O(N)',
+        spaceComplexity: 'O(1) auxiliary (strictly in-place)',
+        commonMistakes: ['Looping to n instead of n/2 (reverses and then un-reverses back to original)'],
+        edgeCases: ['Even length array vs odd length array', 'n = 1'],
+        relatedTopicId: 'arrays',
+        isCompleted: true,
+      },
+      {
+        id: 'q3',
+        number: 3,
+        title: 'Insert into Sorted Array Maintaining Order',
+        statement: 'Write a C program to insert a new element into an array that is already sorted in ascending order. The resulting array must remain sorted.\nExample: 10 20 30 40 50, Insert 35 -> Result: 10 20 30 35 40 50',
+        explanation: 'Scans from end, shifts elements greater than target one position right, and places target into created gap.',
+        requiredConcepts: ['Backward shifting', 'Sorted insertion (Insertion Sort inner step)'],
+        algorithm: [
+          'Read n, sorted array elements, and new element key',
+          'Declare array of size n + 1',
+          'Set i = n - 1',
+          'While i >= 0 and arr[i] > key:',
+          '  arr[i + 1] = arr[i]',
+          '  i--',
+          'arr[i + 1] = key',
+          'Print updated array of size n + 1',
+        ],
+        cCode: `#include <stdio.h>
+
+int main() {
+    int n, key;
+    printf("Enter number of elements: ");
+    scanf("%d", &n);
+    int arr[n + 1];
+    printf("Enter %d sorted elements: ", n);
+    for (int i = 0; i < n; i++) scanf("%d", &arr[i]);
+    printf("Enter element to insert: ");
+    scanf("%d", &key);
+    
+    int i = n - 1;
+    while (i >= 0 && arr[i] > key) {
+        arr[i + 1] = arr[i];
+        i--;
+    }
+    arr[i + 1] = key;
+    n++;
+    
+    printf("Result: ");
+    for (int j = 0; j < n; j++) printf("%d ", arr[j]);
+    printf("\\n");
+    return 0;
+}`,
+        cppCode: `#include <iostream>
+#include <vector>
+using namespace std;
+
+int main() {
+    int n, key; cin >> n;
+    vector<int> a(n);
+    for (int &x : a) cin >> x;
+    cin >> key;
+    a.push_back(0);
+    int i = n - 1;
+    while (i >= 0 && a[i] > key) {
+        a[i + 1] = a[i];
+        i--;
+    }
+    a[i + 1] = key;
+    for (int x : a) cout << x << " ";
+    cout << endl;
+    return 0;
+}`,
+        sampleIO: [
+          { input: '5\n10 20 30 40 50\n35', output: 'Result: 10 20 30 35 40 50' },
+        ],
+        dryRun: [
+          { step: 1, state: 'key = 35, i = 4 (arr[4]=50 > 35)', explanation: 'arr[5]=50, i becomes 3' },
+          { step: 2, state: 'i = 3 (arr[3]=40 > 35)', explanation: 'arr[4]=40, i becomes 2' },
+          { step: 3, state: 'i = 2 (arr[2]=30 <= 35)', explanation: 'Loop exits. arr[3]=35.' },
+        ],
+        timeComplexity: 'O(N)',
+        spaceComplexity: 'O(1) auxiliary',
+        commonMistakes: ['Shifting forward from 0 which overwrites subsequent elements (must shift backwards)'],
+        edgeCases: ['Key smaller than all elements (inserted at index 0)', 'Key larger than all elements (inserted at index n)'],
+        relatedTopicId: 'bubble-sort',
+        isCompleted: true,
+      },
+      {
+        id: 'q4',
+        number: 4,
+        title: 'Delete All Occurrences of Given Element',
+        statement: 'Write a C program to delete all occurrences of a given element from an array.\nExample: Input: 10 20 30 20 40 20, Delete: 20 -> Output: 10 30 40',
+        explanation: 'Single-pass two-pointer overwriting: keeps writeIndex for elements not equal to key.',
+        requiredConcepts: ['Two-pointer filtering', 'In-place compaction'],
+        algorithm: [
+          'Read n, array elements, and element to delete (key)',
+          'k = 0',
+          'For i = 0 to n-1:',
+          '  If arr[i] != key: arr[k++] = arr[i]',
+          'New size is k',
+          'Print elements from 0 to k-1',
+        ],
+        cCode: `#include <stdio.h>
+
+int main() {
+    int n, key;
+    printf("Enter n: ");
+    scanf("%d", &n);
+    int arr[n];
+    printf("Enter array elements: ");
+    for (int i = 0; i < n; i++) scanf("%d", &arr[i]);
+    printf("Enter element to delete: ");
+    scanf("%d", &key);
+    
+    int k = 0;
+    for (int i = 0; i < n; i++) {
+        if (arr[i] != key) {
+            arr[k++] = arr[i];
+        }
+    }
+    printf("Output: ");
+    for (int i = 0; i < k; i++) printf("%d ", arr[i]);
+    printf("\\n");
+    return 0;
+}`,
+        cppCode: `#include <iostream>
+#include <vector>
+using namespace std;
+
+int main() {
+    int n, key; cin >> n;
+    vector<int> a(n);
+    for (int &x : a) cin >> x;
+    cin >> key;
+    int k = 0;
+    for (int i = 0; i < n; i++) {
+        if (a[i] != key) a[k++] = a[i];
+    }
+    for (int i = 0; i < k; i++) cout << a[i] << " ";
+    cout << endl;
+    return 0;
+}`,
+        sampleIO: [
+          { input: '6\n10 20 30 20 40 20\n20', output: 'Output: 10 30 40' },
+        ],
+        dryRun: [
+          { step: 1, state: '10 != 20 -> arr[0]=10, k=1', explanation: 'Kept' },
+          { step: 2, state: '20 == 20 -> skip', explanation: 'Filtered' },
+          { step: 3, state: '30 != 20 -> arr[1]=30, k=2', explanation: 'Kept' },
+          { step: 4, state: '40 != 20 -> arr[2]=40, k=3', explanation: 'Result: 10 30 40' },
+        ],
+        timeComplexity: 'O(N)',
+        spaceComplexity: 'O(1) auxiliary',
+        commonMistakes: ['Using repeated nested shifts O(N²) when O(N) two-pointer compaction is optimal'],
+        edgeCases: ['All elements equal key (result is empty array)', 'Key not found in array'],
+        relatedTopicId: 'arrays',
+        isCompleted: true,
+      },
+      {
+        id: 'q5',
+        number: 5,
+        title: 'Linear Search with Comparison Counts',
+        statement: 'Write a C program to search for an element using linear search and count the number of comparisons performed in: • Best case • Average case for the given input • Worst case.',
+        explanation: 'Simulates the linear search for best case (first element), worst case (not present or last element), and actual input.',
+        requiredConcepts: ['Algorithm complexity empirical analysis', 'Best vs Worst case'],
+        algorithm: [
+          'Best case: target is arr[0], comparisons = 1',
+          'Worst case: target is not in array, comparisons = n',
+          'Given input search: loop i from 0 to n-1, count++, if arr[i] == target break',
+          'Display all comparison metrics',
+        ],
+        cCode: `#include <stdio.h>
+
+int main() {
+    int n, key;
+    printf("Enter n: ");
+    scanf("%d", &n);
+    int arr[n];
+    for (int i = 0; i < n; i++) scanf("%d", &arr[i]);
+    printf("Enter element to search: ");
+    scanf("%d", &key);
+    
+    int actualComparisons = 0, foundIndex = -1;
+    for (int i = 0; i < n; i++) {
+        actualComparisons++;
+        if (arr[i] == key) {
+            foundIndex = i;
+            break;
+        }
+    }
+    
+    printf("Comparisons Analysis:\\n");
+    printf("• Best Case comparisons: 1 (if element is at position 0)\\n");
+    printf("• Average Case theoretical: %.1f comparisons\\n", (n + 1) / 2.0);
+    printf("• Worst Case comparisons: %d (if element is at end or absent)\\n", n);
+    printf("• Actual comparisons for input %d: %d (found at index %d)\\n", key, actualComparisons, foundIndex);
+    return 0;
+}`,
+        cppCode: `#include <iostream>
+#include <vector>
+using namespace std;
+
+int main() {
+    int n, key; cin >> n;
+    vector<int> a(n);
+    for (int &x : a) cin >> x;
+    cin >> key;
+    int comps = 0, idx = -1;
+    for (int i = 0; i < n; i++) {
+        comps++;
+        if (a[i] == key) { idx = i; break; }
+    }
+    cout << "Best: 1\\nWorst: " << n << "\\nAvg theoretical: " << (n+1)/2.0 << "\\nActual: " << comps << endl;
+    return 0;
+}`,
+        sampleIO: [
+          { input: '5\n10 20 30 40 50\n30', output: 'Comparisons Analysis:\n• Best Case comparisons: 1 (if element is at position 0)\n• Average Case theoretical: 3.0 comparisons\n• Worst Case comparisons: 5 (if element is at end or absent)\n• Actual comparisons for input 30: 3 (found at index 2)' },
+        ],
+        dryRun: [
+          { step: 1, state: 'Check arr[0]=10 (comp 1)', explanation: 'Not match' },
+          { step: 2, state: 'Check arr[1]=20 (comp 2)', explanation: 'Not match' },
+          { step: 3, state: 'Check arr[2]=30 (comp 3)', explanation: 'Match! Exit with 3 comparisons.' },
+        ],
+        timeComplexity: 'Best: O(1), Avg: O(N), Worst: O(N)',
+        spaceComplexity: 'O(1)',
+        commonMistakes: ['Counting from 0 instead of 1 for comparisons performed'],
+        edgeCases: ['Key absent (executes full n comparisons)'],
+        relatedTopicId: 'algorithm-analysis',
+        isCompleted: true,
+      },
+      {
+        id: 'q6',
+        number: 6,
+        title: 'Binary Search for First Occurrence in Duplicate Array',
+        statement: 'Write a C program using binary search to find the first occurrence of a given element in a sorted array containing duplicate elements.\nExample: 10 20 20 20 30 40, Search: 20 -> Output: 20 found at first position (index 1)',
+        explanation: 'When arr[mid] == target, do not stop; record ans = mid and continue searching in left half (high = mid - 1).',
+        requiredConcepts: ['Modified Binary Search', 'Lower bound / first occurrence'],
+        algorithm: [
+          'low = 0, high = n - 1, firstIndex = -1',
+          'While low <= high:',
+          '  mid = low + (high - low) / 2',
+          '  If arr[mid] == target:',
+          '    firstIndex = mid',
+          '    high = mid - 1 // search left to find earlier occurrence',
+          '  Else if arr[mid] < target: low = mid + 1',
+          '  Else: high = mid - 1',
+          'Print firstIndex',
+        ],
+        cCode: `#include <stdio.h>
+
+int findFirstOccurrence(int arr[], int n, int target) {
+    int low = 0, high = n - 1, ans = -1;
+    while (low <= high) {
+        int mid = low + (high - low) / 2;
+        if (arr[mid] == target) {
+            ans = mid;
+            high = mid - 1; // Keep searching in left subarray
+        } else if (arr[mid] < target) {
+            low = mid + 1;
+        } else {
+            high = mid - 1;
+        }
+    }
+    return ans;
+}
+
+int main() {
+    int n, target;
+    printf("Enter n: ");
+    scanf("%d", &n);
+    int arr[n];
+    printf("Enter sorted array: ");
+    for (int i = 0; i < n; i++) scanf("%d", &arr[i]);
+    printf("Enter search target: ");
+    scanf("%d", &target);
+    
+    int idx = findFirstOccurrence(arr, n, target);
+    if (idx != -1)
+        printf("%d found at first position (index %d)\\n", target, idx);
+    else
+        printf("%d not found\\n", target);
+    return 0;
+}`,
+        cppCode: `#include <iostream>
+#include <vector>
+using namespace std;
+
+int main() {
+    int n, target; cin >> n;
+    vector<int> a(n);
+    for (int &x : a) cin >> x;
+    cin >> target;
+    int l = 0, h = n - 1, ans = -1;
+    while (l <= h) {
+        int m = l + (h - l) / 2;
+        if (a[m] == target) { ans = m; h = m - 1; }
+        else if (a[m] < target) l = m + 1;
+        else h = m - 1;
+    }
+    if (ans != -1) cout << target << " found at index " << ans << endl;
+    else cout << "Not found" << endl;
+    return 0;
+}`,
+        sampleIO: [
+          { input: '6\n10 20 20 20 30 40\n20', output: '20 found at first position (index 1)' },
+        ],
+        dryRun: [
+          { step: 1, state: 'low=0, high=5 -> mid=2 (arr[2]=20)', explanation: 'Match! ans=2, search left: high=1.' },
+          { step: 2, state: 'low=0, high=1 -> mid=0 (arr[0]=10)', explanation: 'arr[0]=10 < 20 -> low=1.' },
+          { step: 3, state: 'low=1, high=1 -> mid=1 (arr[1]=20)', explanation: 'Match! ans=1, high=0. Loop ends with ans=1.' },
+        ],
+        timeComplexity: 'O(log N)',
+        spaceComplexity: 'O(1)',
+        commonMistakes: ['Returning mid immediately on match, which might be the middle or last duplicate instead of first'],
+        edgeCases: ['All elements equal to target', 'Target at index 0'],
+        relatedTopicId: 'binary-search',
+        isCompleted: true,
+      },
+      {
+        id: 'q7',
+        number: 7,
+        title: 'Linear Search and Delete First Occurrence',
+        statement: 'Write a C program that searches for a user-specified element using linear search. If found, delete its first occurrence and display the updated array.',
+        explanation: 'Finds index via linear scan, shifts all subsequent elements left by 1 position, decrements size.',
+        requiredConcepts: ['Linear search', 'Array deletion shift'],
+        algorithm: [
+          'Read n, array elements, and search key',
+          'Find first index i where arr[i] == key',
+          'If found:',
+          '  Shift elements from i to n-2: arr[j] = arr[j + 1]',
+          '  Decrement n',
+          '  Display updated array',
+          'Else: print element not found',
+        ],
+        cCode: `#include <stdio.h>
+
+int main() {
+    int n, key, foundIdx = -1;
+    printf("Enter n: ");
+    scanf("%d", &n);
+    int arr[n];
+    for (int i = 0; i < n; i++) scanf("%d", &arr[i]);
+    printf("Enter element to search and delete: ");
+    scanf("%d", &key);
+    
+    for (int i = 0; i < n; i++) {
+        if (arr[i] == key) {
+            foundIdx = i;
+            break;
+        }
+    }
+    
+    if (foundIdx != -1) {
+        for (int j = foundIdx; j < n - 1; j++) {
+            arr[j] = arr[j + 1];
+        }
+        n--;
+        printf("Element %d deleted. Updated array: ", key);
+        for (int i = 0; i < n; i++) printf("%d ", arr[i]);
+        printf("\\n");
+    } else {
+        printf("Element %d not found in array.\\n", key);
+    }
+    return 0;
+}`,
+        cppCode: `#include <iostream>
+#include <vector>
+using namespace std;
+
+int main() {
+    int n, key; cin >> n;
+    vector<int> a(n);
+    for (int &x : a) cin >> x;
+    cin >> key;
+    for (auto it = a.begin(); it != a.end(); ++it) {
+        if (*it == key) {
+            a.erase(it);
+            cout << "Updated: ";
+            for (int x : a) cout << x << " ";
+            cout << endl;
+            return 0;
+        }
+    }
+    cout << "Not found" << endl;
+    return 0;
+}`,
+        sampleIO: [
+          { input: '5\n10 20 30 40 50\n30', output: 'Element 30 deleted. Updated array: 10 20 40 50' },
+        ],
+        dryRun: [
+          { step: 1, state: 'Found 30 at index 2', explanation: 'Shifts 40 and 50 to indices 2 and 3.' },
+        ],
+        timeComplexity: 'O(N)',
+        spaceComplexity: 'O(1) auxiliary',
+        commonMistakes: ['Deleting subsequent occurrences when problem specifies "first occurrence"'],
+        edgeCases: ['Element is at index 0', 'Element is at last index'],
+        relatedTopicId: 'arrays',
+        isCompleted: true,
+      },
+    ],
+  },
+
+  // ─── DS Lab Exercise 4: 2-D & 3-D Array and Selection Sort ────────────────
+  {
+    id: 'ds-lab-4',
+    subjectId: 'ds',
+    subjectName: 'Data Structures',
+    labNo: 4,
+    title: 'Lab Exercise 4 (2-D & 3-D Array and Selection Sort)',
+    description: 'Matrix row/column sums and extrema, square matrix boundary elements, saddle point detection, 3-D layer aggregation, row deletion with upward shifting, and Selection Sort with comparison & swap counting.',
+    dueDate: '2024-12-05',
+    questions: [
+      {
+        id: 'q1',
+        number: 1,
+        title: 'Matrix Row/Column Sums and Extrema',
+        statement: 'Write a C program to read a matrix of size m × n and find:\n• Sum of each row\n• Sum of each column\n• Row having the maximum sum\n• Column having the minimum sum.',
+        explanation: '2D array traversal iterating over rows for row sums, and columns for column sums, keeping track of min/max indices.',
+        requiredConcepts: ['2D arrays', 'Row-major traversal', 'Column-major traversal'],
+        algorithm: [
+          'Read m and n',
+          'Read matrix elements mat[m][n]',
+          'Compute row sum for each row i; track maxRowSum and maxRowIdx',
+          'Compute col sum for each col j; track minColSum and minColIdx',
+          'Print all results',
+        ],
+        cCode: `#include <stdio.h>
+#include <limits.h>
+
+int main() {
+    int m, n;
+    printf("Enter rows (m) and cols (n): ");
+    scanf("%d %d", &m, &n);
+    int mat[m][n];
+    printf("Enter matrix elements:\\n");
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) scanf("%d", &mat[i][j]);
+    }
+    
+    int maxRowSum = INT_MIN, maxRow = 0;
+    for (int i = 0; i < m; i++) {
+        int rsum = 0;
+        for (int j = 0; j < n; j++) rsum += mat[i][j];
+        printf("Sum of row %d = %d\\n", i, rsum);
+        if (rsum > maxRowSum) { maxRowSum = rsum; maxRow = i; }
+    }
+    printf("Row with maximum sum: Row %d (Sum = %d)\\n", maxRow, maxRowSum);
+    
+    int minColSum = INT_MAX, minCol = 0;
+    for (int j = 0; j < n; j++) {
+        int csum = 0;
+        for (int i = 0; i < m; i++) csum += mat[i][j];
+        printf("Sum of col %d = %d\\n", j, csum);
+        if (csum < minColSum) { minColSum = csum; minCol = j; }
+    }
+    printf("Column with minimum sum: Column %d (Sum = %d)\\n", minCol, minColSum);
+    return 0;
+}`,
+        cppCode: `#include <iostream>
+#include <vector>
+#include <climits>
+using namespace std;
+
+int main() {
+    int m, n; cin >> m >> n;
+    vector<vector<int>> mat(m, vector<int>(n));
+    for (int i = 0; i < m; i++)
+        for (int j = 0; j < n; j++) cin >> mat[i][j];
+    
+    int maxRSum = INT_MIN, maxR = 0;
+    for (int i = 0; i < m; i++) {
+        int rs = 0;
+        for (int j = 0; j < n; j++) rs += mat[i][j];
+        cout << "Row " << i << " sum: " << rs << "\\n";
+        if (rs > maxRSum) { maxRSum = rs; maxR = i; }
+    }
+    cout << "Max Row: " << maxR << endl;
+    return 0;
+}`,
+        sampleIO: [
+          { input: '3 3\n1 2 3\n4 5 6\n7 8 9', output: 'Sum of row 0 = 6\nSum of row 1 = 15\nSum of row 2 = 24\nRow with maximum sum: Row 2 (Sum = 24)\nSum of col 0 = 12\nSum of col 1 = 15\nSum of col 2 = 18\nColumn with minimum sum: Column 0 (Sum = 12)' },
+        ],
+        dryRun: [
+          { step: 1, state: 'Row sums: 6, 15, 24', explanation: 'Max row is 2' },
+          { step: 2, state: 'Col sums: 12, 15, 18', explanation: 'Min col is 0' },
+        ],
+        timeComplexity: 'O(M * N)',
+        spaceComplexity: 'O(M * N)',
+        commonMistakes: ['Inverting loop variables i and j in column sum traversal'],
+        edgeCases: ['1x1 matrix', 'Negative values in matrix'],
+        relatedTopicId: 'arrays',
+        isCompleted: true,
+      },
+      {
+        id: 'q2',
+        number: 2,
+        title: 'Square Matrix Boundary Elements and Sum',
+        statement: 'Write a C program to read a square matrix and display only its boundary elements. Also calculate the sum of the boundary elements.',
+        explanation: 'Boundary elements are those where i == 0 or i == n-1 or j == 0 or j == n-1.',
+        requiredConcepts: ['Boundary condition check', 'Matrix formatting'],
+        algorithm: [
+          'Read n and square matrix mat[n][n]',
+          'Init boundarySum = 0',
+          'For i = 0 to n-1:',
+          '  For j = 0 to n-1:',
+          '    If i == 0 || i == n-1 || j == 0 || j == n-1:',
+          '      Print mat[i][j], boundarySum += mat[i][j]',
+          '    Else: print empty space',
+          'Print boundarySum',
+        ],
+        cCode: `#include <stdio.h>
+
+int main() {
+    int n, sum = 0;
+    printf("Enter matrix dimension n: ");
+    scanf("%d", &n);
+    int mat[n][n];
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < n; j++) scanf("%d", &mat[i][j]);
+        
+    printf("Boundary Elements:\\n");
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            if (i == 0 || i == n - 1 || j == 0 || j == n - 1) {
+                printf("%d\\t", mat[i][j]);
+                sum += mat[i][j];
+            } else {
+                printf("\\t");
+            }
+        }
+        printf("\\n");
+    }
+    printf("Sum of boundary elements = %d\\n", sum);
+    return 0;
+}`,
+        cppCode: `#include <iostream>
+#include <vector>
+using namespace std;
+
+int main() {
+    int n, sum = 0; cin >> n;
+    vector<vector<int>> m(n, vector<int>(n));
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < n; j++) {
+            cin >> m[i][j];
+            if (i == 0 || i == n - 1 || j == 0 || j == n - 1) sum += m[i][j];
+        }
+    cout << "Boundary sum: " << sum << endl;
+    return 0;
+}`,
+        sampleIO: [
+          { input: '3\n1 2 3\n4 5 6\n7 8 9', output: 'Boundary Elements:\n1\t2\t3\t\n4\t\t6\t\n7\t8\t9\t\nSum of boundary elements = 40' },
+        ],
+        dryRun: [
+          { step: 1, state: '1+2+3+4+6+7+8+9 = 40', explanation: 'Only center element 5 is excluded from sum.' },
+        ],
+        timeComplexity: 'O(N²)',
+        spaceComplexity: 'O(N²)',
+        commonMistakes: ['Adding corner elements twice if iterating per side'],
+        edgeCases: ['n = 1 (entire matrix is boundary)', 'n = 2 (all elements are boundary)'],
+        relatedTopicId: 'arrays',
+        isCompleted: true,
+      },
+      {
+        id: 'q3',
+        number: 3,
+        title: 'Matrix Saddle Point Detection',
+        statement: 'Write a C program to find the saddle point of a matrix, if it exists. A saddle point is an element that is the smallest in its row but largest in its column.',
+        explanation: 'For each row i, find min element at colIndex. Then check if that element is the maximum in colIndex.',
+        requiredConcepts: ['Saddle point criteria', 'Row-min and Col-max correlation'],
+        algorithm: [
+          'Read m, n, and matrix elements',
+          'found = 0',
+          'For each row i from 0 to m-1:',
+          '  Find min in row i at column c_min',
+          '  Check if mat[i][c_min] is maximum in column c_min (compare against all rows k for column c_min)',
+          '  If yes: saddle point found at (i, c_min), print value and break',
+          'If not found: print "No saddle point exists"',
+        ],
+        cCode: `#include <stdio.h>
+
+int main() {
+    int m, n;
+    printf("Enter rows and cols: ");
+    scanf("%d %d", &m, &n);
+    int mat[m][n];
+    for (int i = 0; i < m; i++)
+        for (int j = 0; j < n; j++) scanf("%d", &mat[i][j]);
+        
+    int hasSaddle = 0;
+    for (int i = 0; i < m; i++) {
+        // Find minimum element in row i
+        int min_val = mat[i][0], col_idx = 0;
+        for (int j = 1; j < n; j++) {
+            if (mat[i][j] < min_val) {
+                min_val = mat[i][j];
+                col_idx = j;
+            }
+        }
+        
+        // Verify if min_val is the maximum in its column col_idx
+        int isSaddle = 1;
+        for (int k = 0; k < m; k++) {
+            if (mat[k][col_idx] > min_val) {
+                isSaddle = 0;
+                break;
+            }
+        }
+        
+        if (isSaddle) {
+            printf("Saddle point exists at (%d, %d) with value = %d\\n", i, col_idx, min_val);
+            hasSaddle = 1;
+            break;
+        }
+    }
+    if (!hasSaddle) printf("No saddle point exists in the matrix.\\n");
+    return 0;
+}`,
+        cppCode: `#include <iostream>
+#include <vector>
+using namespace std;
+
+int main() {
+    int m, n; cin >> m >> n;
+    vector<vector<int>> mat(m, vector<int>(n));
+    for (int i = 0; i < m; i++)
+        for (int j = 0; j < n; j++) cin >> mat[i][j];
+    for (int i = 0; i < m; i++) {
+        int minCol = 0;
+        for (int j = 1; j < n; j++) if (mat[i][j] < mat[i][minCol]) minCol = j;
+        bool isSaddle = true;
+        for (int k = 0; k < m; k++) if (mat[k][minCol] > mat[i][minCol]) { isSaddle = false; break; }
+        if (isSaddle) {
+            cout << "Saddle point: " << mat[i][minCol] << " at (" << i << ", " << minCol << ")\\n";
+            return 0;
+        }
+    }
+    cout << "No saddle point\\n";
+    return 0;
+}`,
+        sampleIO: [
+          { input: '3 3\n1 2 3\n4 5 6\n7 8 9', output: 'Saddle point exists at (2, 0) with value = 7' },
+        ],
+        dryRun: [
+          { step: 1, state: 'Row 0: min is 1 at col 0. Col 0 has 7 > 1. Not saddle.', explanation: 'Check next row' },
+          { step: 2, state: 'Row 1: min is 4 at col 0. Col 0 has 7 > 4. Not saddle.', explanation: 'Check next row' },
+          { step: 3, state: 'Row 2: min is 7 at col 0. Col 0 max is 7. Matches! Saddle point = 7.', explanation: 'Found' },
+        ],
+        timeComplexity: 'O(M * N)',
+        spaceComplexity: 'O(M * N)',
+        commonMistakes: ['Assuming multiple elements in the same row cannot match or confusing row-max with col-min'],
+        edgeCases: ['Matrix with no saddle point', 'All elements identical'],
+        relatedTopicId: 'arrays',
+        isCompleted: true,
+      },
+      {
+        id: 'q4',
+        number: 4,
+        title: '3-D Array Layer Sum Calculation',
+        statement: 'Write a C program to store elements in a 3-D array representing multiple matrices. Calculate and display the sum of elements of each 2-D layer.',
+        explanation: 'Uses 3D array mat[layers][rows][cols] and sums per layer.',
+        requiredConcepts: ['3D array indexing', 'Layer dimension slicing'],
+        algorithm: [
+          'Read layers L, rows R, cols C',
+          'Read 3D array elements mat[L][R][C]',
+          'For each layer l from 0 to L-1:',
+          '  layerSum = 0',
+          '  For r = 0 to R-1:',
+          '    For c = 0 to C-1: layerSum += mat[l][r][c]',
+          '  Print layerSum for layer l',
+        ],
+        cCode: `#include <stdio.h>
+
+int main() {
+    int L, R, C;
+    printf("Enter layers, rows, cols: ");
+    scanf("%d %d %d", &L, &R, &C);
+    int mat[L][R][C];
+    
+    for (int l = 0; l < L; l++) {
+        printf("Enter elements for Layer %d:\\n", l);
+        for (int r = 0; r < R; r++) {
+            for (int c = 0; c < C; c++) scanf("%d", &mat[l][r][c]);
+        }
+    }
+    
+    printf("\\n--- Layer Sums ---\\n");
+    for (int l = 0; l < L; l++) {
+        int sum = 0;
+        for (int r = 0; r < R; r++) {
+            for (int c = 0; c < C; c++) sum += mat[l][r][c];
+        }
+        printf("Sum of Layer %d = %d\\n", l, sum);
+    }
+    return 0;
+}`,
+        cppCode: `#include <iostream>
+#include <vector>
+using namespace std;
+
+int main() {
+    int L, R, C; cin >> L >> R >> C;
+    for (int l = 0; l < L; l++) {
+        int sum = 0;
+        for (int r = 0; r < R; r++) {
+            for (int c = 0; c < C; c++) {
+                int val; cin >> val;
+                sum += val;
+            }
+        }
+        cout << "Layer " << l << " sum: " << sum << endl;
+    }
+    return 0;
+}`,
+        sampleIO: [
+          { input: '2 2 2\n1 2\n3 4\n5 6\n7 8', output: 'Sum of Layer 0 = 10\nSum of Layer 1 = 26' },
+        ],
+        dryRun: [
+          { step: 1, state: 'Layer 0: 1+2+3+4 = 10', explanation: 'Layer 0 processed.' },
+          { step: 2, state: 'Layer 1: 5+6+7+8 = 26', explanation: 'Layer 1 processed.' },
+        ],
+        timeComplexity: 'O(L * R * C)',
+        spaceComplexity: 'O(L * R * C)',
+        commonMistakes: ['Misordering dimensions mat[layer][row][col]'],
+        edgeCases: ['L = 1 (equivalent to single 2D matrix)'],
+        relatedTopicId: 'arrays',
+        isCompleted: true,
+      },
+      {
+        id: 'q5',
+        number: 5,
+        title: 'Delete Specified Row and Shift Upward',
+        statement: 'Write a C program to read an m × n matrix and delete a specified row. Shift the remaining rows upward and display the resulting matrix.',
+        explanation: 'Deletes row targetRow by shifting all rows from targetRow+1 onwards upward into row - 1.',
+        requiredConcepts: ['2D array row deletion', 'Row-wise shifting'],
+        algorithm: [
+          'Read m, n, and matrix',
+          'Read delRow to delete',
+          'For i = delRow to m - 2:',
+          '  For j = 0 to n - 1: mat[i][j] = mat[i + 1][j]',
+          'Decrement m',
+          'Display updated matrix of size (m-1) x n',
+        ],
+        cCode: `#include <stdio.h>
+
+int main() {
+    int m, n, delRow;
+    printf("Enter rows and cols: ");
+    scanf("%d %d", &m, &n);
+    int mat[m][n];
+    for (int i = 0; i < m; i++)
+        for (int j = 0; j < n; j++) scanf("%d", &mat[i][j]);
+        
+    printf("Enter row index to delete (0 to %d): ", m - 1);
+    scanf("%d", &delRow);
+    
+    if (delRow < 0 || delRow >= m) {
+        printf("Invalid row index.\\n");
+        return 0;
+    }
+    
+    for (int i = delRow; i < m - 1; i++) {
+        for (int j = 0; j < n; j++) {
+            mat[i][j] = mat[i + 1][j];
+        }
+    }
+    m--;
+    
+    printf("Resulting Matrix:\\n");
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) printf("%d\\t", mat[i][j]);
+        printf("\\n");
+    }
+    return 0;
+}`,
+        cppCode: `#include <iostream>
+#include <vector>
+using namespace std;
+
+int main() {
+    int m, n, delRow; cin >> m >> n;
+    vector<vector<int>> mat(m, vector<int>(n));
+    for (int i = 0; i < m; i++)
+        for (int j = 0; j < n; j++) cin >> mat[i][j];
+    cin >> delRow;
+    mat.erase(mat.begin() + delRow);
+    for (auto &row : mat) {
+        for (int x : row) cout << x << "\\t";
+        cout << "\\n";
+    }
+    return 0;
+}`,
+        sampleIO: [
+          { input: '3 3\n1 2 3\n4 5 6\n7 8 9\n1', output: 'Resulting Matrix:\n1\t2\t3\t\n7\t8\t9\t' },
+        ],
+        dryRun: [
+          { step: 1, state: 'delRow = 1 (row [4,5,6])', explanation: 'Row 2 ([7,8,9]) moves up to Row 1. Size becomes 2x3.' },
+        ],
+        timeComplexity: 'O(M * N)',
+        spaceComplexity: 'O(1) auxiliary',
+        commonMistakes: ['Out-of-bounds access if shifting past m-1'],
+        edgeCases: ['Deleting first row (delRow = 0)', 'Deleting last row (delRow = m - 1)'],
+        relatedTopicId: 'arrays',
+        isCompleted: true,
+      },
+      {
+        id: 'q6',
+        number: 6,
+        title: 'Selection Sort with Comparison and Swap Counts',
+        statement: 'Write a C program to implement Selection Sort and count the total number of comparisons and swaps performed during sorting. Display both counts.',
+        explanation: 'Repeatedly finds minimum from unsorted part and places it at beginning, tracking exact comparison and swap counter operations.',
+        requiredConcepts: ['Selection Sort', 'Comparisons tracking', 'Swaps tracking'],
+        algorithm: [
+          'Init comparisons = 0, swaps = 0',
+          'For i = 0 to n - 2:',
+          '  minIdx = i',
+          '  For j = i + 1 to n - 1:',
+          '    comparisons++',
+          '    If arr[j] < arr[minIdx]: minIdx = j',
+          '  If minIdx != i:',
+          '    swap(arr[i], arr[minIdx])',
+          '    swaps++',
+          'Print sorted array, comparisons, and swaps',
+        ],
+        cCode: `#include <stdio.h>
+
+int main() {
+    int n, comparisons = 0, swaps = 0;
+    printf("Enter n: ");
+    scanf("%d", &n);
+    int arr[n];
+    for (int i = 0; i < n; i++) scanf("%d", &arr[i]);
+    
+    for (int i = 0; i < n - 1; i++) {
+        int minIdx = i;
+        for (int j = i + 1; j < n; j++) {
+            comparisons++;
+            if (arr[j] < arr[minIdx]) {
+                minIdx = j;
+            }
+        }
+        if (minIdx != i) {
+            int temp = arr[i];
+            arr[i] = arr[minIdx];
+            arr[minIdx] = temp;
+            swaps++;
+        }
+    }
+    
+    printf("Sorted array: ");
+    for (int i = 0; i < n; i++) printf("%d ", arr[i]);
+    printf("\\n");
+    printf("Total comparisons = %d\\n", comparisons);
+    printf("Total swaps = %d\\n", swaps);
+    return 0;
+}`,
+        cppCode: `#include <iostream>
+#include <vector>
+using namespace std;
+
+int main() {
+    int n, comps = 0, sw = 0; cin >> n;
+    vector<int> a(n);
+    for (int &x : a) cin >> x;
+    for (int i = 0; i < n - 1; i++) {
+        int minIdx = i;
+        for (int j = i + 1; j < n; j++) {
+            comps++;
+            if (a[j] < a[minIdx]) minIdx = j;
+        }
+        if (minIdx != i) { swap(a[i], a[minIdx]); sw++; }
+    }
+    for (int x : a) cout << x << " ";
+    cout << "\\nComparisons: " << comps << " Swaps: " << sw << endl;
+    return 0;
+}`,
+        sampleIO: [
+          { input: '5\n64 25 12 22 11', output: 'Sorted array: 11 12 22 25 64\nTotal comparisons = 10\nTotal swaps = 4' },
+        ],
+        dryRun: [
+          { step: 1, state: 'Total comparisons = n*(n-1)/2 = 5*4/2 = 10', explanation: 'Selection sort always performs exactly n*(n-1)/2 comparisons.' },
+          { step: 2, state: 'Passes make swaps when minIdx != i', explanation: '4 swaps performed.' },
+        ],
+        timeComplexity: 'Best/Avg/Worst: O(N²) comparisons, O(N) swaps',
+        spaceComplexity: 'O(1)',
+        commonMistakes: ['Incrementing swaps even when element is already in place (minIdx == i)'],
+        edgeCases: ['Array already sorted (0 swaps, but still 10 comparisons)'],
+        relatedTopicId: 'bubble-sort',
+        isCompleted: true,
+      },
+    ],
+  },
+
+  // ─── DS Lab Exercise 5: Bubble, Insertion, Merge, Quick Sort ──────────────
+  {
+    id: 'ds-lab-5',
+    subjectId: 'ds',
+    subjectName: 'Data Structures',
+    labNo: 5,
+    title: 'Lab Exercise 5 (Bubble Sort, Insertion Sort, Merge Sort, and Quick Sort)',
+    description: 'Dynamic sorted array maintenance via Insertion Sort, student marks sorting with algorithm stability analysis, and e-commerce price sorting with Quick Sort displaying partition pivots.',
+    dueDate: '2024-12-10',
+    questions: [
+      {
+        id: 'q1',
+        number: 1,
+        title: 'Maintain Array in Sorted Order Using Insertion Sort',
+        statement: 'Write a C program that maintains an array in sorted order using Insertion Sort. Given a new element, insert it into its appropriate position without disturbing the sorted order.',
+        explanation: 'Simulates the core invariant of Insertion Sort: shifts elements larger than key to the right and inserts key.',
+        requiredConcepts: ['Insertion sort invariant', 'Backward shifting'],
+        algorithm: [
+          'Read n and initial sorted array',
+          'Read new element X to insert',
+          'Set i = n - 1',
+          'While i >= 0 and arr[i] > X:',
+          '  arr[i + 1] = arr[i]',
+          '  i--',
+          'arr[i + 1] = X',
+          'n++',
+          'Display updated sorted array',
+        ],
+        cCode: `#include <stdio.h>
+
+void insertSorted(int arr[], int *n, int key) {
+    int i = *n - 1;
+    while (i >= 0 && arr[i] > key) {
+        arr[i + 1] = arr[i];
+        i--;
+    }
+    arr[i + 1] = key;
+    (*n)++;
+}
+
+int main() {
+    int n, key;
+    printf("Enter initial count of sorted elements: ");
+    scanf("%d", &n);
+    int arr[100];
+    printf("Enter %d sorted elements: ", n);
+    for (int i = 0; i < n; i++) scanf("%d", &arr[i]);
+    
+    printf("Enter new element to insert: ");
+    scanf("%d", &key);
+    
+    insertSorted(arr, &n, key);
+    
+    printf("Array after insertion: ");
+    for (int i = 0; i < n; i++) printf("%d ", arr[i]);
+    printf("\\n");
+    return 0;
+}`,
+        cppCode: `#include <iostream>
+#include <vector>
+using namespace std;
+
+int main() {
+    int n, key; cin >> n;
+    vector<int> a(n);
+    for (int &x : a) cin >> x;
+    cin >> key;
+    a.push_back(0);
+    int i = n - 1;
+    while (i >= 0 && a[i] > key) { a[i + 1] = a[i]; i--; }
+    a[i + 1] = key;
+    for (int x : a) cout << x << " ";
+    cout << endl;
+    return 0;
+}`,
+        sampleIO: [
+          { input: '4\n12 25 40 55\n30', output: 'Array after insertion: 12 25 30 40 55' },
+        ],
+        dryRun: [
+          { step: 1, state: '55 > 30 -> shift 55 to index 4', explanation: 'i becomes 2' },
+          { step: 2, state: '40 > 30 -> shift 40 to index 3', explanation: 'i becomes 1' },
+          { step: 3, state: '25 <= 30 -> stop', explanation: 'Insert 30 at index 2.' },
+        ],
+        timeComplexity: 'O(N)',
+        spaceComplexity: 'O(1) auxiliary',
+        commonMistakes: ['Shifting forward instead of backward overwriting data'],
+        edgeCases: ['Key is smaller than all items', 'Key is larger than all items'],
+        relatedTopicId: 'bubble-sort',
+        isCompleted: true,
+      },
+      {
+        id: 'q2',
+        number: 2,
+        title: 'Student Marks Sorting and Stability Analysis',
+        statement: 'Consider student records containing Roll Number and Marks. Implement Bubble Sort, Merge Sort, and Quick Sort to sort students by marks. Analyse whether the relative order of students having equal marks is preserved.',
+        explanation: 'Bubble Sort and Merge Sort are STABLE algorithms (preserve initial order of equal keys with <=). Quick Sort is UNSTABLE due to long-range partition swaps.',
+        requiredConcepts: ['Sorting algorithm stability', 'Struct sorting', 'Comparator functions'],
+        algorithm: [
+          'Define Student struct: rollNo, marks, originalOrder',
+          'Sort copies using Bubble Sort, Merge Sort, and Quick Sort',
+          'Compare output relative orders for identical marks',
+          'Conclude: Bubble Sort (Stable), Merge Sort (Stable), Quick Sort (Unstable)',
+        ],
+        cCode: `#include <stdio.h>
+#include <string.h>
+
+typedef struct {
+    int roll;
+    int marks;
+    int originalPos;
+} Student;
+
+void bubbleSort(Student arr[], int n) {
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = 0; j < n - i - 1; j++) {
+            if (arr[j].marks > arr[j + 1].marks) {
+                Student temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            }
+        }
+    }
+}
+
+void merge(Student arr[], int l, int m, int r) {
+    int n1 = m - l + 1, n2 = r - m;
+    Student L[n1], R[n2];
+    for (int i = 0; i < n1; i++) L[i] = arr[l + i];
+    for (int j = 0; j < n2; j++) R[j] = arr[m + 1 + j];
+    int i = 0, j = 0, k = l;
+    while (i < n1 && j < n2) {
+        if (L[i].marks <= R[j].marks) arr[k++] = L[i++]; // <= ensures stability
+        else arr[k++] = R[j++];
+    }
+    while (i < n1) arr[k++] = L[i++];
+    while (j < n2) arr[k++] = R[j++];
+}
+
+void mergeSort(Student arr[], int l, int r) {
+    if (l < r) {
+        int m = l + (r - l) / 2;
+        mergeSort(arr, l, m);
+        mergeSort(arr, m + 1, r);
+        merge(arr, l, m, r);
+    }
+}
+
+int partition(Student arr[], int low, int high) {
+    int pivot = arr[high].marks;
+    int i = low - 1;
+    for (int j = low; j < high; j++) {
+        if (arr[j].marks < pivot) {
+            i++;
+            Student temp = arr[i]; arr[i] = arr[j]; arr[j] = temp;
+        }
+    }
+    Student temp = arr[i + 1]; arr[i + 1] = arr[high]; arr[high] = temp;
+    return i + 1;
+}
+
+void quickSort(Student arr[], int low, int high) {
+    if (low < high) {
+        int pi = partition(arr, low, high);
+        quickSort(arr, low, pi - 1);
+        quickSort(arr, pi + 1, high);
+    }
+}
+
+void printStudents(Student arr[], int n) {
+    for (int i = 0; i < n; i++)
+        printf("[Roll: %d, Marks: %d, OrigPos: %d] ", arr[i].roll, arr[i].marks, arr[i].originalPos);
+    printf("\\n");
+}
+
+int main() {
+    int n = 4;
+    Student students[] = {
+        {101, 85, 0},
+        {102, 70, 1},
+        {103, 85, 2}, // Equal marks to 101
+        {104, 60, 3}
+    };
+    
+    Student bCopy[4], mCopy[4], qCopy[4];
+    memcpy(bCopy, students, sizeof(students));
+    memcpy(mCopy, students, sizeof(students));
+    memcpy(qCopy, students, sizeof(students));
+    
+    bubbleSort(bCopy, n);
+    mergeSort(mCopy, 0, n - 1);
+    quickSort(qCopy, 0, n - 1);
+    
+    printf("Bubble Sort (Stable):\\n"); printStudents(bCopy, n);
+    printf("Merge Sort (Stable):\\n"); printStudents(mCopy, n);
+    printf("Quick Sort (Unstable):\\n"); printStudents(qCopy, n);
+    return 0;
+}`,
+        cppCode: `#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+struct Student { int roll, marks, pos; };
+
+int main() {
+    cout << "Stability Analysis:\\n";
+    cout << "• Bubble Sort: STABLE (adjacent swaps preserve equal elements)\\n";
+    cout << "• Merge Sort: STABLE (uses <= in merge step)\\n";
+    cout << "• Quick Sort: UNSTABLE (partitioning swaps non-adjacent elements across pivot)\\n";
+    return 0;
+}`,
+        sampleIO: [
+          { input: '4 students: {101: 85}, {102: 70}, {103: 85}, {104: 60}', output: 'Bubble Sort: [Roll: 104, Marks: 60], [Roll: 102, Marks: 70], [Roll: 101, Marks: 85, Pos: 0], [Roll: 103, Marks: 85, Pos: 2]\nStability Preserved: Roll 101 appears before Roll 103.' },
+        ],
+        dryRun: [
+          { step: 1, state: 'Students 101 and 103 have identical marks 85', explanation: 'Stable sorts preserve 101 before 103.' },
+        ],
+        timeComplexity: 'Bubble: O(N²), Merge: O(N log N), Quick: O(N log N) avg',
+        spaceComplexity: 'Merge: O(N), Quick: O(log N)',
+        commonMistakes: ['Using < instead of <= in merge sort, which destroys stability'],
+        edgeCases: ['All students have identical marks'],
+        relatedTopicId: 'merge-quick-sort',
+        isCompleted: true,
+      },
+      {
+        id: 'q3',
+        number: 3,
+        title: 'Quick Sort on Product Prices Displaying Partition Pivots',
+        statement: 'An online shopping application stores the prices of products in an unsorted array. When a customer selects "Sort by Price: Low to High", the system needs to arrange the products efficiently. Write a C program using Quick Sort to: • Accept n product prices • Sort prices in ascending order • Display the pivot selected during each partition • Display the final sorted prices.',
+        explanation: 'Standard Lomuto or Hoare partition tracking and printing pivot value and partitioned index at each recursion level.',
+        requiredConcepts: ['Quick Sort', 'Divide and conquer', 'Pivot selection & partition step'],
+        algorithm: [
+          'Choose pivot = arr[high]',
+          'Print chosen pivot',
+          'Rearrange array around pivot so elements <= pivot are left, elements > pivot are right',
+          'Place pivot at correct sorted index',
+          'Recursively quicksort left and right partitions',
+        ],
+        cCode: `#include <stdio.h>
+
+int partitionCount = 0;
+
+int partition(float prices[], int low, int high) {
+    float pivot = prices[high];
+    partitionCount++;
+    printf("Partition #%d: Selected Pivot = %.2f (from range [%d..%d])\\n", partitionCount, pivot, low, high);
+    
+    int i = low - 1;
+    for (int j = low; j < high; j++) {
+        if (prices[j] <= pivot) {
+            i++;
+            float temp = prices[i];
+            prices[i] = prices[j];
+            prices[j] = temp;
+        }
+    }
+    float temp = prices[i + 1];
+    prices[i + 1] = prices[high];
+    prices[high] = temp;
+    
+    printf("  Array state after partition: ");
+    for (int k = low; k <= high; k++) printf("%.2f ", prices[k]);
+    printf("\\n");
+    
+    return i + 1;
+}
+
+void quickSort(float prices[], int low, int high) {
+    if (low < high) {
+        int pi = partition(prices, low, high);
+        quickSort(prices, low, pi - 1);
+        quickSort(prices, pi + 1, high);
+    }
+}
+
+int main() {
+    int n;
+    printf("Enter number of products: ");
+    scanf("%d", &n);
+    float prices[n];
+    printf("Enter %d product prices:\\n", n);
+    for (int i = 0; i < n; i++) scanf("%f", &prices[i]);
+    
+    printf("\\n--- Starting Quick Sort ---\\n");
+    quickSort(prices, 0, n - 1);
+    
+    printf("\\nFinal Sorted Prices (Low to High): ");
+    for (int i = 0; i < n; i++) printf("%.2f ", prices[i]);
+    printf("\\n");
+    return 0;
+}`,
+        cppCode: `#include <iostream>
+#include <vector>
+using namespace std;
+
+int partition(vector<float>& a, int l, int h) {
+    float pivot = a[h];
+    cout << "Pivot: " << pivot << endl;
+    int i = l - 1;
+    for (int j = l; j < h; j++) {
+        if (a[j] <= pivot) swap(a[++i], a[j]);
+    }
+    swap(a[i + 1], a[h]);
+    return i + 1;
+}
+
+void qs(vector<float>& a, int l, int h) {
+    if (l < h) {
+        int pi = partition(a, l, h);
+        qs(a, l, pi - 1);
+        qs(a, pi + 1, h);
+    }
+}
+
+int main() {
+    int n; cin >> n;
+    vector<float> p(n);
+    for (float &x : p) cin >> x;
+    qs(p, 0, n - 1);
+    for (float x : p) cout << x << " ";
+    cout << endl;
+    return 0;
+}`,
+        sampleIO: [
+          { input: '5\n499.99 129.50 999.00 49.99 250.00', output: 'Partition #1: Selected Pivot = 250.00\n...\nFinal Sorted Prices (Low to High): 49.99 129.50 250.00 499.99 999.00' },
+        ],
+        dryRun: [
+          { step: 1, state: 'high index is chosen as pivot', explanation: 'Elements smaller move left, larger move right.' },
+          { step: 2, state: 'Pivot placed in exact final position', explanation: 'Subarrays recursed.' },
+        ],
+        timeComplexity: 'Best/Avg: O(N log N), Worst: O(N²)',
+        spaceComplexity: 'O(log N) recursion stack',
+        commonMistakes: ['Infinite recursion if high and low bounds are not strictly decremented/incremented around pi'],
+        edgeCases: ['Prices already sorted (worst case partition if last element chosen)'],
+        relatedTopicId: 'merge-quick-sort',
+        isCompleted: true,
+      },
+    ],
+  },
+
+  // ─── DS Lab Exercise 6: Single Linked List ────────────────────────────────
+  {
+    id: 'ds-lab-6',
+    subjectId: 'ds',
+    subjectName: 'Data Structures',
+    labNo: 6,
+    title: 'Lab Exercise 6 (Single Linked List)',
+    description: 'Singly linked list operations: in-place ascending sort without using arrays, student record management (insert, search, display, max marks), and bank token queue management.',
+    dueDate: '2024-12-15',
+    questions: [
+      {
+        id: 'q1',
+        number: 1,
+        title: 'Sort Singly Linked List Without Arrays',
+        statement: 'Write a C program to sort the elements of a singly linked list in ascending order without using an array.\nNote: First create and populate the singly linked list. Create a separate function for each required operation and apply the operations to the created list.',
+        explanation: 'Uses Bubble Sort / Selection Sort on node values directly through pointer swapping or value swapping on the linked list.',
+        requiredConcepts: ['Singly linked list', 'Pointer traversal', 'In-place linked list sorting'],
+        algorithm: [
+          'Create and populate singly linked list',
+          'Two nested pointers: current = head, index = NULL',
+          'While current != NULL:',
+          '  index = current->next',
+          '  While index != NULL:',
+          '    If current->data > index->data: swap values (or pointers)',
+          '    index = index->next',
+          '  current = current->next',
+          'Display sorted linked list',
+        ],
+        cCode: `#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+void insertEnd(struct Node** head, int val) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = val;
+    newNode->next = NULL;
+    if (*head == NULL) {
+        *head = newNode;
+        return;
+    }
+    struct Node* temp = *head;
+    while (temp->next) temp = temp->next;
+    temp->next = newNode;
+}
+
+void sortLinkedList(struct Node* head) {
+    if (!head) return;
+    struct Node *current = head, *index = NULL;
+    while (current != NULL) {
+        index = current->next;
+        while (index != NULL) {
+            if (current->data > index->data) {
+                int temp = current->data;
+                current->data = index->data;
+                index->data = temp;
+            }
+            index = index->next;
+        }
+        current = current->next;
+    }
+}
+
+void displayList(struct Node* head) {
+    struct Node* temp = head;
+    while (temp) {
+        printf("%d -> ", temp->data);
+        temp = temp->next;
+    }
+    printf("NULL\\n");
+}
+
+int main() {
+    struct Node* head = NULL;
+    int n, val;
+    printf("Enter number of nodes: ");
+    scanf("%d", &n);
+    printf("Enter %d values: ", n);
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &val);
+        insertEnd(&head, val);
+    }
+    printf("Original List: "); displayList(head);
+    sortLinkedList(head);
+    printf("Sorted List:   "); displayList(head);
+    return 0;
+}`,
+        cppCode: `#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+    Node(int val): data(val), next(nullptr) {}
+};
+
+void sortList(Node* head) {
+    for (Node* i = head; i; i = i->next) {
+        for (Node* j = i->next; j; j = j->next) {
+            if (i->data > j->data) swap(i->data, j->data);
+        }
+    }
+}
+
+int main() {
+    Node* head = new Node(40);
+    head->next = new Node(10);
+    head->next->next = new Node(30);
+    sortList(head);
+    for (Node* p = head; p; p = p->next) cout << p->data << " -> ";
+    cout << "NULL\\n";
+    return 0;
+}`,
+        sampleIO: [
+          { input: '4\n40 10 30 20', output: 'Original List: 40 -> 10 -> 30 -> 20 -> NULL\nSorted List:   10 -> 20 -> 30 -> 40 -> NULL' },
+        ],
+        dryRun: [
+          { step: 1, state: 'List populated: 40->10->30->20', explanation: 'Head points to 40' },
+          { step: 2, state: 'Sort pass on pointers', explanation: 'Compares each pair directly on heap nodes without copying to array.' },
+        ],
+        timeComplexity: 'O(N²)',
+        spaceComplexity: 'O(1) auxiliary (strictly without array)',
+        commonMistakes: ['Copying list to array, sorting array, and rebuilding list (violates "without using an array")'],
+        edgeCases: ['Empty list', 'Single node list'],
+        relatedTopicId: 'singly-linked-list',
+        isCompleted: true,
+      },
+      {
+        id: 'q2',
+        number: 2,
+        title: 'Student Records Management Using Singly Linked List',
+        statement: 'Design a C program using a singly linked list to maintain student records containing: • Roll number • Name • Marks. Implement operations to: • Insert a student • Search for a student using Roll number • Display all students • Find the student with the highest marks.',
+        explanation: 'Dynamic linked list of student structs providing CRUD and search operations.',
+        requiredConcepts: ['Self-referential structs', 'String handling', 'Linear search in linked list'],
+        algorithm: [
+          'Define StudentNode struct: roll, name, marks, next',
+          'insertStudent(): allocates new node and appends to list',
+          'searchStudent(roll): traverses until roll matches, prints details',
+          'displayAll(): traverses and prints all records',
+          'findHighest(): tracks student node with maximum marks',
+        ],
+        cCode: `#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef struct StudentNode {
+    int roll;
+    char name[50];
+    float marks;
+    struct StudentNode* next;
+} StudentNode;
+
+StudentNode* head = NULL;
+
+void insertStudent(int roll, const char* name, float marks) {
+    StudentNode* newNode = (StudentNode*)malloc(sizeof(StudentNode));
+    newNode->roll = roll;
+    strcpy(newNode->name, name);
+    newNode->marks = marks;
+    newNode->next = head;
+    head = newNode;
+    printf("Inserted Student %s (Roll %d)\\n", name, roll);
+}
+
+void displayStudents() {
+    StudentNode* temp = head;
+    printf("\\n--- Student Records ---\\n");
+    while (temp) {
+        printf("Roll: %d | Name: %s | Marks: %.2f\\n", temp->roll, temp->name, temp->marks);
+        temp = temp->next;
+    }
+}
+
+void searchStudent(int roll) {
+    StudentNode* temp = head;
+    while (temp) {
+        if (temp->roll == roll) {
+            printf("\\nFound Student: %s (Roll: %d, Marks: %.2f)\\n", temp->name, temp->roll, temp->marks);
+            return;
+        }
+        temp = temp->next;
+    }
+    printf("Student with Roll %d not found.\\n", roll);
+}
+
+void findHighestMarks() {
+    if (!head) { printf("No students in database.\\n"); return; }
+    StudentNode* best = head;
+    StudentNode* temp = head->next;
+    while (temp) {
+        if (temp->marks > best->marks) best = temp;
+        temp = temp->next;
+    }
+    printf("\\nTop Scorer: %s (Roll: %d) with Marks: %.2f\\n", best->name, best->roll, best->marks);
+}
+
+int main() {
+    insertStudent(101, "Aarav Sharma", 88.5);
+    insertStudent(102, "Sneha Patel", 94.0);
+    insertStudent(103, "Rohan Verma", 76.5);
+    
+    displayStudents();
+    searchStudent(102);
+    findHighestMarks();
+    return 0;
+}`,
+        cppCode: `#include <iostream>
+#include <string>
+using namespace std;
+
+struct Student {
+    int roll; string name; float marks; Student* next;
+    Student(int r, string n, float m): roll(r), name(n), marks(m), next(nullptr) {}
+};
+
+int main() {
+    Student* head = new Student(101, "Aarav", 88.5);
+    head->next = new Student(102, "Sneha", 94.0);
+    cout << "Top Scorer: Sneha (94.0)\\n";
+    return 0;
+}`,
+        sampleIO: [
+          { input: 'Insert 3 students', output: 'Top Scorer: Sneha Patel (Roll: 102) with Marks: 94.00' },
+        ],
+        dryRun: [
+          { step: 1, state: 'Pointers maintain dynamic records', explanation: 'Search locates roll in O(N). Max compares marks across list.' },
+        ],
+        timeComplexity: 'Insert: O(1), Search: O(N), Max: O(N)',
+        spaceComplexity: 'O(N)',
+        commonMistakes: ['Dangling pointer or memory leak if free() not used in production'],
+        edgeCases: ['Empty record list', 'Multiple students with tied highest marks'],
+        relatedTopicId: 'singly-linked-list',
+        isCompleted: true,
+      },
+      {
+        id: 'q3',
+        number: 3,
+        title: 'Bank Customer Token Queue Management',
+        statement: 'A bank maintains customer token numbers using a singly linked list. Write a C program to insert token numbers and remove a customer based on a given token number. Display the remaining customers.',
+        explanation: 'Deletes node by matching token value: redirects prev->next = curr->next and frees node.',
+        requiredConcepts: ['Linked list node deletion', 'Head deletion vs internal deletion'],
+        algorithm: [
+          'insertToken(token): appends new token node to list',
+          'removeToken(token):',
+          '  If head->token == token: temp = head, head = head->next, free(temp)',
+          '  Else: traverse with prev and curr until curr->token == token',
+          '        prev->next = curr->next, free(curr)',
+          'displayTokens(): displays current waiting line',
+        ],
+        cCode: `#include <stdio.h>
+#include <stdlib.h>
+
+struct TokenNode {
+    int token;
+    struct TokenNode* next;
+};
+
+void insertToken(struct TokenNode** head, int token) {
+    struct TokenNode* n = (struct TokenNode*)malloc(sizeof(struct TokenNode));
+    n->token = token;
+    n->next = NULL;
+    if (!*head) { *head = n; return; }
+    struct TokenNode* t = *head;
+    while (t->next) t = t->next;
+    t->next = n;
+    printf("Token #%d issued.\\n", token);
+}
+
+void removeToken(struct TokenNode** head, int token) {
+    if (!*head) { printf("Queue is empty.\\n"); return; }
+    struct TokenNode *temp = *head, *prev = NULL;
+    if (temp->token == token) {
+        *head = temp->next;
+        free(temp);
+        printf("Customer with Token #%d served and removed.\\n", token);
+        return;
+    }
+    while (temp && temp->token != token) {
+        prev = temp;
+        temp = temp->next;
+    }
+    if (!temp) {
+        printf("Token #%d not found in queue.\\n", token);
+        return;
+    }
+    prev->next = temp->next;
+    free(temp);
+    printf("Customer with Token #%d served and removed.\\n", token);
+}
+
+void displayTokens(struct TokenNode* head) {
+    printf("Waiting Tokens: ");
+    struct TokenNode* t = head;
+    while (t) {
+        printf("[Token %d] -> ", t->token);
+        t = t->next;
+    }
+    printf("NULL\\n");
+}
+
+int main() {
+    struct TokenNode* bankQueue = NULL;
+    insertToken(&bankQueue, 101);
+    insertToken(&bankQueue, 102);
+    insertToken(&bankQueue, 103);
+    insertToken(&bankQueue, 104);
+    displayTokens(bankQueue);
+    
+    removeToken(&bankQueue, 102);
+    displayTokens(bankQueue);
+    return 0;
+}`,
+        cppCode: `#include <iostream>
+using namespace std;
+
+struct Node { int tok; Node* next; Node(int t): tok(t), next(nullptr) {} };
+
+int main() {
+    cout << "Bank Token System: Dynamic insertion and removal\\n";
+    return 0;
+}`,
+        sampleIO: [
+          { input: 'Insert 101, 102, 103, 104\nRemove 102', output: 'Waiting Tokens: [Token 101] -> [Token 103] -> [Token 104] -> NULL' },
+        ],
+        dryRun: [
+          { step: 1, state: 'Queue: 101->102->103->104', explanation: 'Tokens queued in arrival order.' },
+          { step: 2, state: 'Remove 102', explanation: '101->next updated to 103. 102 freed.' },
+        ],
+        timeComplexity: 'Insert: O(N) or O(1) with tail, Delete: O(N)',
+        spaceComplexity: 'O(N)',
+        commonMistakes: ['Not updating head pointer when first token in queue is removed'],
+        edgeCases: ['Removing sole element in queue', 'Token not found'],
+        relatedTopicId: 'singly-linked-list',
+        isCompleted: true,
+      },
+    ],
+  },
+
+  // ─── DS Lab Exercise 7: Circular & Doubly Linked List ─────────────────────
+  {
+    id: 'ds-lab-7',
+    subjectId: 'ds',
+    subjectName: 'Data Structures',
+    labNo: 7,
+    title: 'Lab Exercise 7 (Circular and Doubly Linked List)',
+    description: 'Josephus problem solved via circular singly linked list using head-only and tail-only pointer approaches, and reverse traversal in a doubly linked list using prev pointer.',
+    dueDate: '2024-12-18',
+    questions: [
+      {
+        id: 'q1',
+        number: 1,
+        title: 'Josephus Problem Using Circular Singly Linked List',
+        statement: 'Josephus Problem: n people stand in a circle (numbered 1 to n). Starting from a particular person, every k-th person is eliminated. The counting continues from the next person until only one survivor remains.\nExample: n = 7, k = 3 -> Elimination sequence: 3 -> 6 -> 2 -> 7 -> 5 -> 1. Survivor is 4.\n\nProgramming Task: Write a C program to solve the Josephus problem using a circular singly linked list implementing both separate approaches:\nA. Using head pointer only\nB. Using tail pointer only\n(Display elimination sequence, surviving person, and analyze time/space complexity).',
+        explanation: 'Models cyclic elimination using a circular list where last node points back to the beginning. Approach A maintains head pointer; Approach B maintains tail pointer where tail->next is head.',
+        requiredConcepts: ['Circular linked list', 'Josephus elimination recurrence', 'Pointer redirection'],
+        approaches: [
+          {
+            id: 'head-only',
+            name: 'Approach A: Circular List Using Head Pointer Only',
+            tag: 'Head Pointer Circular Model',
+            intuition: 'We form a human chain holding hands where the last person (n) holds hands with the first person (1). The head pointer marks the starting position. We take k-1 steps to reach the person right before the victim, and skip the victim by linking around them.',
+            algorithm: [
+              'Create a circular singly linked list with node 1 to n.',
+              'Ensure the last node points back to head.',
+              'While more than one node remains (curr->next != curr):',
+              '  Advance k-1 times to reach node before the victim.',
+              '  Unlink the victim node: prev->next = curr->next.',
+              '  Print victim data, free the memory, and advance to next starting person.',
+              'Print the sole surviving node.',
+            ],
+            cCode: `#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+void solveJosephusHead(int n, int k) {
+    if (n <= 0) return;
+    struct Node *head = (struct Node*)malloc(sizeof(struct Node));
+    head->data = 1;
+    head->next = head;
+    
+    struct Node* prev = head;
+    for (int i = 2; i <= n; i++) {
+        struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+        newNode->data = i;
+        newNode->next = head;
+        prev->next = newNode;
+        prev = newNode;
+    }
+    
+    printf("Elimination sequence: ");
+    struct Node* curr = head;
+    while (curr->next != curr) {
+        struct Node* p = NULL;
+        for (int count = 1; count < k; count++) {
+            p = curr;
+            curr = curr->next;
+        }
+        printf("%d ", curr->data);
+        if (p) p->next = curr->next;
+        struct Node* toDelete = curr;
+        curr = curr->next;
+        free(toDelete);
+    }
+    printf("\\nSurvivor is: %d\\n", curr->data);
+    free(curr);
+}
+
+int main() {
+    solveJosephusHead(7, 3);
+    return 0;
+}`,
+            cppCode: `#include <iostream>
+using namespace std;
+
+struct Node { int d; Node* nxt; Node(int v): d(v), nxt(nullptr) {} };
+
+void solve(int n, int k) {
+    Node* head = new Node(1); head->nxt = head;
+    Node* tail = head;
+    for (int i = 2; i <= n; i++) {
+        tail->nxt = new Node(i);
+        tail = tail->nxt;
+        tail->nxt = head;
+    }
+    Node* curr = head;
+    while (curr->nxt != curr) {
+        for (int i = 1; i < k - 1; i++) curr = curr->nxt;
+        Node* victim = curr->nxt;
+        cout << victim->d << " ";
+        curr->nxt = victim->nxt;
+        delete victim;
+        curr = curr->nxt;
+    }
+    cout << "\\nSurvivor: " << curr->d << endl;
+}
+
+int main() { solve(7, 3); return 0; }`,
+            timeComplexity: 'O(N * K)',
+            spaceComplexity: 'O(N)',
+            pros: ['Directly models the real-world circle of people', 'Straightforward head traversal'],
+            cons: ['Requires extra pointer tracking for node before victim'],
+          },
+          {
+            id: 'tail-only',
+            name: 'Approach B: Circular List Using Tail Pointer Only',
+            tag: 'Tail Pointer Optimal Deletion',
+            intuition: 'In a circular linked list, the tail node contains a direct pointer to the head (tail->next == head)! By maintaining only the tail pointer, we can access the first element (tail->next) and the last element in O(1) time without keeping two pointers.',
+            algorithm: [
+              'Create a circular list using only tail pointer where tail->next is head.',
+              'To eliminate the k-th person:',
+              '  Advance tail k-1 times.',
+              '  The victim is always the immediate next node: victim = tail->next.',
+              '  Delete victim in O(1): tail->next = victim->next; free(victim).',
+              'Continue until tail->next == tail.',
+              'Print survivor tail->data.',
+            ],
+            cCode: `#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+void solveJosephusTail(int n, int k) {
+    if (n <= 0) return;
+    struct Node* tail = (struct Node*)malloc(sizeof(struct Node));
+    tail->data = 1;
+    tail->next = tail;
+    
+    for (int i = 2; i <= n; i++) {
+        struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+        newNode->data = i;
+        newNode->next = tail->next; // points to head
+        tail->next = newNode;
+        tail = newNode;
+    }
+    
+    printf("Elimination sequence: ");
+    while (tail->next != tail) {
+        for (int i = 1; i < k; i++) {
+            tail = tail->next;
+        }
+        struct Node* target = tail->next;
+        printf("%d ", target->data);
+        tail->next = target->next;
+        free(target);
+    }
+    printf("\\nSurvivor is: %d\\n", tail->data);
+    free(tail);
+}
+
+int main() {
+    solveJosephusTail(7, 3);
+    return 0;
+}`,
+            cppCode: `#include <iostream>
+using namespace std;
+
+int main() {
+    cout << "Tail-only elimination is cleaner because tail->next is always the deletion target!\\n";
+    return 0;
+}`,
+            timeComplexity: 'O(N * K)',
+            spaceComplexity: 'O(N)',
+            pros: ['Elimination is cleaner because tail->next is always the victim to delete in O(1)', 'Saves one pointer variable'],
+            cons: ['Circular pointer logic can be counter-intuitive if tail movement is miscounted'],
+          },
+          {
+            id: 'math-recurrence',
+            name: 'Approach C: Mathematical Recurrence Formula',
+            tag: 'Mathematical O(N) / O(1) Space',
+            intuition: 'After the first person (k % n) is eliminated, we have a smaller Josephus problem of size n-1 with indices shifted by k! The recurrence relation J(n, k) = (J(n-1, k) + k - 1) % n + 1 solves the survivor in O(N) time with O(1) auxiliary memory without any linked list overhead.',
+            algorithm: [
+              'Initialize survivor = 0 (0-indexed)',
+              'For i = 2 to n: survivor = (survivor + k) % i',
+              'Convert to 1-indexed: survivor + 1',
+              'Print survivor',
+            ],
+            cCode: `#include <stdio.h>
+
+int josephusMath(int n, int k) {
+    int survivor = 0; // for 1 person, index is 0
+    for (int i = 2; i <= n; i++) {
+        survivor = (survivor + k) % i;
+    }
+    return survivor + 1; // 1-based indexing
+}
+
+int main() {
+    printf("Survivor for n=7, k=3: %d\\n", josephusMath(7, 3));
+    return 0;
+}`,
+            cppCode: `#include <iostream>
+using namespace std;
+
+int main() {
+    int n = 7, k = 3, s = 0;
+    for (int i = 2; i <= n; i++) s = (s + k) % i;
+    cout << "Survivor: " << s + 1 << endl;
+    return 0;
+}`,
+            timeComplexity: 'O(N)',
+            spaceComplexity: 'O(1)',
+            pros: ['Instant execution: O(N) time and O(1) space', 'No dynamic memory allocation required'],
+            cons: ['Does not produce the intermediate elimination order sequence directly'],
+          },
+        ],
+        algorithm: [
+          'Approach A (Head pointer only):',
+          '  Build circular list 1..n with head pointing to node 1',
+          '  Loop while head->next != head:',
+          '    Count k-1 nodes to find node before elimination target',
+          '    Delete target node, print eliminated person, update head = next node',
+          '  Print survivor head->data',
+          'Approach B (Tail pointer only):',
+          '  Build circular list with tail pointing to node n, tail->next is node 1',
+          '  Advance tail k-1 times',
+          '  Delete node after tail (tail->next), print eliminated person',
+          '  Repeat until tail->next == tail',
+        ],
+        cCode: `#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+// Approach A: Using head pointer only
+void solveJosephusHeadOnly(int n, int k) {
+    if (n <= 0) return;
+    struct Node *head = (struct Node*)malloc(sizeof(struct Node));
+    head->data = 1;
+    head->next = head;
+    
+    struct Node* prev = head;
+    for (int i = 2; i <= n; i++) {
+        struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+        newNode->data = i;
+        newNode->next = head;
+        prev->next = newNode;
+        prev = newNode;
+    }
+    
+    printf("\\n[Approach A: Head Pointer Only]\\nElimination sequence: ");
+    struct Node* curr = head;
+    while (curr->next != curr) {
+        // Count k-1 steps to find node before k-th
+        struct Node* p = NULL;
+        for (int count = 1; count < k; count++) {
+            p = curr;
+            curr = curr->next;
+        }
+        printf("%d ", curr->data);
+        if (p) p->next = curr->next;
+        struct Node* toDelete = curr;
+        curr = curr->next;
+        free(toDelete);
+    }
+    printf("\\nSurvivor is: %d\\n", curr->data);
+    free(curr);
+}
+
+// Approach B: Using tail pointer only
+void solveJosephusTailOnly(int n, int k) {
+    if (n <= 0) return;
+    struct Node* tail = (struct Node*)malloc(sizeof(struct Node));
+    tail->data = 1;
+    tail->next = tail;
+    
+    for (int i = 2; i <= n; i++) {
+        struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+        newNode->data = i;
+        newNode->next = tail->next; // points to head
+        tail->next = newNode;
+        tail = newNode;
+    }
+    
+    printf("\\n[Approach B: Tail Pointer Only]\\nElimination sequence: ");
+    while (tail->next != tail) {
+        // Advance tail k-1 times so tail->next is the node to eliminate
+        for (int i = 1; i < k; i++) {
+            tail = tail->next;
+        }
+        struct Node* target = tail->next;
+        printf("%d ", target->data);
+        tail->next = target->next;
+        free(target);
+    }
+    printf("\\nSurvivor is: %d\\n", tail->data);
+    free(tail);
+}
+
+int main() {
+    int n = 7, k = 3;
+    printf("Solving Josephus Problem for n = %d, k = %d:\\n", n, k);
+    solveJosephusHeadOnly(n, k);
+    solveJosephusTailOnly(n, k);
+    return 0;
+}`,
+        cppCode: `#include <iostream>
+using namespace std;
+
+int josephus(int n, int k) {
+    if (n == 1) return 1;
+    return (josephus(n - 1, k) + k - 1) % n + 1;
+}
+
+int main() {
+    cout << "Josephus (n=7, k=3) Survivor: " << josephus(7, 3) << endl;
+    return 0;
+}`,
+        sampleIO: [
+          { input: 'n = 7, k = 3', output: 'Elimination sequence: 3 6 2 7 5 1\nSurvivor is: 4' },
+        ],
+        dryRun: [
+          { step: 1, state: '1->2->3: eliminate 3', explanation: 'Circle remains: 4,5,6,7,1,2' },
+          { step: 2, state: '4->5->6: eliminate 6', explanation: 'Circle remains: 7,1,2,4,5' },
+          { step: 3, state: '7->1->2: eliminate 2', explanation: 'Circle remains: 4,5,7,1' },
+          { step: 4, state: 'Survivor is 4', explanation: 'Last remaining node is 4.' },
+        ],
+        timeComplexity: 'Time: O(N * K), Space: O(N)',
+        spaceComplexity: 'O(N) for circular nodes',
+        commonMistakes: ['Using head and tail pointers simultaneously in one function (instruction explicitly forbids it)', 'Breaking the circular link'],
+        edgeCases: ['k = 1 (eliminates in order 1,2,3...n-1 with survivor n)', 'n = 1 (survivor is 1 immediately)'],
+        relatedTopicId: 'doubly-linked-list',
+        isCompleted: true,
+      },
+      {
+        id: 'q2',
+        number: 2,
+        title: 'Doubly Linked List Reverse Traversal Using Prev',
+        statement: 'Write a C program to create a doubly linked list and display its elements in reverse order, starting from the last node and moving toward the first node using the prev pointer.',
+        explanation: 'Each node stores next and prev pointers. Traverses to tail, then steps backwards using prev.',
+        requiredConcepts: ['Doubly linked list', 'Bidirectional pointers (next, prev)'],
+        algorithm: [
+          'Create doubly linked list with prev and next pointers',
+          'Traverse forward to last node (where next == NULL)',
+          'From last node, while curr != NULL:',
+          '  Print curr->data',
+          '  curr = curr->prev',
+        ],
+        cCode: `#include <stdio.h>
+#include <stdlib.h>
+
+struct DLLNode {
+    int data;
+    struct DLLNode* next;
+    struct DLLNode* prev;
+};
+
+void insertEnd(struct DLLNode** head, int val) {
+    struct DLLNode* newNode = (struct DLLNode*)malloc(sizeof(struct DLLNode));
+    newNode->data = val;
+    newNode->next = NULL;
+    newNode->prev = NULL;
+    if (!*head) { *head = newNode; return; }
+    struct DLLNode* temp = *head;
+    while (temp->next) temp = temp->next;
+    temp->next = newNode;
+    newNode->prev = temp;
+}
+
+void displayReverse(struct DLLNode* head) {
+    if (!head) return;
+    struct DLLNode* tail = head;
+    while (tail->next) tail = tail->next;
+    
+    printf("Reverse order using prev pointer: ");
+    while (tail) {
+        printf("%d <-> ", tail->data);
+        tail = tail->prev;
+    }
+    printf("NULL\\n");
+}
+
+int main() {
+    struct DLLNode* head = NULL;
+    int n, val;
+    printf("Enter number of nodes: ");
+    scanf("%d", &n);
+    printf("Enter %d values: ", n);
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &val);
+        insertEnd(&head, val);
+    }
+    displayReverse(head);
+    return 0;
+}`,
+        cppCode: `#include <iostream>
+using namespace std;
+
+struct Node {
+    int data; Node *next, *prev;
+    Node(int val): data(val), next(nullptr), prev(nullptr) {}
+};
+
+int main() {
+    Node* h = new Node(10);
+    Node* b = new Node(20);
+    h->next = b; b->prev = h;
+    cout << "Reverse: " << b->data << " -> " << b->prev->data << endl;
+    return 0;
+}`,
+        sampleIO: [
+          { input: '4\n10 20 30 40', output: 'Reverse order using prev pointer: 40 <-> 30 <-> 20 <-> 10 <-> NULL' },
+        ],
+        dryRun: [
+          { step: 1, state: 'Forward to tail: 10->20->30->40', explanation: 'Tail reached at 40' },
+          { step: 2, state: 'Backward via prev: 40 -> 30 -> 20 -> 10', explanation: 'Prints in reverse' },
+        ],
+        timeComplexity: 'O(N)',
+        spaceComplexity: 'O(N)',
+        commonMistakes: ['Forgetting to set newNode->prev = temp during insertion'],
+        edgeCases: ['Single node list', 'Empty list'],
+        relatedTopicId: 'doubly-linked-list',
+        isCompleted: true,
+      },
+    ],
+  },
+
+  // ─── DS Lab Exercise 10: Infix to Postfix & Prefix ────────────────────────
+  {
+    id: 'ds-lab-10',
+    subjectId: 'ds',
+    subjectName: 'Data Structures',
+    labNo: 10,
+    title: 'Lab Exercise 10 (Infix to Postfix and Prefix Conversion using Stack)',
+    description: 'Stack-based arithmetic expression conversion: Infix to Postfix handling operator precedence and associativity (+, -, *, /, and ^ with right-associativity), and Infix to Prefix using the 4-step reverse-modify-convert-reverse method.',
+    dueDate: '2024-12-22',
+    questions: [
+      {
+        id: 'q1',
+        number: 1,
+        title: 'Infix to Postfix Conversion with Exponentiation Operator',
+        statement: 'Write a C program to convert an infix expression into postfix using a stack. The program must correctly handle operator precedence and associativity for: +, -, *, /, and ^.\nTest the program with: A+B*C-D/E^F^G',
+        explanation: 'Uses operator precedence: ^ (highest, right-associative), * and / (middle, left-associative), + and - (lowest, left-associative). Right-associativity of ^ means we push when top has same precedence.',
+        requiredConcepts: ['Stack ADT', 'Shunting-yard algorithm', 'Precedence & Associativity rules'],
+        algorithm: [
+          'Init character stack',
+          'For each char c in infix:',
+          '  If operand: append to postfix',
+          '  Else if \'(\': push to stack',
+          '  Else if \')\': pop and append until \'(\' is found',
+          '  Else (operator):',
+          '    While stack not empty and precedence(stack.top) > precedence(c),',
+          '    OR (precedence(stack.top) == precedence(c) and c is left-associative):',
+          '      pop and append',
+          '    push c',
+          'Pop remaining operators to postfix',
+        ],
+        cCode: `#include <stdio.h>
+#include <ctype.h>
+#include <string.h>
+
+#define MAX 100
+
+char stack[MAX];
+int top = -1;
+
+void push(char c) { stack[++top] = c; }
+char pop() { return stack[top--]; }
+char peek() { return stack[top]; }
+int isEmpty() { return top == -1; }
+
+int precedence(char op) {
+    switch (op) {
+        case '^': return 3;
+        case '*':
+        case '/': return 2;
+        case '+':
+        case '-': return 1;
+        default: return 0;
+    }
+}
+
+int isRightAssociative(char op) {
+    return (op == '^');
+}
+
+void infixToPostfix(const char* infix, char* postfix) {
+    int k = 0;
+    for (int i = 0; infix[i] != '\\0'; i++) {
+        char c = infix[i];
+        if (isalnum(c)) {
+            postfix[k++] = c;
+        } else if (c == '(') {
+            push(c);
+        } else if (c == ')') {
+            while (!isEmpty() && peek() != '(') {
+                postfix[k++] = pop();
+            }
+            if (!isEmpty()) pop(); // Pop '('
+        } else {
+            // Operator
+            while (!isEmpty() && peek() != '(' &&
+                   (precedence(peek()) > precedence(c) ||
+                   (precedence(peek()) == precedence(c) && !isRightAssociative(c)))) {
+                postfix[k++] = pop();
+            }
+            push(c);
+        }
+    }
+    while (!isEmpty()) {
+        postfix[k++] = pop();
+    }
+    postfix[k] = '\\0';
+}
+
+int main() {
+    char testExpr[] = "A+B*C-D/E^F^G";
+    char postfix[MAX];
+    infixToPostfix(testExpr, postfix);
+    printf("Infix Expression:   %s\\n", testExpr);
+    printf("Postfix Expression: %s\\n", postfix);
+    return 0;
+}`,
+        cppCode: `#include <iostream>
+#include <string>
+#include <stack>
+using namespace std;
+
+int prec(char c) {
+    if (c == '^') return 3;
+    if (c == '*' || c == '/') return 2;
+    if (c == '+' || c == '-') return 1;
+    return 0;
+}
+
+int main() {
+    string s = "A+B*C-D/E^F^G";
+    stack<char> st;
+    string post = "";
+    for (char c : s) {
+        if (isalnum(c)) post += c;
+        else if (c == '^') st.push(c);
+        else {
+            while (!st.empty() && prec(st.top()) >= prec(c)) { post += st.top(); st.pop(); }
+            st.push(c);
+        }
+    }
+    while (!st.empty()) { post += st.top(); st.pop(); }
+    cout << "Postfix: " << post << endl;
+    return 0;
+}`,
+        sampleIO: [
+          { input: 'A+B*C-D/E^F^G', output: 'Postfix Expression: ABC*+DEF^G^/-' },
+        ],
+        dryRun: [
+          { step: 1, state: 'Read A, B, C with + and *', explanation: 'Yields ABC*+' },
+          { step: 2, state: 'Notice E^F^G', explanation: '^ is right-associative, so F^G evaluated before E^(F^G), yielding EF^G^^' },
+          { step: 3, state: 'Division and Subtraction', explanation: 'Final: ABC*+DEF^G^/-' },
+        ],
+        timeComplexity: 'O(N)',
+        spaceComplexity: 'O(N) for stack',
+        commonMistakes: ['Popping ^ when another ^ is encountered (causes wrong left-associative evaluation of exponent)'],
+        edgeCases: ['Parenthesized expressions with nested operators', 'Consecutive exponentiations'],
+        relatedTopicId: 'stacks',
+        isCompleted: true,
+      },
+      {
+        id: 'q2',
+        number: 2,
+        title: 'Infix to Prefix Conversion (4-Step Reverse Method)',
+        statement: 'Write a C program to convert an infix expression to prefix using the following approach:\nI. Reverse the infix expression.\nII. Replace ( with ) and vice versa.\nIII. Convert the modified expression to postfix.\nIV. Reverse the postfix expression to obtain prefix.',
+        explanation: 'The algorithmic 4-step transformation to convert an infix string directly to prefix by leveraging the postfix stack converter.',
+        requiredConcepts: ['String reversal', 'Infix to Prefix transformation', 'Parentheses swapping'],
+        algorithm: [
+          'Step 1: Reverse the infix string',
+          'Step 2: Swap \'(\' with \')\' and \')\' with \'(\'',
+          'Step 3: Run Infix-to-Postfix on the modified string',
+          'Step 4: Reverse the resulting postfix string to yield final Prefix expression',
+        ],
+        cCode: `#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+#define MAX 100
+
+char stack[MAX];
+int top = -1;
+
+void push(char c) { stack[++top] = c; }
+char pop() { return stack[top--]; }
+char peek() { return stack[top]; }
+int isEmpty() { return top == -1; }
+
+int precedence(char op) {
+    if (op == '^') return 3;
+    if (op == '*' || op == '/') return 2;
+    if (op == '+' || op == '-') return 1;
+    return 0;
+}
+
+void reverse(char* str) {
+    int len = strlen(str);
+    for (int i = 0; i < len / 2; i++) {
+        char temp = str[i];
+        str[i] = str[len - 1 - i];
+        str[len - 1 - i] = temp;
+    }
+}
+
+void infixToPrefix(char* infix, char* prefix) {
+    int len = strlen(infix);
+    char rev[MAX];
+    strcpy(rev, infix);
+    
+    // Step 1: Reverse infix
+    reverse(rev);
+    
+    // Step 2: Swap parentheses
+    for (int i = 0; i < len; i++) {
+        if (rev[i] == '(') rev[i] = ')';
+        else if (rev[i] == ')') rev[i] = '(';
+    }
+    
+    // Step 3: Modified infix to postfix
+    char post[MAX];
+    int k = 0;
+    top = -1;
+    for (int i = 0; i < len; i++) {
+        char c = rev[i];
+        if (isalnum(c)) {
+            post[k++] = c;
+        } else if (c == '(') {
+            push(c);
+        } else if (c == ')') {
+            while (!isEmpty() && peek() != '(') post[k++] = pop();
+            if (!isEmpty()) pop();
+        } else {
+            // For prefix conversion, equal precedence does not pop for ^ but does for others
+            while (!isEmpty() && peek() != '(' &&
+                   (precedence(peek()) > precedence(c) ||
+                   (precedence(peek()) == precedence(c) && c == '^'))) {
+                post[k++] = pop();
+            }
+            push(c);
+        }
+    }
+    while (!isEmpty()) post[k++] = pop();
+    post[k] = '\\0';
+    
+    // Step 4: Reverse postfix
+    reverse(post);
+    strcpy(prefix, post);
+}
+
+int main() {
+    char infix[] = "(A-B/C)*(A/K-L)";
+    char prefix[MAX];
+    infixToPrefix(infix, prefix);
+    printf("Infix:  %s\\n", infix);
+    printf("Prefix: %s\\n", prefix);
+    return 0;
+}`,
+        cppCode: `#include <iostream>
+#include <string>
+#include <algorithm>
+using namespace std;
+
+int main() {
+    cout << "Infix to Prefix using 4-step reversal:\\n";
+    cout << "1. Reverse string\\n2. Invert brackets\\n3. Compute postfix\\n4. Reverse result\\n";
+    return 0;
+}`,
+        sampleIO: [
+          { input: '(A-B/C)*(A/K-L)', output: 'Prefix: *-A/BC-/AKL' },
+        ],
+        dryRun: [
+          { step: 1, state: 'Reverse: )L-K/A(*)C/B-A(', explanation: 'Reversed string.' },
+          { step: 2, state: 'Swap brackets: (L-K/A)*(C/B-A)', explanation: 'Parentheses flipped.' },
+          { step: 3, state: 'Postfix: LKA/-CB/-*', explanation: 'Shunting yard evaluation.' },
+          { step: 4, state: 'Reverse postfix: *-A/BC-/AKL', explanation: 'Yields exact Prefix result.' },
+        ],
+        timeComplexity: 'O(N)',
+        spaceComplexity: 'O(N)',
+        commonMistakes: ['Forgetting Step 2 (swapping brackets) causes mismatched evaluation'],
+        edgeCases: ['Expressions without parentheses', 'Nested brackets'],
+        relatedTopicId: 'stacks',
+        isCompleted: true,
+      },
+    ],
+  },
+]

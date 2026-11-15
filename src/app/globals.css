@@ -1,0 +1,175 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+@layer base {
+  :root {
+    /* Urban Nocturne — Light Mode: Refined Frosted Silver & Slate */
+    --background: 0 0% 96%;              /* #F5F5F5 Clean Silver/Off-White */
+    --foreground: 0 0% 8%;               /* #141414 Deep Charcoal (High Contrast) */
+    --card: 0 0% 100%;                  /* Liquid Glass card base */
+    --card-foreground: 0 0% 8%;         /* #141414 */
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 8%;
+    --primary: 62 100% 45%;             /* #E2E800 Electric Chartreuse */
+    --primary-foreground: 0 0% 8%;      /* #141414 Dark ink on lime */
+    --secondary: 0 0% 92%;              /* #EAEAEA */
+    --secondary-foreground: 0 0% 8%;
+    --muted: 0 0% 91%;                  /* #E8E8E8 */
+    --muted-foreground: 0 0% 42%;       /* #6B6B6B Clear readable gray */
+    --accent: 62 100% 45%;              /* #E2E800 */
+    --accent-foreground: 0 0% 8%;
+    --destructive: 0 84% 50%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 86%;                 /* #DCDCDC Crisp edge */
+    --input: 0 0% 86%;
+    --ring: 62 100% 45%;
+    --radius: 1rem;
+  }
+
+  .dark {
+    /* Urban Nocturne — Dark Mode: Deep Charcoal, Slate, Silver & Electric Chartreuse */
+    --background: 0 0% 8%;              /* #141414 Deep Charcoal */
+    --foreground: 0 0% 84%;             /* #D6D6D6 Light Silver / Pale Gray */
+    --card: 0 0% 10%;                  /* #1A1A1A Base */
+    --card-foreground: 0 0% 84%;        /* #D6D6D6 */
+    --popover: 0 0% 11%;                /* #1C1C1C */
+    --popover-foreground: 0 0% 84%;
+    --primary: 62 100% 45%;             /* #E2E800 Electric Chartreuse */
+    --primary-foreground: 0 0% 8%;      /* #141414 Deep Charcoal */
+    --secondary: 0 0% 15%;              /* #262626 Dark Slate Gray */
+    --secondary-foreground: 0 0% 84%;
+    --muted: 0 0% 14%;                  /* #242424 */
+    --muted-foreground: 0 0% 59%;       /* #979797 Medium Neutral Gray */
+    --accent: 62 100% 45%;              /* #E2E800 */
+    --accent-foreground: 0 0% 8%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 22%;                 /* #383838 (Derived from #444444) */
+    --input: 0 0% 22%;
+    --ring: 62 100% 45%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  code, pre, .font-mono {
+    font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+  }
+}
+
+/* Subtle Film Grain Noise Overlay */
+.grain-overlay {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.035'/%3E%3C/svg%3E");
+}
+
+/* Liquid Glass Utilities */
+@layer utilities {
+  /* Translucent Liquid Glass Surface with Specular Refraction */
+  .liquid-glass {
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.85);
+    box-shadow: 
+      0 4px 20px -2px rgba(0, 0, 0, 0.05),
+      inset 0 1px 1px 0 rgba(255, 255, 255, 0.9);
+  }
+
+  .dark .liquid-glass {
+    background: rgba(20, 20, 20, 0.68);
+    backdrop-filter: blur(24px) saturate(190%);
+    -webkit-backdrop-filter: blur(24px) saturate(190%);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    box-shadow: 
+      0 10px 30px -5px rgba(0, 0, 0, 0.5),
+      inset 0 1px 1px 0 rgba(255, 255, 255, 0.12),
+      inset 0 -1px 1px 0 rgba(0, 0, 0, 0.3);
+  }
+
+  /* Liquid Glass Interactive Hover */
+  .liquid-glass-hover {
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .liquid-glass-hover:hover {
+    transform: translateY(-2px);
+    box-shadow: 
+      0 12px 32px -4px rgba(0, 0, 0, 0.08),
+      inset 0 1px 2px 0 rgba(255, 255, 255, 0.95);
+    border-color: rgba(226, 232, 0, 0.6);
+  }
+  .dark .liquid-glass-hover:hover {
+    box-shadow: 
+      0 16px 40px -8px rgba(0, 0, 0, 0.7),
+      0 0 20px -2px rgba(226, 232, 0, 0.15),
+      inset 0 1px 2px 0 rgba(226, 232, 0, 0.3);
+    border-color: rgba(226, 232, 0, 0.35);
+  }
+
+  /* Liquid Glass Pill / Badge */
+  .liquid-pill {
+    background: rgba(226, 232, 0, 0.12);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(226, 232, 0, 0.3);
+    color: #8C9000;
+  }
+  .dark .liquid-pill {
+    background: rgba(226, 232, 0, 0.14);
+    border: 1px solid rgba(226, 232, 0, 0.35);
+    color: #E2E800;
+    box-shadow: 0 0 12px -2px rgba(226, 232, 0, 0.2);
+  }
+
+  /* Electric Chartreuse Glow Utility */
+  .glow-chartreuse {
+    box-shadow: 0 0 24px -2px rgba(226, 232, 0, 0.35);
+  }
+
+  /* Matt slate badge */
+  .matte-slate {
+    background: rgba(68, 68, 68, 0.15);
+    border: 1px solid rgba(68, 68, 68, 0.25);
+  }
+  .dark .matte-slate {
+    background: rgba(68, 68, 68, 0.35);
+    border: 1px solid rgba(214, 214, 214, 0.1);
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(151, 151, 151, 0.3);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(226, 232, 0, 0.6);
+}
+
+::selection {
+  background: #E2E800;
+  color: #141414;
+}
