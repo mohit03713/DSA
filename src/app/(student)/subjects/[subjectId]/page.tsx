@@ -31,6 +31,22 @@ export default function SubjectDetailPage({ params }: { params: { subjectId: str
           </p>
         </div>
         <div className="flex items-center gap-2">
+          {subject.id === 'dip' && (
+            <>
+              <Link
+                href="/subjects/dip/formulas"
+                className="px-3.5 py-1.5 rounded-xl bg-cyan-500/15 hover:bg-cyan-500/25 text-cyan-300 border border-cyan-500/30 text-xs font-bold transition-all shadow-sm flex items-center gap-1.5"
+              >
+                ∑ Formula Sheet
+              </Link>
+              <Link
+                href="/subjects/dip/visualizer"
+                className="px-3.5 py-1.5 rounded-xl bg-cyan-500/15 hover:bg-cyan-500/25 text-cyan-300 border border-cyan-500/30 text-xs font-bold transition-all shadow-sm flex items-center gap-1.5"
+              >
+                ✨ Interactive Studio
+              </Link>
+            </>
+          )}
           <DifficultyBadge difficulty={subject.difficulty} />
           <Link
             href={`/labs?subject=${subject.id}`}
@@ -40,6 +56,46 @@ export default function SubjectDetailPage({ params }: { params: { subjectId: str
           </Link>
         </div>
       </div>
+
+      {subject.id === 'dip' && (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <Link
+            href="/subjects/dip/formulas"
+            className="bg-gradient-to-r from-cyan-950/40 via-card to-card border border-cyan-500/30 hover:border-cyan-400 p-5 rounded-2xl transition-all group flex items-start justify-between"
+          >
+            <div className="space-y-1">
+              <span className="text-[10px] font-mono font-bold text-cyan-400 uppercase tracking-wider">
+                Exam Preparation
+              </span>
+              <h3 className="text-base font-bold text-foreground group-hover:text-cyan-300 transition-colors flex items-center gap-2">
+                <span>📐</span> Unit-wise Formula Sheet & Solved Numericals
+              </h3>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Step-by-step arithmetic, derivation steps, exam tips, and quick-search for Units 1 through 5.
+              </p>
+            </div>
+            <ArrowRight className="w-5 h-5 text-cyan-400 mt-2 flex-shrink-0 group-hover:translate-x-1 transition-transform" />
+          </Link>
+
+          <Link
+            href="/subjects/dip/visualizer"
+            className="bg-gradient-to-r from-cyan-950/40 via-card to-card border border-cyan-500/30 hover:border-cyan-400 p-5 rounded-2xl transition-all group flex items-start justify-between"
+          >
+            <div className="space-y-1">
+              <span className="text-[10px] font-mono font-bold text-cyan-400 uppercase tracking-wider">
+                Visual Learning
+              </span>
+              <h3 className="text-base font-bold text-foreground group-hover:text-cyan-300 transition-colors flex items-center gap-2">
+                <span>✨</span> Interactive DIP Studio & Animated Simulators
+              </h3>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Live 2D spatial convolution mask sliding, histogram equalization generator, and pixel distance calculator.
+              </p>
+            </div>
+            <ArrowRight className="w-5 h-5 text-cyan-400 mt-2 flex-shrink-0 group-hover:translate-x-1 transition-transform" />
+          </Link>
+        </div>
+      )}
 
       <div className="space-y-5">
         {units.map((unit) => (

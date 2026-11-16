@@ -224,7 +224,12 @@ export default function TopicDetailPage({ params }: { params: { topicId: string 
           <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
             <Link href="/subjects" className="hover:text-foreground">Subjects</Link>
             <span>/</span>
-            <Link href="/subjects/ds" className="hover:text-foreground">{currentTopic.subject}</Link>
+            <Link
+              href={currentTopic.subject.toLowerCase().includes('image') ? '/subjects/dip' : '/subjects/ds'}
+              className="hover:text-foreground"
+            >
+              {currentTopic.subject}
+            </Link>
             <span>/</span>
             <span className="text-foreground">{currentTopic.unit}</span>
           </div>
@@ -313,6 +318,95 @@ export default function TopicDetailPage({ params }: { params: { topicId: string 
         </div>
       </section>
 
+      {/* Solved Numericals Section (if present) */}
+      {currentTopic.numericals && currentTopic.numericals.length > 0 && (
+        <section className="bg-card border-2 border-cyan-500/30 rounded-2xl p-6 space-y-6 relative overflow-hidden shadow-lg shadow-cyan-500/5">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="flex items-center justify-between border-b border-border pb-3">
+            <div className="flex items-center gap-2.5">
+              <span className="w-8 h-8 rounded-xl bg-cyan-500/20 text-cyan-400 text-base flex items-center justify-center font-bold">
+                ∑
+              </span>
+              <div>
+                <h2 className="text-xl font-bold text-foreground">
+                  Step-by-Step Solved Numericals & Exam Problems
+                </h2>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Complete mathematical breakdowns with explicit calculations and formulas
+                </p>
+              </div>
+            </div>
+            <span className="text-xs font-mono font-bold px-3 py-1 rounded-full bg-cyan-500/15 text-cyan-400 border border-cyan-500/30">
+              {currentTopic.numericals.length} Solved Problem{currentTopic.numericals.length > 1 ? 's' : ''}
+            </span>
+          </div>
+
+          <div className="space-y-6">
+            {currentTopic.numericals.map((num, idx) => (
+              <div key={idx} className="bg-secondary/30 rounded-xl p-5 border border-border/80 space-y-4">
+                <div>
+                  <span className="text-xs font-mono font-bold text-cyan-400 uppercase tracking-wider">
+                    Exam Numerical Problem {idx + 1}
+                  </span>
+                  <p className="text-base font-semibold text-foreground mt-1 leading-snug">
+                    {num.question}
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <div className="bg-background/80 rounded-xl p-3.5 border border-border/60">
+                    <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1.5">
+                      📋 Given Data:
+                    </p>
+                    <ul className="text-xs space-y-1 text-foreground">
+                      {num.givenData.map((d, i) => (
+                        <li key={i} className="font-mono flex items-center gap-1.5">
+                          <span className="text-cyan-400 font-bold">•</span> {d}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div className="bg-background/80 rounded-xl p-3.5 border border-border/60">
+                    <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1.5">
+                      📐 Formula Applied:
+                    </p>
+                    <pre className="text-xs font-mono text-cyan-300 font-semibold whitespace-pre-wrap">
+                      {num.formulaUsed}
+                    </pre>
+                  </div>
+                </div>
+
+                <div className="space-y-3 pt-2">
+                  <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
+                    🔢 Step-by-Step Derivation & Arithmetic:
+                  </p>
+                  {num.steps.map((st) => (
+                    <div key={st.stepNumber} className="border-l-2 border-cyan-500/40 pl-3.5 space-y-1">
+                      <p className="text-xs font-bold text-foreground">
+                        Step {st.stepNumber}: {st.title}
+                      </p>
+                      <pre className="text-xs font-mono bg-black/40 text-emerald-400 p-2.5 rounded-lg border border-border/40 whitespace-pre-wrap">
+                        {st.calculation}
+                      </pre>
+                      <p className="text-xs text-muted-foreground italic">{st.explanation}</p>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="p-3.5 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-between">
+                  <span className="text-xs font-bold text-cyan-400 uppercase tracking-wider">
+                    🎯 Final Answer:
+                  </span>
+                  <span className="text-xs font-mono font-bold text-foreground bg-background px-3 py-1.5 rounded-lg border border-border">
+                    {num.finalAnswer}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
       {/* 7. Pseudocode */}
       <section className="bg-card border border-border rounded-2xl p-6">
         <h2 className="text-lg font-semibold text-foreground mb-4">Pseudocode</h2>
@@ -322,13 +416,13 @@ export default function TopicDetailPage({ params }: { params: { topicId: string 
       {/* 8. C Code */}
       <section className="bg-card border border-border rounded-2xl p-6">
         <h2 className="text-lg font-semibold text-foreground mb-4">Implementation in C</h2>
-        <CodeBlock code={currentTopic.cCode} language="c" title="bubble_sort.c" />
+        <CodeBlock code={currentTopic.cCode} language="c" title={`${params.topicId.replace(/-/g, '_')}.c`} />
       </section>
 
       {/* 9. C++ Code */}
       <section className="bg-card border border-border rounded-2xl p-6">
         <h2 className="text-lg font-semibold text-foreground mb-4">Implementation in C++</h2>
-        <CodeBlock code={currentTopic.cppCode} language="cpp" title="bubble_sort.cpp" />
+        <CodeBlock code={currentTopic.cppCode} language="cpp" title={`${params.topicId.replace(/-/g, '_')}.cpp`} />
       </section>
 
       {/* 10. Line-by-line explanation */}

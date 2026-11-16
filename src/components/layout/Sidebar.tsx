@@ -155,17 +155,26 @@ export function Sidebar({ collapsed, onCollapse }: SidebarProps) {
       {/* User Info & Collapse Button */}
       <div className="border-t border-black/10 dark:border-white/10 flex-shrink-0 p-2">
         {!collapsed && (
-          <div className="flex items-center gap-2.5 px-2.5 py-2.5 rounded-xl bg-black/5 dark:bg-white/[0.04] mb-1.5 border border-black/10 dark:border-white/10">
-            <div className="w-7 h-7 rounded-lg bg-[#E2E800] text-[#141414] flex items-center justify-center text-xs font-extrabold flex-shrink-0">
-              {initials}
+          user ? (
+            <div className="flex items-center gap-2.5 px-2.5 py-2.5 rounded-xl bg-black/5 dark:bg-white/[0.04] mb-1.5 border border-black/10 dark:border-white/10">
+              <div className="w-7 h-7 rounded-lg bg-[#E2E800] text-[#141414] flex items-center justify-center text-xs font-extrabold flex-shrink-0">
+                {initials}
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-xs font-bold text-foreground truncate">{displayName}</p>
+                <p className="text-[10px] text-muted-foreground font-mono truncate">
+                  {user.role === 'admin' ? 'Faculty Admin' : `Sem ${user.semester || '4'} • CSE`}
+                </p>
+              </div>
             </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-xs font-bold text-foreground truncate">{displayName}</p>
-              <p className="text-[10px] text-muted-foreground font-mono truncate">
-                {user?.role === 'admin' ? 'Faculty Admin' : `Sem ${user?.semester || '4'} • CSE`}
-              </p>
-            </div>
-          </div>
+          ) : (
+            <Link
+              href="/auth/login"
+              className="flex items-center justify-center gap-2 px-3 py-2 rounded-xl bg-cyan-500/15 hover:bg-cyan-500/25 text-cyan-300 border border-cyan-500/30 text-xs font-bold transition-all mb-1.5"
+            >
+              <span>Sign In / Demo</span>
+            </Link>
+          )
         )}
 
         <button

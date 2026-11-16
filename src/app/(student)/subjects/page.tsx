@@ -1,13 +1,13 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { BookOpen, ArrowRight, Binary, Database, Cpu, Network, TrendingUp } from 'lucide-react'
+import { BookOpen, ArrowRight, Binary, Database, Cpu, Network, TrendingUp, Image as ImageIcon } from 'lucide-react'
 import { DEMO_SUBJECTS } from '@/lib/constants/demoData'
 import { DifficultyBadge } from '@/components/shared/DifficultyBadge'
 
 export const metadata: Metadata = { title: 'Subjects' }
 
 const ICONS: Record<string, React.ComponentType<{ className?: string; style?: React.CSSProperties }>> = {
-  Binary, Database, Cpu, Network, BookOpen,
+  Binary, Database, Cpu, Network, BookOpen, Image: ImageIcon,
 }
 
 export default function SubjectsPage() {

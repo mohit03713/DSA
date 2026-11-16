@@ -53,5 +53,18 @@ export const SUBJECTS_DATA: Subject[] = [
     difficulty: 'Hard',
     progress: 30,
   },
+  {
+    id: 'dip',
+    name: 'Digital Image Processing',
+    code: 'CS405',
+    semester: 4,
+    description: '2D signals & systems, spatial and frequency enhancement, image transforms, restoration models, and compression standards.',
+    iconName: 'Image',
+    color: '#06b6d4',
+    unitCount: 5,
+    topicCount: 52,
+    difficulty: 'Hard',
+    progress: 40,
+  },
 ]
 

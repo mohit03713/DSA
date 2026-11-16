@@ -145,84 +145,94 @@ export function TopNav() {
           </AnimatePresence>
         </div>
 
-        {/* User Profile Menu */}
-        <div className="relative">
-          <button
-            onClick={() => setUserOpen(!userOpen)}
-            className="flex items-center gap-2 rounded-xl px-2 py-1.5 hover:bg-black/5 dark:hover:bg-white/5 transition-colors border border-black/10 dark:border-white/10"
-          >
-            <div className="w-7 h-7 rounded-lg bg-[#E2E800] text-[#141414] flex items-center justify-center font-extrabold text-xs shadow-chartreuse-sm">
-              {initials}
-            </div>
-            <span className="hidden md:block text-xs font-bold text-foreground">
-              {displayName.split(' ')[0]}
-            </span>
-          </button>
+        {/* User Profile Menu or Sign In */}
+        {user ? (
+          <div className="relative">
+            <button
+              onClick={() => setUserOpen(!userOpen)}
+              className="flex items-center gap-2 rounded-xl px-2 py-1.5 hover:bg-black/5 dark:hover:bg-white/5 transition-colors border border-black/10 dark:border-white/10"
+            >
+              <div className="w-7 h-7 rounded-lg bg-[#E2E800] text-[#141414] flex items-center justify-center font-extrabold text-xs shadow-chartreuse-sm">
+                {initials}
+              </div>
+              <span className="hidden md:block text-xs font-bold text-foreground">
+                {displayName.split(' ')[0]}
+              </span>
+            </button>
 
-          <AnimatePresence>
-            {userOpen && (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.96, y: -4 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.96, y: -4 }}
-                transition={{ duration: 0.15 }}
-                className="absolute right-0 top-full mt-2 w-64 liquid-glass border border-black/15 dark:border-white/15 rounded-2xl shadow-xl z-50 overflow-hidden"
-              >
-                <div className="px-4 py-3 border-b border-black/10 dark:border-white/10 bg-black/5 dark:bg-white/[0.03]">
-                  <div className="flex items-center justify-between gap-2">
-                    <p className="font-bold text-sm text-foreground truncate">{displayName}</p>
-                    <span className="text-[10px] font-mono font-bold uppercase px-2 py-0.5 rounded-full bg-[#E2E800] text-[#141414]">
-                      {user?.role || 'Student'}
-                    </span>
+            <AnimatePresence>
+              {userOpen && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.96, y: -4 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.96, y: -4 }}
+                  transition={{ duration: 0.15 }}
+                  className="absolute right-0 top-full mt-2 w-64 liquid-glass border border-black/15 dark:border-white/15 rounded-2xl shadow-xl z-50 overflow-hidden"
+                >
+                  <div className="px-4 py-3 border-b border-black/10 dark:border-white/10 bg-black/5 dark:bg-white/[0.03]">
+                    <div className="flex items-center justify-between gap-2">
+                      <p className="font-bold text-sm text-foreground truncate">{displayName}</p>
+                      <span className="text-[10px] font-mono font-bold uppercase px-2 py-0.5 rounded-full bg-[#E2E800] text-[#141414]">
+                        {user.role}
+                      </span>
+                    </div>
+                    <p className="text-xs text-muted-foreground truncate mt-0.5 font-medium">{displayEmail}</p>
+                    <p className="text-[11px] text-muted-foreground font-mono mt-1">
+                      Semester {user.semester || '4'} • {user.branch || 'CSE'}
+                    </p>
                   </div>
-                  <p className="text-xs text-muted-foreground truncate mt-0.5 font-medium">{displayEmail}</p>
-                  <p className="text-[11px] text-muted-foreground font-mono mt-1">
-                    Semester {user?.semester || '4'} • {user?.branch || 'CSE'}
-                  </p>
-                </div>
 
-                <div className="p-1.5 space-y-0.5">
-                  <Link
-                    href="/progress"
-                    className="flex items-center gap-2 px-3 py-2 text-xs font-semibold rounded-xl hover:bg-black/5 dark:hover:bg-white/5 transition-colors text-foreground"
-                    onClick={() => setUserOpen(false)}
-                  >
-                    <User className="w-3.5 h-3.5 text-muted-foreground" />
-                    Profile & Analytics
-                  </Link>
-                  <Link
-                    href="/settings"
-                    className="flex items-center gap-2 px-3 py-2 text-xs font-semibold rounded-xl hover:bg-black/5 dark:hover:bg-white/5 transition-colors text-foreground"
-                    onClick={() => setUserOpen(false)}
-                  >
-                    <Settings className="w-3.5 h-3.5 text-muted-foreground" />
-                    Preferences & Dark Mode
-                  </Link>
-                  {user?.role === 'admin' && (
+                  <div className="p-1.5 space-y-0.5">
                     <Link
-                      href="/admin"
-                      className="flex items-center gap-2 px-3 py-2 text-xs font-bold rounded-xl hover:bg-black/5 dark:hover:bg-white/5 transition-colors text-[#E2E800]"
+                      href="/progress"
+                      className="flex items-center gap-2 px-3 py-2 text-xs font-semibold rounded-xl hover:bg-black/5 dark:hover:bg-white/5 transition-colors text-foreground"
                       onClick={() => setUserOpen(false)}
                     >
-                      <ShieldCheck className="w-3.5 h-3.5" />
-                      Faculty Admin
+                      <User className="w-3.5 h-3.5 text-muted-foreground" />
+                      Profile & Analytics
                     </Link>
-                  )}
-                  <button
-                    onClick={() => {
-                      setUserOpen(false)
-                      logout()
-                    }}
-                    className="w-full flex items-center gap-2 px-3 py-2 text-xs font-bold rounded-xl hover:bg-red-500/10 text-red-500 transition-colors border-t border-black/10 dark:border-white/10 mt-1"
-                  >
-                    <LogOut className="w-3.5 h-3.5" />
-                    Sign Out
-                  </button>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
+                    <Link
+                      href="/settings"
+                      className="flex items-center gap-2 px-3 py-2 text-xs font-semibold rounded-xl hover:bg-black/5 dark:hover:bg-white/5 transition-colors text-foreground"
+                      onClick={() => setUserOpen(false)}
+                    >
+                      <Settings className="w-3.5 h-3.5 text-muted-foreground" />
+                      Preferences & Dark Mode
+                    </Link>
+                    {user.role === 'admin' && (
+                      <Link
+                        href="/admin"
+                        className="flex items-center gap-2 px-3 py-2 text-xs font-bold rounded-xl hover:bg-black/5 dark:hover:bg-white/5 transition-colors text-[#E2E800]"
+                        onClick={() => setUserOpen(false)}
+                      >
+                        <ShieldCheck className="w-3.5 h-3.5" />
+                        Faculty Admin
+                      </Link>
+                    )}
+                    <button
+                      onClick={() => {
+                        setUserOpen(false)
+                        logout()
+                      }}
+                      className="w-full flex items-center gap-2 px-3 py-2 text-xs font-bold rounded-xl hover:bg-red-500/10 text-red-500 transition-colors border-t border-black/10 dark:border-white/10 mt-1"
+                    >
+                      <LogOut className="w-3.5 h-3.5" />
+                      Sign Out
+                    </button>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        ) : (
+          <Link
+            href="/auth/login"
+            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-black font-extrabold text-xs shadow-sm transition-all"
+          >
+            <User className="w-3.5 h-3.5" />
+            <span>Sign In</span>
+          </Link>
+        )}
       </div>
     </header>
   )

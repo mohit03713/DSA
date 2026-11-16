@@ -1,3 +1,11 @@
+export interface SolvedNumerical {
+  question: string
+  givenData: string[]
+  formulaUsed: string
+  steps: { stepNumber: number; title: string; calculation: string; explanation: string }[]
+  finalAnswer: string
+}
+
 export interface TopicPageData {
   title: string
   subject: string
@@ -25,9 +33,13 @@ export interface TopicPageData {
   practiceQuestions: string[]
   vivaQuestions: string[]
   relatedTopics: string[]
+  numericals?: SolvedNumerical[]
 }
 
+import { DIP_TOPICS_DATA } from './dipTopicsData'
+
 export const TOPICS_REGISTRY: Record<string, TopicPageData> = {
+  ...DIP_TOPICS_DATA,
   'stacks-infix-postfix': {
     title: 'Infix to Postfix and Prefix Conversion Using Stacks',
     subject: 'Data Structures',

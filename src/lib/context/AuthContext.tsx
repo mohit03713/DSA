@@ -65,7 +65,7 @@ const STORAGE_KEY_ACCOUNTS = 'studysphere_registered_accounts'
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const router = useRouter()
-  const [user, setUser] = useState<User | null>(DEFAULT_STUDENT)
+  const [user, setUser] = useState<User | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
   // Initialize auth state on client mount
@@ -75,12 +75,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (stored) {
         setUser(JSON.parse(stored))
       } else {
-        // Pre-set default student user for first-time session
-        setUser(DEFAULT_STUDENT)
-        localStorage.setItem(STORAGE_KEY_USER, JSON.stringify(DEFAULT_STUDENT))
+        const hasLoggedOut = localStorage.getItem('studysphere_explicit_logout')
+        if (!hasLoggedOut) {
+          // Pre-set default student user for first-time session
+          setUser(DEFAULT_STUDENT)
+          localStorage.setItem(STORAGE_KEY_USER, JSON.stringify(DEFAULT_STUDENT))
+        } else {
+          setUser(null)
+        }
       }
     } catch {
-      setUser(DEFAULT_STUDENT)
+      setUser(null)
     } finally {
       setIsLoading(false)
     }
@@ -148,6 +153,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(loggedUser)
     try {
       localStorage.setItem(STORAGE_KEY_USER, JSON.stringify(loggedUser))
+      localStorage.removeItem('studysphere_explicit_logout')
     } catch (e) {
       console.warn('Failed saving user to localStorage:', e)
     }
@@ -213,6 +219,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(null)
     try {
       localStorage.removeItem(STORAGE_KEY_USER)
+      localStorage.setItem('studysphere_explicit_logout', 'true')
     } catch {}
     router.push('/auth/login')
   }

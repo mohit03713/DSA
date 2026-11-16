@@ -67,6 +67,20 @@ export const DEMO_SUBJECTS: Subject[] = [
     progress: 30,
     lastStudied: '2024-11-08T14:15:00Z',
   },
+  {
+    id: 'dip',
+    name: 'Digital Image Processing',
+    code: 'CS405',
+    semester: 4,
+    description: '2D signals & systems, spatial and frequency enhancement, image transforms, restoration models, and compression standards.',
+    iconName: 'Image',
+    color: '#06b6d4',
+    unitCount: 5,
+    topicCount: 52,
+    difficulty: 'Hard',
+    progress: 40,
+    lastStudied: '2024-11-15T18:00:00Z',
+  },
 ]
 
 export const DEMO_CONTINUE_LEARNING = [
