@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { Calendar, Clock, AlertCircle } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { DEMO_UPCOMING_EXAMS } from '@/lib/constants/demoData'
@@ -30,15 +31,18 @@ export function UpcomingExamsWidget() {
               initial={{ opacity: 0, y: 6 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.25, delay: idx * 0.05 }}
-              className={cn(
-                'flex items-center gap-3.5 p-3.5 rounded-2xl border transition-all',
-                isUrgent
-                  ? 'border-[#E2E800]/40 bg-[#E2E800]/10 dark:bg-[#E2E800]/10'
-                  : isSoon
-                  ? 'border-black/15 dark:border-white/15 bg-black/5 dark:bg-white/[0.04]'
-                  : 'border-black/10 dark:border-white/[0.08] bg-black/5 dark:bg-white/[0.02]'
-              )}
             >
+              <Link
+                href="/exam-ai"
+                className={cn(
+                  'flex items-center gap-3.5 p-3.5 rounded-2xl border transition-all block group hover:brightness-105',
+                  isUrgent
+                    ? 'border-[#E2E800]/40 bg-[#E2E800]/10 dark:bg-[#E2E800]/10'
+                    : isSoon
+                    ? 'border-black/15 dark:border-white/15 bg-black/5 dark:bg-white/[0.04]'
+                    : 'border-black/10 dark:border-white/[0.08] bg-black/5 dark:bg-white/[0.02]'
+                )}
+              >
               {/* Countdown block */}
               <div
                 className={cn(
@@ -71,7 +75,8 @@ export function UpcomingExamsWidget() {
                   Urgent
                 </div>
               )}
-            </motion.div>
+            </Link>
+          </motion.div>
           )
         })}
       </div>

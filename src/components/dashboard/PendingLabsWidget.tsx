@@ -32,14 +32,19 @@ export function PendingLabsWidget() {
           const daysLeft = (lab as { daysLeft?: number }).daysLeft ?? getDaysUntil(lab.dueDate)
           const isUrgent = daysLeft <= 2
           const pct = Math.round((lab.questionsDone / lab.questionsTotal) * 100)
+          const labNo = (lab as { labNo?: number }).labNo || idx + 1
+          const subjectId = (lab as { subjectId?: string }).subjectId || (lab.subject.toLowerCase().includes('image') ? 'dip' : 'ds')
           return (
             <motion.div
               key={lab.id}
               initial={{ opacity: 0, y: 6 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.25, delay: idx * 0.05 }}
-              className="p-3.5 rounded-2xl bg-black/5 dark:bg-white/[0.03] hover:bg-black/10 dark:hover:bg-white/[0.07] border border-black/10 dark:border-white/[0.08] transition-all"
             >
+              <Link
+                href={`/labs/${subjectId}/${labNo}`}
+                className="block p-3.5 rounded-2xl bg-black/5 dark:bg-white/[0.03] hover:bg-black/10 dark:hover:bg-white/[0.07] border border-black/10 dark:border-white/[0.08] transition-all group"
+              >
               <div className="flex items-start justify-between mb-2">
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1">
@@ -77,8 +82,9 @@ export function PendingLabsWidget() {
                   {lab.questionsDone}/{lab.questionsTotal}
                 </span>
               </div>
-            </motion.div>
-          )
+            </Link>
+          </motion.div>
+        )
         })}
       </div>
     </div>

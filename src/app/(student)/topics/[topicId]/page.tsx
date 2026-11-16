@@ -204,18 +204,11 @@ int main() {
   relatedTopics: ['Selection Sort', 'Insertion Sort', 'Merge Sort', 'Quick Sort'],
 }
 
-import { TOPICS_REGISTRY } from '@/lib/constants/topicsData'
+import { resolveTopic } from '@/lib/constants/topicsData'
 
 export default function TopicDetailPage({ params }: { params: { topicId: string } }) {
-  const dynamicTopic = TOPICS_REGISTRY[params.topicId]
-  const topicData = dynamicTopic || {
-    ...TOPIC,
-    title: params.topicId
-      .split('-')
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(' '),
-  }
-  const currentTopic = topicData
+  const { topic: currentTopic, subjectId, relatedLinks } = resolveTopic(params.topicId)
+
   return (
     <div className="max-w-4xl mx-auto space-y-6 animate-fade-in">
       {/* Header */}
@@ -225,8 +218,8 @@ export default function TopicDetailPage({ params }: { params: { topicId: string 
             <Link href="/subjects" className="hover:text-foreground">Subjects</Link>
             <span>/</span>
             <Link
-              href={currentTopic.subject.toLowerCase().includes('image') ? '/subjects/dip' : '/subjects/ds'}
-              className="hover:text-foreground"
+              href={`/subjects/${subjectId}`}
+              className="hover:text-foreground font-medium text-foreground/80 hover:underline"
             >
               {currentTopic.subject}
             </Link>
@@ -248,6 +241,25 @@ export default function TopicDetailPage({ params }: { params: { topicId: string 
         </div>
         <BookmarkButton itemId={params.topicId} itemType="topic" />
       </div>
+
+      {subjectId === 'dip' && (
+        <div className="flex items-center gap-3 bg-cyan-950/20 border border-cyan-500/30 p-3.5 rounded-2xl text-xs">
+          <span className="text-cyan-400 font-bold font-mono">DIP STUDIO</span>
+          <span className="text-muted-foreground">Explore interactive tools for this subject:</span>
+          <Link
+            href="/subjects/dip/formulas"
+            className="px-2.5 py-1 rounded-lg bg-cyan-500/20 text-cyan-300 font-semibold hover:bg-cyan-500/30 transition-colors"
+          >
+            Formula Sheet
+          </Link>
+          <Link
+            href="/subjects/dip/visualizer"
+            className="px-2.5 py-1 rounded-lg bg-cyan-500/20 text-cyan-300 font-semibold hover:bg-cyan-500/30 transition-colors"
+          >
+            Visualizer Studio
+          </Link>
+        </div>
+      )}
 
       {/* 1. Introduction */}
       <section className="bg-card border border-border rounded-2xl p-6">
@@ -606,17 +618,33 @@ export default function TopicDetailPage({ params }: { params: { topicId: string 
         </div>
       </section>
 
-      {/* 17. Related Topics */}
+      {/* 17. Related Topics & Quick Actions */}
       <section className="bg-card border border-border rounded-2xl p-6">
-        <h2 className="text-lg font-semibold text-foreground mb-4">Related Topics</h2>
-        <div className="flex flex-wrap gap-2">
-          {currentTopic.relatedTopics.map((topic) => (
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+          <h2 className="text-lg font-semibold text-foreground">Related Topics</h2>
+          <div className="flex items-center gap-2">
             <Link
-              key={topic}
-              href={`/topics/${topic.toLowerCase().replace(/\s+/g, '-')}`}
+              href={`/practice?topicId=${params.topicId}`}
+              className="text-xs px-3 py-1.5 rounded-xl bg-primary/10 text-primary hover:bg-primary/20 transition-colors font-medium"
+            >
+              Practice in IDE
+            </Link>
+            <Link
+              href={`/tutor?prompt=Explain the theoretical foundations and exam viva questions for ${currentTopic.title}`}
+              className="text-xs px-3 py-1.5 rounded-xl bg-secondary text-foreground hover:bg-secondary/80 transition-colors font-medium"
+            >
+              Ask AI Tutor
+            </Link>
+          </div>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          {relatedLinks.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
               className="px-4 py-2 rounded-xl bg-secondary hover:bg-primary/10 hover:text-primary text-sm text-foreground transition-colors border border-border hover:border-primary/30"
             >
-              {topic}
+              {link.title}
             </Link>
           ))}
         </div>

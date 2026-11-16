@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { Star, ChevronRight } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { DEMO_IMPORTANT_QUESTIONS } from '@/lib/constants/demoData'
@@ -69,29 +70,30 @@ export function ImportantQuestionsWidget() {
         className="space-y-2.5"
       >
         {DEMO_IMPORTANT_QUESTIONS.map((q) => (
-          <motion.div
-            key={q.id}
-            variants={itemVariants}
-            className="flex items-center gap-3.5 p-3.5 rounded-2xl bg-black/5 dark:bg-white/[0.03] hover:bg-black/10 dark:hover:bg-white/[0.07] border border-black/10 dark:border-white/[0.08] transition-all group cursor-pointer"
-          >
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2 mb-1">
-                <span className="text-[11px] font-mono font-bold px-2 py-0.5 rounded-md bg-black/5 dark:bg-white/5 text-muted-foreground border border-black/10 dark:border-white/10">
-                  {q.subject}
-                </span>
-                <DifficultyBadge difficulty={(q as { difficulty?: string }).difficulty} />
-                {(q as { marks?: number }).marks && (
-                  <span className="text-[10px] font-mono text-muted-foreground font-semibold">
-                    {(q as { marks?: number }).marks}M
+          <motion.div key={q.id} variants={itemVariants}>
+            <Link
+              href="/exam-ai"
+              className="flex items-center gap-3.5 p-3.5 rounded-2xl bg-black/5 dark:bg-white/[0.03] hover:bg-black/10 dark:hover:bg-white/[0.07] border border-black/10 dark:border-white/[0.08] transition-all group cursor-pointer block"
+            >
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="text-[11px] font-mono font-bold px-2 py-0.5 rounded-md bg-black/5 dark:bg-white/5 text-muted-foreground border border-black/10 dark:border-white/10">
+                    {q.subject}
                   </span>
-                )}
+                  <DifficultyBadge difficulty={(q as { difficulty?: string }).difficulty} />
+                  {(q as { marks?: number }).marks && (
+                    <span className="text-[10px] font-mono text-muted-foreground font-semibold">
+                      {(q as { marks?: number }).marks}M
+                    </span>
+                  )}
+                </div>
+                <p className="text-sm font-bold text-foreground group-hover:text-[#E2E800] transition-colors leading-snug line-clamp-2">
+                  {q.question}
+                </p>
               </div>
-              <p className="text-sm font-bold text-foreground group-hover:text-[#E2E800] transition-colors leading-snug line-clamp-2">
-                {q.question}
-              </p>
-            </div>
 
-            <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-foreground transition-colors flex-shrink-0" />
+              <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-foreground transition-colors flex-shrink-0" />
+            </Link>
           </motion.div>
         ))}
       </motion.div>

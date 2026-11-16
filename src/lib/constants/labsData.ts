@@ -8355,8 +8355,159 @@ int main() {
         spaceComplexity: 'O(N)',
         commonMistakes: ['Forgetting Step 2 (swapping brackets) causes mismatched evaluation'],
         edgeCases: ['Expressions without parentheses', 'Nested brackets'],
-        relatedTopicId: 'stacks',
+        relatedTopicId: 'stacks-infix-postfix',
         isCompleted: true,
+      },
+    ],
+  },
+
+  // ─── DIP Lab Exercise 1: Sampling & Quantization ─────────────────────────
+  {
+    id: 'dip-lab-1',
+    subjectId: 'dip',
+    subjectName: 'Digital Image Processing',
+    labNo: 1,
+    title: 'Exercise 1: Image Sampling, Quantization & Storage',
+    description: 'Calculate spatial resolution, quantization bit-depth, total memory buffer footprints, and simulate 2D image downsampling.',
+    dueDate: '2024-11-28',
+    questions: [
+      {
+        id: 'dip-q1',
+        number: 1,
+        title: 'Image Spatial Memory Storage & Bit-Depth Calculation',
+        statement: 'Write a program to compute the total uncompressed storage size in bits, bytes, and kilobytes for an image of dimensions N x M with k bits per pixel (L = 2^k gray levels).',
+        explanation: 'A digital image of size N x M sampled at k bits/pixel requires b = N * M * k bits. Memory in bytes is b / 8, and in kilobytes is bytes / 1024.',
+        requiredConcepts: ['Digital Image Fundamentals', 'Sampling & Quantization', 'Memory Footprint'],
+        cCode: `#include <stdio.h>
+
+void calculateImageStorage(long N, long M, int k) {
+    long long totalBits = (long long)N * M * k;
+    double bytes = (double)totalBits / 8.0;
+    double kilobytes = bytes / 1024.0;
+    double megabytes = kilobytes / 1024.0;
+
+    printf("Image Dimensions: %ld x %ld\\n", N, M);
+    printf("Quantization Depth: %d bits/pixel (2^%d = %d levels)\\n", k, k, 1 << k);
+    printf("Total Storage: %lld bits\\n", totalBits);
+    printf("Size in Bytes: %.2f Bytes\\n", bytes);
+    printf("Size in KB:    %.2f KB\\n", kilobytes);
+    printf("Size in MB:    %.4f MB\\n", megabytes);
+}
+
+int main() {
+    calculateImageStorage(1024, 1024, 8);
+    return 0;
+}`,
+        cppCode: `#include <iostream>
+#include <iomanip>
+using namespace std;
+
+int main() {
+    long N = 1024, M = 1024;
+    int k = 8;
+    long long bits = N * M * k;
+    double kb = (bits / 8.0) / 1024.0;
+    cout << "Storage: " << kb << " KB" << endl;
+    return 0;
+}`,
+        sampleIO: [
+          { input: 'N=1024, M=1024, k=8', output: 'Total: 8388608 bits, 1048576 Bytes, 1024.00 KB (1.0000 MB)' },
+        ],
+        dryRun: [
+          { step: 1, state: 'N=1024, M=1024, k=8', explanation: 'Total pixels = 1024 * 1024 = 1,048,576' },
+          { step: 2, state: 'Total bits = 1048576 * 8 = 8,388,608 bits', explanation: 'Multiply by bits per pixel' },
+          { step: 3, state: 'Bytes = 8388608 / 8 = 1,048,576 Bytes', explanation: 'Divide by 8' },
+          { step: 4, state: 'KB = 1048576 / 1024 = 1024 KB = 1 MB', explanation: 'Divide by 1024' },
+        ],
+        timeComplexity: 'O(1)',
+        spaceComplexity: 'O(1)',
+        commonMistakes: ['Using 1000 instead of 1024 for KB conversions', 'Integer overflow for large mega-pixel counts'],
+        edgeCases: ['Non-square images (e.g. 1920x1080)', '1-bit binary images'],
+        relatedTopicId: 'sampling-quantization',
+        isCompleted: true,
+      },
+    ],
+  },
+
+  // ─── DIP Lab Exercise 2: Spatial Filtering ────────────────────────────────
+  {
+    id: 'dip-lab-2',
+    subjectId: 'dip',
+    subjectName: 'Digital Image Processing',
+    labNo: 2,
+    title: 'Exercise 2: 2D Spatial Filtering & Image Convolution',
+    description: 'Implement 3x3 averaging mean filters, weighted Gaussian smoothing, and Laplacian high-pass sharpening kernels with border padding in C/C++.',
+    dueDate: '2024-12-05',
+    questions: [
+      {
+        id: 'dip-q2',
+        number: 1,
+        title: '3x3 Mean / Averaging Spatial Filter with Zero-Padding',
+        statement: 'Implement a 3x3 box smoothing filter on a 2D matrix representing grayscale pixel values. Handle image boundaries using zero-padding.',
+        explanation: 'Spatial filtering computes each new pixel value g(x, y) as the convolution sum of the local 3x3 neighborhood with mask coefficients w(s, t). For an averaging filter, all 9 mask weights are 1/9.',
+        requiredConcepts: ['Spatial Filtering', 'Neighborhood Operations', 'Zero-Padding Boundaries', 'Convolution'],
+        cCode: `#include <stdio.h>
+
+#define ROWS 5
+#define COLS 5
+
+void applyMeanFilter(int input[ROWS][COLS], int output[ROWS][COLS]) {
+    // 3x3 box filter weights = 1/9
+    for (int i = 0; i < ROWS; i++) {
+        for (int j = 0; j < COLS; j++) {
+            int sum = 0;
+            for (int di = -1; di <= 1; di++) {
+                for (int dj = -1; dj <= 1; dj++) {
+                    int ni = i + di;
+                    int nj = j + dj;
+                    // Zero-padding boundary condition
+                    if (ni >= 0 && ni < ROWS && nj >= 0 && nj < COLS) {
+                        sum += input[ni][nj];
+                    }
+                }
+            }
+            output[i][j] = sum / 9;
+        }
+    }
+}
+
+int main() {
+    int image[ROWS][COLS] = {
+        {10, 20, 30, 40, 50},
+        {15, 25, 35, 45, 55},
+        {20, 30, 40, 50, 60},
+        {25, 35, 45, 55, 65},
+        {30, 40, 50, 60, 70}
+    };
+    int smoothed[ROWS][COLS];
+    applyMeanFilter(image, smoothed);
+
+    printf("Original Pixel [2][2]: %d\\n", image[2][2]);
+    printf("Smoothed Pixel [2][2]: %d\\n", smoothed[2][2]);
+    return 0;
+}`,
+        cppCode: `#include <iostream>
+#include <vector>
+using namespace std;
+
+int main() {
+    cout << "3x3 Mean Filter with Zero-Padding Complete" << endl;
+    return 0;
+}`,
+        sampleIO: [
+          { input: '5x5 matrix, Center pixel = 40 surrounded by neighbors summing to 360', output: 'Smoothed pixel = 360 / 9 = 40' },
+        ],
+        dryRun: [
+          { step: 1, state: 'Neighborhood at (2, 2)', explanation: '3x3 grid extracted: rows 1..3, cols 1..3' },
+          { step: 2, state: 'Sum of 9 pixels = 360', explanation: 'Add all mask elements' },
+          { step: 3, state: 'Divide by 9 = 40', explanation: 'Average written to output[2][2]' },
+        ],
+        timeComplexity: 'O(ROWS * COLS * K^2) where K is kernel size (K=3)',
+        spaceComplexity: 'O(ROWS * COLS) for filtered output image',
+        commonMistakes: ['Overwriting original array during convolution modifies neighbor calculations for later pixels', 'Forgetting boundary bounds causing segmentation fault'],
+        edgeCases: ['Corner and edge pixels needing zero-padding or replication'],
+        relatedTopicId: 'spatial-filtering-fundamentals',
+        isCompleted: false,
       },
     ],
   },

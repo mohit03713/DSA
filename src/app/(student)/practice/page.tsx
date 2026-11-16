@@ -1,6 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, Suspense } from 'react'
+import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
 import {
   Play,
   RotateCcw,
@@ -12,7 +14,11 @@ import {
   Settings,
   Download,
   AlertCircle,
+  ArrowLeft,
 } from 'lucide-react'
+import { LABS_DATA } from '@/lib/constants/labsData'
+import { DSA_PROBLEMS } from '@/lib/constants/dsaData'
+import { resolveTopic } from '@/lib/constants/topicsData'
 
 const CODE_TEMPLATES: Record<string, string> = {
   cpp: `#include <iostream>
@@ -74,7 +80,12 @@ print(f"Squared:  {squared}")
 }`,
 }
 
-export default function PracticeIDEPage() {
+function PracticeIDEContent() {
+  const searchParams = useSearchParams()
+  const labId = searchParams.get('labId')
+  const problemId = searchParams.get('problemId')
+  const topicId = searchParams.get('topicId')
+
   const [lang, setLang] = useState<string>('cpp')
   const [code, setCode] = useState<string>(CODE_TEMPLATES['cpp'])
   const [customInput, setCustomInput] = useState<string>('')
@@ -88,6 +99,66 @@ export default function PracticeIDEPage() {
     status: string
   } | null>(null)
   const [copied, setCopied] = useState<boolean>(false)
+  const [loadedSource, setLoadedSource] = useState<{
+    title: string
+    backLink: string
+    type: string
+  } | null>(null)
+
+  useEffect(() => {
+    // 1. Check lab question
+    if (labId) {
+      for (const lab of LABS_DATA) {
+        const q = lab.questions.find((quest) => quest.id === labId)
+        if (q) {
+          const starter = q.cCode || q.cppCode || CODE_TEMPLATES['c']
+          const preferredLang = q.cCode ? 'c' : 'cpp'
+          setLang(preferredLang)
+          setCode(starter)
+          setLoadedSource({
+            title: `${lab.title}: ${q.title}`,
+            backLink: `/labs/${lab.subjectId}/${lab.labNo}/${q.id}`,
+            type: 'Lab Practical',
+          })
+          return
+        }
+      }
+    }
+
+    // 2. Check DSA problem
+    if (problemId) {
+      const problem = DSA_PROBLEMS.find((p) => p.id === problemId)
+      if (problem && problem.approaches.length > 0) {
+        const app = problem.approaches[0]
+        const starter = app.cppCode || app.cCode || CODE_TEMPLATES['cpp']
+        const preferredLang = app.cppCode ? 'cpp' : 'c'
+        setLang(preferredLang)
+        setCode(starter)
+        setLoadedSource({
+          title: problem.title,
+          backLink: `/dsa/problems/${problem.id}`,
+          type: 'DSA Problem',
+        })
+        return
+      }
+    }
+
+    // 3. Check topic
+    if (topicId) {
+      const { topic } = resolveTopic(topicId)
+      if (topic) {
+        const starter = topic.cCode || topic.cppCode || CODE_TEMPLATES['c']
+        const preferredLang = topic.cCode ? 'c' : 'cpp'
+        setLang(preferredLang)
+        setCode(starter)
+        setLoadedSource({
+          title: topic.title,
+          backLink: `/topics/${topicId}`,
+          type: 'Curriculum Topic',
+        })
+      }
+    }
+  }, [labId, problemId, topicId])
 
   const handleLanguageChange = (newLang: string) => {
     setLang(newLang)
@@ -108,22 +179,22 @@ export default function PracticeIDEPage() {
 
   const handleRun = () => {
     setIsRunning(true)
-    setOutput('Compiling and executing code on server...')
+    setOutput('Compiling and executing code in cloud sandbox...')
     setExecutionStats(null)
 
     setTimeout(() => {
       setIsRunning(false)
       if (lang === 'cpp') {
         setOutput(
-          `StudySphere AI - Code Execution Engine\n--------------------------------------\nArray elements: 10 25 42 68 99 \n\n[Process completed with exit code 0]`
+          `StudySphere AI - Code Execution Engine\n--------------------------------------\nExecution completed successfully.\nOutput:\n10 25 42 68 99\n\n[Process completed with exit code 0]`
         )
       } else if (lang === 'c') {
         setOutput(
-          `StudySphere AI - C Execution Engine\n----------------------------------\nArray traversal: 12 34 56 78 90 \n\n[Process completed with exit code 0]`
+          `StudySphere AI - C Execution Engine\n----------------------------------\nExecution completed successfully.\nArray elements: 12 34 56 78 90\n\n[Process completed with exit code 0]`
         )
       } else if (lang === 'python') {
         setOutput(
-          `StudySphere AI - Python Engine\n-----------------------------------\nOriginal: [10, 20, 30, 40, 50]\nSquared:  [100, 400, 900, 1600, 2500]\n\n[Process completed with exit code 0]`
+          `StudySphere AI - Python Engine\n-----------------------------------\nExecution completed successfully.\nSquared: [100, 400, 900, 1600, 2500]\n\n[Process completed with exit code 0]`
         )
       } else {
         setOutput(
@@ -135,11 +206,32 @@ export default function PracticeIDEPage() {
         memory: '2.4 MB',
         status: 'Success (Exit Code 0)',
       })
-    }, 800)
+    }, 700)
   }
 
   return (
     <div className="space-y-6 animate-fade-in pb-12">
+      {/* Loaded Source Banner */}
+      {loadedSource && (
+        <div className="flex items-center justify-between bg-primary/10 border border-primary/30 p-3.5 rounded-2xl text-xs">
+          <div className="flex items-center gap-2">
+            <span className="px-2 py-0.5 rounded-md bg-primary text-primary-foreground font-bold font-mono">
+              {loadedSource.type}
+            </span>
+            <span className="font-semibold text-foreground">
+              {loadedSource.title}
+            </span>
+            <span className="text-muted-foreground hidden sm:inline">— Starter code loaded into editor</span>
+          </div>
+          <Link
+            href={loadedSource.backLink}
+            className="flex items-center gap-1 text-primary hover:underline font-semibold"
+          >
+            <ArrowLeft className="w-3.5 h-3.5" /> Back to details
+          </Link>
+        </div>
+      )}
+
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
@@ -257,3 +349,10 @@ export default function PracticeIDEPage() {
   )
 }
 
+export default function PracticeIDEPage() {
+  return (
+    <Suspense fallback={<div className="p-8 text-center text-muted-foreground">Loading Practice Sandbox...</div>}>
+      <PracticeIDEContent />
+    </Suspense>
+  )
+}

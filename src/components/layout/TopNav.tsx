@@ -3,10 +3,11 @@
 import { usePathname } from 'next/navigation'
 import { Search, Bell, Moon, Sun, User, LogOut, Settings, ChevronRight, ShieldCheck } from 'lucide-react'
 import { useTheme } from 'next-themes'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useAuth } from '@/lib/context/AuthContext'
+import { GlobalSearch } from '@/components/shared/GlobalSearch'
 
 function getBreadcrumbs(pathname: string): { label: string; href: string }[] {
   const segments = pathname.split('/').filter(Boolean)
@@ -43,7 +44,19 @@ export function TopNav() {
   const { user, logout } = useAuth()
   const [userOpen, setUserOpen] = useState(false)
   const [notifOpen, setNotifOpen] = useState(false)
+  const [searchOpen, setSearchOpen] = useState(false)
   const crumbs = getBreadcrumbs(pathname)
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault()
+        setSearchOpen((prev) => !prev)
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [])
 
   const displayName = user?.name || 'Mohit Sharma'
   const displayEmail = user?.email || 'mohit.sharma@chitkara.edu.in'
@@ -80,7 +93,10 @@ export function TopNav() {
 
       {/* Global Quick Search Button */}
       <div className="flex-1 sm:flex-none sm:w-64 max-w-sm">
-        <button className="w-full flex items-center gap-2 px-3.5 py-2 rounded-xl bg-black/5 dark:bg-white/[0.04] text-muted-foreground text-xs hover:text-foreground transition-colors border border-black/10 dark:border-white/10">
+        <button
+          onClick={() => setSearchOpen(true)}
+          className="w-full flex items-center gap-2 px-3.5 py-2 rounded-xl bg-black/5 dark:bg-white/[0.04] text-muted-foreground text-xs hover:text-foreground transition-colors border border-black/10 dark:border-white/10"
+        >
           <Search className="w-3.5 h-3.5" />
           <span className="hidden sm:inline">Search topics, labs, codes...</span>
           <span className="sm:hidden">Search...</span>
@@ -89,6 +105,8 @@ export function TopNav() {
           </span>
         </button>
       </div>
+
+      <GlobalSearch open={searchOpen} onClose={() => setSearchOpen(false)} />
 
       <div className="flex items-center gap-1.5">
         {/* Theme Toggle */}

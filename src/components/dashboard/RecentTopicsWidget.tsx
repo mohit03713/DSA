@@ -55,7 +55,7 @@ export function RecentTopicsWidget() {
         {DEMO_RECENT_TOPICS.map((topic, idx) => (
           <motion.div key={topic.id} variants={itemVariants}>
             <Link
-              href={`/topics/${topic.id}`}
+              href={`/topics/${(topic as { topicId?: string }).topicId || topic.id}`}
               className="flex items-center gap-3.5 pl-3.5 pr-3 py-2.5 rounded-2xl hover:bg-black/5 dark:hover:bg-white/5 border border-transparent transition-all group relative"
             >
               {/* Timeline dot */}

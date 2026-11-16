@@ -34,8 +34,8 @@ const INITIAL_BOOKMARKS: SavedBookmark[] = [
     id: 'b2',
     title: 'Bubble Sort In-Place Implementation & Analysis',
     type: 'topic',
-    category: 'Data Structures · Unit 5',
-    href: '/topics/bubble-sort',
+    category: 'Data Structures · Unit 3',
+    href: '/topics/selection-bubble-insertion',
     savedAt: '3 days ago',
   },
   {
@@ -53,6 +53,14 @@ const INITIAL_BOOKMARKS: SavedBookmark[] = [
     category: 'DSA Problem · Graphs',
     href: '/dsa/problems/dijkstra-shortest-path',
     savedAt: '1 week ago',
+  },
+  {
+    id: 'b5',
+    title: 'Image Sampling & Quantization (with Numericals)',
+    type: 'topic',
+    category: 'Digital Image Processing · Unit 1',
+    href: '/topics/sampling-quantization',
+    savedAt: 'Just now',
   },
 ]
 

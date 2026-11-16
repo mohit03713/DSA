@@ -21,7 +21,7 @@ export const DSA_PROBLEMS: DetailedDSAProblem[] = [
     solveCount: 1250,
     isSolved: true,
     isBookmarked: true,
-    relatedTopicId: 'arrays',
+    relatedTopicId: 'arrays-1d-basics',
     description: `Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.
 
 You may assume that each input would have exactly one solution, and you may not use the same element twice. You can return the answer in any order.`,
@@ -199,7 +199,7 @@ public:
     solveCount: 2100,
     isSolved: true,
     isBookmarked: false,
-    relatedTopicId: 'stacks',
+    relatedTopicId: 'stacks-infix-postfix',
     description: `Given a string s containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.
 
 An input string is valid if:
@@ -295,7 +295,7 @@ public:
     solveCount: 1800,
     isSolved: false,
     isBookmarked: true,
-    relatedTopicId: 'linked-list',
+    relatedTopicId: 'singly-linked-list',
     description: `Given the head of a singly linked list, reverse the list, and return the reversed list.`,
     examples: [
       { input: 'head = [1,2,3,4,5]', output: '[5,4,3,2,1]' },
@@ -466,7 +466,7 @@ public:
     solveCount: 420,
     isSolved: false,
     isBookmarked: true,
-    relatedTopicId: 'graphs',
+    relatedTopicId: 'dijkstra',
     description: `Given a weighted connected graph with non-negative edge weights and a source vertex S, find the shortest path from S to all other vertices.`,
     examples: [
       {

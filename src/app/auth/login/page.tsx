@@ -174,9 +174,14 @@ export default function LoginPage() {
           <div>
             <div className="flex items-center justify-between mb-1">
               <label className="text-xs font-semibold text-foreground">Password</label>
-              <a href="#" className="text-[11px] text-primary hover:underline">
-                Forgot?
-              </a>
+              <button
+                type="button"
+                onClick={() => setPassword('password123')}
+                className="text-[11px] text-primary hover:underline"
+                title="Fill default demo password"
+              >
+                Forgot password?
+              </button>
             </div>
             <div className="relative">
               <Lock className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground" />

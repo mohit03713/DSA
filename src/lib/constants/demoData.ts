@@ -89,7 +89,7 @@ export const DEMO_CONTINUE_LEARNING = [
     title: 'Binary Search Trees',
     subject: 'Data Structures',
     subjectId: 'ds',
-    unit: 'Unit 3: Trees',
+    unit: 'Unit 4: Trees',
     progress: 65,
     difficulty: 'Medium' as const,
     lastStudied: '2024-11-12T16:00:00Z',
@@ -98,7 +98,7 @@ export const DEMO_CONTINUE_LEARNING = [
   },
   {
     id: 't2',
-    title: 'Process Scheduling',
+    title: 'Process CPU Scheduling',
     subject: 'Operating Systems',
     subjectId: 'os',
     unit: 'Unit 2: Process Management',
@@ -106,45 +106,58 @@ export const DEMO_CONTINUE_LEARNING = [
     difficulty: 'Hard' as const,
     lastStudied: '2024-11-11T12:00:00Z',
     estimatedMinutes: 35,
-    topicId: 'process-scheduling',
+    topicId: 'cpu-scheduling',
   },
   {
     id: 't3',
     title: 'SQL Joins & Subqueries',
     subject: 'DBMS',
     subjectId: 'dbms',
-    unit: 'Unit 2: SQL',
+    unit: 'Unit 3: SQL & Normalization',
     progress: 80,
     difficulty: 'Easy' as const,
     lastStudied: '2024-11-10T09:30:00Z',
     estimatedMinutes: 15,
-    topicId: 'sql-joins',
+    topicId: 'sql-queries-joins',
+  },
+  {
+    id: 't4',
+    title: '2D Spatial Convolution & Filtering',
+    subject: 'Digital Image Processing',
+    subjectId: 'dip',
+    unit: 'Unit 1: Fundamentals of DIP',
+    progress: 55,
+    difficulty: 'Hard' as const,
+    lastStudied: '2024-11-16T15:00:00Z',
+    estimatedMinutes: 40,
+    topicId: 'linear-circular-convolution-2d',
   },
 ]
 
 export const DEMO_WEAK_TOPICS = [
-  { id: 'w1', title: 'Graph Algorithms (Dijkstra)', subject: 'Data Structures', difficulty: 'Hard' as const, score: 32 },
-  { id: 'w2', title: 'Deadlock Detection', subject: 'Operating Systems', difficulty: 'Hard' as const, score: 38 },
-  { id: 'w3', title: 'B+ Trees', subject: 'DBMS', difficulty: 'Medium' as const, score: 45 },
-  { id: 'w4', title: 'TCP Congestion Control', subject: 'Computer Networks', difficulty: 'Hard' as const, score: 28 },
-  { id: 'w5', title: 'Red-Black Trees', subject: 'Data Structures', difficulty: 'Hard' as const, score: 35 },
+  { id: 'w1', topicId: 'dijkstra', title: 'Graph Algorithms (Dijkstra)', subject: 'Data Structures', difficulty: 'Hard' as const, score: 32 },
+  { id: 'w2', topicId: 'deadlock-banker', title: 'Deadlock Detection & Banker\'s', subject: 'Operating Systems', difficulty: 'Hard' as const, score: 38 },
+  { id: 'w3', topicId: 'indexing-b-trees', title: 'B+ Trees & Indexing', subject: 'DBMS', difficulty: 'Medium' as const, score: 45 },
+  { id: 'w4', topicId: 'tcp-congestion-control', title: 'TCP Congestion Control', subject: 'Computer Networks', difficulty: 'Hard' as const, score: 28 },
+  { id: 'w5', topicId: 'sampling-quantization', title: 'Image Sampling & Quantization', subject: 'Digital Image Processing', difficulty: 'Hard' as const, score: 35 },
 ]
 
 export const DEMO_UPCOMING_EXAMS = [
   { id: 'e1', name: 'Data Structures Mid-Sem', date: '2024-11-25', formattedDate: '25 Nov', daysLeft: 12, subject: 'DS', type: 'Mid-Semester' },
   { id: 'e2', name: 'OS Unit Test 3', date: '2024-11-18', formattedDate: '18 Nov', daysLeft: 5, subject: 'OS', type: 'Unit Test' },
   { id: 'e3', name: 'DBMS End-Sem', date: '2024-12-10', formattedDate: '10 Dec', daysLeft: 27, subject: 'DBMS', type: 'End-Semester' },
+  { id: 'e4', name: 'Digital Image Processing Exam', date: '2024-12-15', formattedDate: '15 Dec', daysLeft: 32, subject: 'DIP', type: 'End-Semester' },
 ]
 
 export const DEMO_PENDING_LABS = [
-  { id: 'l1', title: 'Lab 1: Basic 1D-Array Operations', subject: 'Data Structures', dueDate: '2024-11-20', daysLeft: 7, questionsTotal: 7, questionsDone: 7 },
-  { id: 'l2', title: 'Lab 2: Array Manipulations & Palindrome', subject: 'Data Structures', dueDate: '2024-11-25', daysLeft: 12, questionsTotal: 6, questionsDone: 6 },
-  { id: 'l3', title: 'Lab 3: Linear & Binary Search', subject: 'Data Structures', dueDate: '2024-11-28', daysLeft: 15, questionsTotal: 7, questionsDone: 5 },
-  { id: 'l4', title: 'Lab 4: 2D/3D Array & Selection Sort', subject: 'Data Structures', dueDate: '2024-12-05', daysLeft: 22, questionsTotal: 6, questionsDone: 3 },
-  { id: 'l5', title: 'Lab 5: Bubble, Merge & Quick Sort', subject: 'Data Structures', dueDate: '2024-12-10', daysLeft: 27, questionsTotal: 3, questionsDone: 2 },
-  { id: 'l6', title: 'Lab 6: Singly Linked List', subject: 'Data Structures', dueDate: '2024-12-15', daysLeft: 32, questionsTotal: 3, questionsDone: 1 },
-  { id: 'l7', title: 'Lab 7: Josephus & Doubly Linked List', subject: 'Data Structures', dueDate: '2024-12-18', daysLeft: 35, questionsTotal: 2, questionsDone: 0 },
-  { id: 'l10', title: 'Lab 10: Infix to Postfix/Prefix Stack', subject: 'Data Structures', dueDate: '2024-12-22', daysLeft: 39, questionsTotal: 2, questionsDone: 0 },
+  { id: 'l1', labNo: 1, title: 'Lab 1: Basic 1D-Array Operations', subject: 'Data Structures', dueDate: '2024-11-20', daysLeft: 7, questionsTotal: 7, questionsDone: 7 },
+  { id: 'l2', labNo: 2, title: 'Lab 2: Array Manipulations & Palindrome', subject: 'Data Structures', dueDate: '2024-11-25', daysLeft: 12, questionsTotal: 6, questionsDone: 6 },
+  { id: 'l3', labNo: 3, title: 'Lab 3: Linear & Binary Search', subject: 'Data Structures', dueDate: '2024-11-28', daysLeft: 15, questionsTotal: 7, questionsDone: 5 },
+  { id: 'l4', labNo: 4, title: 'Lab 4: 2D/3D Array & Selection Sort', subject: 'Data Structures', dueDate: '2024-12-05', daysLeft: 22, questionsTotal: 6, questionsDone: 3 },
+  { id: 'l5', labNo: 5, title: 'Lab 5: Bubble, Merge & Quick Sort', subject: 'Data Structures', dueDate: '2024-12-10', daysLeft: 27, questionsTotal: 3, questionsDone: 2 },
+  { id: 'l6', labNo: 6, title: 'Lab 6: Singly Linked List', subject: 'Data Structures', dueDate: '2024-12-15', daysLeft: 32, questionsTotal: 3, questionsDone: 1 },
+  { id: 'l7', labNo: 7, title: 'Lab 7: Josephus & Doubly Linked List', subject: 'Data Structures', dueDate: '2024-12-18', daysLeft: 35, questionsTotal: 2, questionsDone: 0 },
+  { id: 'l10', labNo: 10, title: 'Lab 10: Infix to Postfix/Prefix Stack', subject: 'Data Structures', dueDate: '2024-12-22', daysLeft: 39, questionsTotal: 2, questionsDone: 0 },
 ]
 
 export const DEMO_AI_RECOMMENDATIONS = [
@@ -159,12 +172,12 @@ export const DEMO_AI_RECOMMENDATIONS = [
   },
   {
     id: 'r2',
-    title: 'Deadlock — Detection & Recovery',
+    title: 'Deadlock — Banker\'s Algorithm & Safety',
     reason: 'Your quiz score was 38% — this topic needs immediate attention',
     subject: 'Operating Systems',
     priority: 'high' as const,
     estimatedMinutes: 30,
-    topicId: 'deadlock',
+    topicId: 'deadlock-banker',
   },
   {
     id: 'r3',
@@ -173,7 +186,16 @@ export const DEMO_AI_RECOMMENDATIONS = [
     subject: 'DBMS',
     priority: 'medium' as const,
     estimatedMinutes: 40,
-    topicId: 'normalization',
+    topicId: 'normalization-123-bcnf',
+  },
+  {
+    id: 'r4',
+    title: 'Discrete Histogram Equalization',
+    reason: 'High-frequency exam numerical with 10 marks guaranteed',
+    subject: 'Digital Image Processing',
+    priority: 'high' as const,
+    estimatedMinutes: 45,
+    topicId: 'histogram-processing-equalization',
   },
 ]
 
@@ -183,14 +205,16 @@ export const DEMO_IMPORTANT_QUESTIONS = [
   { id: 'q3', question: 'Explain different types of joins with examples. Write SQL queries.', subject: 'DBMS', frequency: 6, marks: 8 },
   { id: 'q4', question: 'Compare TCP and UDP. Explain TCP three-way handshake.', subject: 'Computer Networks', frequency: 5, marks: 8 },
   { id: 'q5', question: 'Write and explain QuickSort algorithm. What is its worst-case time complexity?', subject: 'Data Structures', frequency: 6, marks: 6 },
+  { id: 'q6', question: 'Perform Histogram Equalization on a 3-bit 64x64 image. Calculate CDF and final gray level mapping.', subject: 'Digital Image Processing', frequency: 9, marks: 10 },
 ]
 
 export const DEMO_RECENT_TOPICS = [
-  { id: 'rt1', title: 'Binary Search Trees', subject: 'Data Structures', visitedAt: '2024-11-12T16:00:00Z', timeAgo: '2h ago' },
-  { id: 'rt2', title: 'Bubble Sort', subject: 'Data Structures', visitedAt: '2024-11-12T13:00:00Z', timeAgo: '5h ago' },
-  { id: 'rt3', title: 'Process Scheduling', subject: 'Operating Systems', visitedAt: '2024-11-11T12:00:00Z', timeAgo: '1d ago' },
-  { id: 'rt4', title: 'SQL Joins', subject: 'DBMS', visitedAt: '2024-11-10T10:00:00Z', timeAgo: '2d ago' },
-  { id: 'rt5', title: 'ER Diagram', subject: 'DBMS', visitedAt: '2024-11-09T08:00:00Z', timeAgo: '3d ago' },
+  { id: 'rt1', topicId: 'binary-search-tree', title: 'Binary Search Trees', subject: 'Data Structures', visitedAt: '2024-11-12T16:00:00Z', timeAgo: '2h ago' },
+  { id: 'rt2', topicId: 'selection-bubble-insertion', title: 'Bubble & Selection Sort', subject: 'Data Structures', visitedAt: '2024-11-12T13:00:00Z', timeAgo: '5h ago' },
+  { id: 'rt3', topicId: 'cpu-scheduling', title: 'Process CPU Scheduling', subject: 'Operating Systems', visitedAt: '2024-11-11T12:00:00Z', timeAgo: '1d ago' },
+  { id: 'rt4', topicId: 'sql-queries-joins', title: 'SQL Joins & Subqueries', subject: 'DBMS', visitedAt: '2024-11-10T10:00:00Z', timeAgo: '2d ago' },
+  { id: 'rt5', topicId: 'er-diagrams', title: 'ER Diagram Modeling', subject: 'DBMS', visitedAt: '2024-11-09T08:00:00Z', timeAgo: '3d ago' },
+  { id: 'rt6', topicId: 'sampling-quantization', title: 'Image Sampling & Quantization', subject: 'Digital Image Processing', visitedAt: '2024-11-16T18:00:00Z', timeAgo: 'Just now' },
 ]
 
 // Generate 84 days of study activity (12 weeks) deterministically (zero random numbers)

@@ -1,6 +1,7 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, Suspense } from 'react'
+import { useSearchParams } from 'next/navigation'
 import {
   Brain,
   Send,
@@ -32,7 +33,11 @@ const STARTER_PROMPTS = [
   'Help me optimize Dijkstra\'s Algorithm using a Min-Heap priority queue.',
 ]
 
-export default function AITutorPage() {
+function AITutorContent() {
+  const searchParams = useSearchParams()
+  const promptParam = searchParams.get('prompt')
+  const promptHandled = useRef(false)
+
   const [sessions, setSessions] = useState(DEMO_CHAT_SESSIONS)
   const [activeSessionId, setActiveSessionId] = useState<string>(DEMO_CHAT_SESSIONS[0].id)
   const [messages, setMessages] = useState<Message[]>([
@@ -40,7 +45,7 @@ export default function AITutorPage() {
       id: 'm1',
       role: 'assistant',
       content:
-        'Hello Mohit! I am your StudySphere AI Personal Tutor. I have full context of your Semester 4 engineering curriculum: Data Structures, Operating Systems, DBMS, and Computer Networks.\n\nWhat topic, algorithm, or lab assignment would you like to explore today?',
+        'Hello Mohit! I am your StudySphere AI Personal Tutor. I have full context of your Semester 4 engineering curriculum: Data Structures, Operating Systems, DBMS, Computer Networks, and Digital Image Processing.\n\nWhat topic, algorithm, or lab assignment would you like to explore today?',
       timestamp: 'Just now',
     },
   ])
@@ -51,6 +56,13 @@ export default function AITutorPage() {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages, isTyping])
+
+  useEffect(() => {
+    if (promptParam && !promptHandled.current) {
+      promptHandled.current = true
+      handleSendMessage(promptParam)
+    }
+  }, [promptParam])
 
   const handleSendMessage = (textToSend?: string) => {
     const text = textToSend || inputValue.trim()
@@ -289,6 +301,14 @@ Node* rightRotate(Node* y) {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function AITutorPage() {
+  return (
+    <Suspense fallback={<div className="p-8 text-center text-muted-foreground">Loading AI Personal Tutor...</div>}>
+      <AITutorContent />
+    </Suspense>
   )
 }
 

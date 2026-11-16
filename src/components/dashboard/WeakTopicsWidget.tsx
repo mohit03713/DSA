@@ -32,7 +32,7 @@ export function WeakTopicsWidget() {
               transition={{ duration: 0.25, delay: idx * 0.05 }}
             >
               <Link
-                href={`/topics/${topic.id}`}
+                href={`/topics/${(topic as { topicId?: string }).topicId || topic.id}`}
                 className="flex items-center gap-3.5 p-3.5 rounded-2xl bg-black/5 dark:bg-white/[0.03] hover:bg-black/10 dark:hover:bg-white/[0.07] border border-black/10 dark:border-white/[0.08] transition-all group"
               >
                 {/* Score badge */}
