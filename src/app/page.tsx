@@ -109,7 +109,7 @@ export default function HomePage() {
           </h1>
 
           <p className="text-sm sm:text-base text-muted-foreground max-w-xl mx-auto lg:mx-0 leading-relaxed">
-            Your university companion for Data Structures, Digital Image Processing, Operating Systems, and DBMS. Complete with step-by-step solved numericals, formula sheets, interactive animated studios, and AI tutor.
+            Your university companion for Data Structures & Algorithms and Digital Image Processing. Complete with step-by-step solved numericals, formula sheets, interactive animated studios, and AI tutor.
           </p>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2 max-w-lg mx-auto lg:mx-0">

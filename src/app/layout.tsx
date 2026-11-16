@@ -10,8 +10,8 @@ export const metadata: Metadata = {
     template: '%s | StudySphere AI',
   },
   description:
-    'AI-powered educational platform for engineering students. Master Data Structures, Operating Systems, DBMS, and Computer Networks with intelligent guidance.',
-  keywords: ['education', 'AI tutor', 'DSA', 'engineering', 'study platform'],
+    'AI-powered educational platform for engineering students. Master Data Structures & Algorithms and Digital Image Processing with interactive studios, formula sheets, and solved numericals.',
+  keywords: ['education', 'AI tutor', 'DSA', 'Digital Image Processing', 'engineering', 'study platform'],
   authors: [{ name: 'StudySphere AI Team' }],
   openGraph: {
     title: 'StudySphere AI',

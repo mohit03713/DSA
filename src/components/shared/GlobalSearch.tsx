@@ -8,19 +8,20 @@ import { cn } from '@/lib/utils'
 const SEARCH_ITEMS = [
   { id: '1', label: 'Bubble & Selection Sort', type: 'topic', subject: 'Data Structures', href: '/topics/selection-bubble-insertion' },
   { id: '2', label: 'Binary Search Tree (BST)', type: 'topic', subject: 'Data Structures', href: '/topics/binary-search-tree' },
-  { id: '3', label: 'CPU Scheduling Algorithms', type: 'topic', subject: 'Operating Systems', href: '/topics/cpu-scheduling' },
-  { id: '4', label: 'SQL Queries & Joins', type: 'topic', subject: 'DBMS', href: '/topics/sql-queries-joins' },
+  { id: '3', label: 'Infix to Postfix & Prefix (Stacks)', type: 'topic', subject: 'Data Structures', href: '/topics/stacks-infix-postfix' },
+  { id: '4', label: 'Singly Linked List Operations', type: 'topic', subject: 'Data Structures', href: '/topics/singly-linked-list' },
   { id: '5', label: 'Dijkstra\'s Shortest Path', type: 'dsa', subject: 'DSA Problem', href: '/dsa/problems/dijkstra-shortest-path' },
   { id: '6', label: 'Two Sum (Hash Map)', type: 'dsa', subject: 'DSA Problem', href: '/dsa/problems/two-sum' },
-  { id: '7', label: 'Lab 1 - Basic 1D Array', type: 'lab', subject: 'DS Lab', href: '/labs/ds/1' },
-  { id: '8', label: 'Lab 10 - Infix to Postfix Stack', type: 'lab', subject: 'DS Lab', href: '/labs/ds/10' },
-  { id: '9', label: 'Deadlock & Banker\'s Algorithm', type: 'topic', subject: 'Operating Systems', href: '/topics/deadlock-banker' },
-  { id: '10', label: 'Normalization (1NF, 2NF, 3NF, BCNF)', type: 'topic', subject: 'DBMS', href: '/topics/normalization-123-bcnf' },
+  { id: '7', label: 'DS Lab 1 - Basic 1D Array', type: 'lab', subject: 'DS Lab', href: '/labs/ds/1' },
+  { id: '8', label: 'DS Lab 10 - Infix to Postfix Stack', type: 'lab', subject: 'DS Lab', href: '/labs/ds/10' },
+  { id: '9', label: 'DIP Lab 1 - Image Sampling & Storage', type: 'lab', subject: 'DIP Lab', href: '/labs/dip/1' },
+  { id: '10', label: 'DIP Lab 2 - 2D Spatial Filtering & Masks', type: 'lab', subject: 'DIP Lab', href: '/labs/dip/2' },
   { id: '11', label: 'Sampling & Quantization (Numericals)', type: 'topic', subject: 'Digital Image Processing', href: '/topics/sampling-quantization' },
   { id: '12', label: 'Histogram Equalization Engine', type: 'topic', subject: 'Digital Image Processing', href: '/topics/histogram-processing-equalization' },
   { id: '13', label: '2D Linear & Circular Convolution', type: 'topic', subject: 'Digital Image Processing', href: '/topics/linear-circular-convolution-2d' },
   { id: '14', label: 'DIP Formula Sheet & Solved Numericals', type: 'note', subject: 'DIP Formulas', href: '/subjects/dip/formulas' },
   { id: '15', label: 'DIP Interactive Studio & Visualizer', type: 'topic', subject: 'DIP Studio', href: '/subjects/dip/visualizer' },
+  { id: '16', label: 'Discrete Cosine Transform (DCT)', type: 'topic', subject: 'Digital Image Processing', href: '/topics/discrete-cosine-transform-dct' },
 ]
 
 const TYPE_ICON = {

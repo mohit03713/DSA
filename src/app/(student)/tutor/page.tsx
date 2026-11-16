@@ -28,8 +28,8 @@ interface Message {
 
 const STARTER_PROMPTS = [
   'Explain AVL Tree Rotations (LL, RR, LR, RL) with balance factors.',
-  'How does Banker\'s Algorithm prevent Deadlocks in Operating Systems?',
-  'What is the difference between 3NF and BCNF with a database example?',
+  'How does 2D Spatial Convolution work with a 3x3 filter mask in DIP?',
+  'Derive the Discrete Histogram Equalization formula step-by-step.',
   'Help me optimize Dijkstra\'s Algorithm using a Min-Heap priority queue.',
 ]
 
@@ -45,7 +45,7 @@ function AITutorContent() {
       id: 'm1',
       role: 'assistant',
       content:
-        'Hello Mohit! I am your StudySphere AI Personal Tutor. I have full context of your Semester 4 engineering curriculum: Data Structures, Operating Systems, DBMS, Computer Networks, and Digital Image Processing.\n\nWhat topic, algorithm, or lab assignment would you like to explore today?',
+        'Hello Mohit! I am your StudySphere AI Personal Tutor. I have full context of your Semester 4 engineering curriculum: Data Structures & Algorithms and Digital Image Processing.\n\nWhat topic, algorithm, or lab assignment would you like to explore today?',
       timestamp: 'Just now',
     },
   ])
@@ -99,12 +99,14 @@ Node* rightRotate(Node* y) {
     return x; // New root
 }`,
         }
-      } else if (text.toLowerCase().includes('deadlock') || text.toLowerCase().includes('banker')) {
-        replyContent = `In **Operating Systems**, **Banker\'s Algorithm** is a deadlock avoidance algorithm named after the banking system where a bank never allocates cash exceeding its reserves.\n\n### Core Matrices:\n1. **Allocation Matrix [N x M]**: Resources currently allocated to process $P_i$.\n2. **Max Matrix [N x M]**: Maximum demand of process $P_i$.\n3. **Available Vector [M]**: Available instances of each resource.\n4. **Need Matrix [N x M]**: \`Need[i][j] = Max[i][j] - Allocation[i][j]\`.\n\nA state is **Safe** if there exists a safe execution sequence such that every process can finish.`
-      } else if (text.toLowerCase().includes('3nf') || text.toLowerCase().includes('bcnf')) {
-        replyContent = `### Normalization Comparison: 3NF vs BCNF\n\n- **Third Normal Form (3NF)**: Eliminates transitive dependencies. For every non-trivial functional dependency $X \\rightarrow Y$, either:\n  1. $X$ is a super key, OR\n  2. $Y$ is a prime attribute (part of any candidate key).\n\n- **Boyce-Codd Normal Form (BCNF)**: Strictly stronger. For every non-trivial functional dependency $X \\rightarrow Y$:\n  - $X$ **MUST** be a super key.\n\n*Key rule:* Every relation in BCNF is in 3NF, but not every 3NF relation is in BCNF!`
+      } else if (text.toLowerCase().includes('histogram') || text.toLowerCase().includes('equalization')) {
+        replyContent = `### Discrete Histogram Equalization in DIP\n\nHistogram equalization stretches the dynamic range of gray levels to maximize contrast across the entire [0, L-1] intensity spectrum.\n\n### Mathematical Formulation:\n1. **Normalized Frequency**: $p(r_k) = \\frac{n_k}{M \\times N}$\n2. **Cumulative Distribution (CDF)**: $s_k = T(r_k) = (L - 1) \\sum_{j=0}^k p(r_j)$\n3. **Rounding**: $s_k = \\text{round}(s_k)$\n\n*Check the live simulator on the **DIP Interactive Studio** page (/subjects/dip/visualizer) or review the solved 3-bit numericals in the Formula Sheet!*`
+      } else if (text.toLowerCase().includes('convolution') || text.toLowerCase().includes('spatial')) {
+        replyContent = `### 2D Spatial Filtering & Image Convolution\n\nSpatial filtering processes an image by sliding a spatial mask $w(s, t)$ of size $m \\times n$ (typically $3 \\times 3$) over every pixel $(x, y)$ of image $f(x, y)$:\n\n$$g(x, y) = \\sum_{s=-a}^a \\sum_{t=-b}^b w(s, t) \\cdot f(x+s, y+t)$$\n\n### Border Boundary Conditions:\n1. **Zero-Padding**: Surround original $M \\times N$ image with zeroes.\n2. **Replication**: Copy the nearest edge pixels outwards.\n3. **Wrap-Around / Circular**: Periodic continuation.\n\n*Tip: Test real-time mask sliding on the **DIP Interactive Studio** page (/subjects/dip/visualizer)!*`
+      } else if (text.toLowerCase().includes('dijkstra')) {
+        replyContent = `### Dijkstra's Shortest Path Algorithm\n\nFinds single-source shortest paths in graphs with non-negative edge weights.\n\n- **Greedy Invariant**: Distance to the extracted minimum-distance vertex is always optimal.\n- **Relaxation**: $\\text{dist}[v] = \\min(\\text{dist}[v], \\text{dist}[u] + w(u, v))$\n- **Complexity**: $O((V + E) \\log V)$ using a binary Min-Heap priority queue.`
       } else {
-        replyContent = `That's an important topic in your engineering curriculum! Let's break it down conceptually:\n\n1. **Core Intuition**: Always inspect the underlying invariants before writing code.\n2. **Time Complexity**: Aim for optimal bounds like $O(N)$ or $O(N \\log N)$ using appropriate data structures.\n3. **Practical Implementation**: Make sure to check base cases and boundary constraints.\n\nWould you like me to generate a complete C/C++ solution or a dry run diagram?`
+        replyContent = `That's a core concept in your **Data Structures & Algorithms** and **Digital Image Processing** curriculum!\n\n1. **Underlying Invariants**: Examine whether the problem requires graph traversal, hierarchical tree organization, spatial domain filtering, or frequency transform analysis.\n2. **Time & Space Bounds**: Aim for optimal computational limits such as $O(N \\log N)$ for tree/sorting algorithms or $O(N \\times M)$ for image convolution.\n3. **Practical Implementation**: Remember edge boundaries, zero-padding, or pointer link management.\n\nWould you like me to generate a C/C++ solution or trace a step-by-step dry run numerical?`
       }
 
       const assistantMsg: Message = {

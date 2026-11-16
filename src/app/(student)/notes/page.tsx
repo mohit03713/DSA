@@ -26,7 +26,7 @@ const INITIAL_NOTES: StudentNote[] = [
   {
     id: 'n1',
     title: 'Dijkstra vs Bellman-Ford Summary',
-    subject: 'Data Structures',
+    subject: 'Data Structures & Algorithms',
     content: `Dijkstra's Algorithm:
 - Works with non-negative edge weights only.
 - Greedy approach using Min-Heap priority queue.
@@ -42,25 +42,39 @@ Bellman-Ford Algorithm:
   },
   {
     id: 'n2',
-    title: 'Peterson\'s Solution Conditions',
-    subject: 'Operating Systems',
-    content: `Two-process solution for the critical section problem:
-1. Mutual Exclusion: Guaranteed because only one process can satisfy the while condition.
-2. Progress: A process outside the critical section cannot block another from entering.
-3. Bounded Waiting: Wait time is bounded by 1 turn.`,
-    tags: ['Synchronization', 'Critical Section'],
-    updatedAt: '2024-11-08',
+    title: 'DIP Histogram Equalization Derivation',
+    subject: 'Digital Image Processing',
+    content: `Histogram Equalization Steps:
+1. Compute probability density function: p(r_k) = n_k / (M * N).
+2. Compute cumulative distribution function (CDF): s_k = T(r_k) = (L - 1) * sum_{j=0}^k p(r_j).
+3. Round s_k to the nearest discrete integer gray level in range [0, L-1].
+4. Map old gray levels to equalized levels. Resulting histogram has approximately uniform distribution and maximized dynamic contrast.`,
+    tags: ['DIP', 'Histogram', 'Contrast Enhancement'],
+    updatedAt: '2024-11-16',
   },
   {
     id: 'n3',
-    title: 'ACID Properties in DBMS',
-    subject: 'DBMS',
-    content: `Atomicity: All-or-nothing execution. Handled by recovery manager / rollback.
-Consistency: Preserves database invariants before and after transactions.
-Isolation: Concurrent transactions execute as if serial. Handled by concurrency control (2PL).
-Durability: Committed data survives system crashes. Handled by write-ahead logging (WAL).`,
-    tags: ['Transactions', 'ACID'],
-    updatedAt: '2024-11-05',
+    title: 'Image Sampling, Quantization & Memory Footprint',
+    subject: 'Digital Image Processing',
+    content: `Fundamental DIP Storage Formulas:
+1. Total bits required: b = N * M * k, where k = log_2(L) bits/pixel.
+2. Storage in Bytes: b / 8.
+3. Storage in Kilobytes (KB): (b / 8) / 1024.
+4. Nyquist rate: Sampling frequency f_s >= 2 * f_max to avoid spatial aliasing / Moiré patterns.`,
+    tags: ['DIP', 'Sampling', 'Quantization', 'Formulas'],
+    updatedAt: '2024-11-15',
+  },
+  {
+    id: 'n4',
+    title: 'Infix to Postfix Stack Reversal Method',
+    subject: 'Data Structures & Algorithms',
+    content: `Infix to Prefix Conversion Steps:
+1. Reverse the infix string.
+2. Swap '(' with ')' and vice versa.
+3. Compute postfix expression using standard stack precedence rules.
+4. Reverse the postfix string to obtain the final prefix notation!`,
+    tags: ['Stacks', 'Parsing', 'Expressions'],
+    updatedAt: '2024-11-12',
   },
 ]
 
